@@ -25,6 +25,10 @@ O ImobiFlow passou a se chamar **Kalli** em 02/10/2026. Os vídeos anteriores ai
 
 Foto de perfil, imagem de compartilhamento do site, capas dos destaques do Instagram e dois carrosséis. Lista completa em [pecas/](pecas/).
 
+## Conteúdo (contexto e painéis)
+
+A pasta [conteudo/](conteudo/) é uma cópia da pasta `18 Conteúdo` da Central da Mittari: manual, roteiros, fichas das animações e das peças, registro de publicações e o Painel de Saúde do Conteúdo. **A fonte é a Central.** Leia aqui antes de produzir uma peça nova e registre o resultado na Central.
+
 ## Como está organizado
 
 ```
