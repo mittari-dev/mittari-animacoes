@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script type="importmap">
+{ "imports": { "three": "./assets/vendor/three.module.js" } }
+</script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --off:#ECECE4; --dim:#8E8E86; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 30%, #121614 0%, #0a0a0a 55%, #060606 100%); }
+#glow { position:absolute; left:90px; top:120px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.08) 0%, rgba(184,255,79,0) 62%); }
+#gl { position:absolute; inset:0; width:1080px; height:1920px; display:block; }
+#typeCam { position:absolute; inset:0; }
+#type { position:absolute; inset:0; color:var(--off); }
+.ln { position:absolute; left:70px; width:940px; top:1180px; text-align:left; }
+.row { display:block; position:relative; }
+.sm { font:500 38px/1.3 Inter; color:#A4A49C; margin-bottom:12px; }
+.big { font-family:Archivo; font-weight:900; font-size:84px; line-height:0.96; letter-spacing:-0.035em; text-transform:uppercase; }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:74px; line-height:1.06; letter-spacing:-0.01em; margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:#FF5A5E; }
+.cr { display:flex; align-items:baseline; gap:22px; margin-bottom:10px; opacity:0; }
+.cr i { width:34px; height:34px; border-radius:50%; flex:none; transform:translateY(2px); }
+.cr b { font:900 66px Archivo; letter-spacing:-0.03em; text-transform:uppercase; }
+.cr span { font:500 38px Inter; color:#B4B4AC; }
+#src { position:absolute; left:70px; top:1650px; font:600 26px Inter; color:#8E8E86; opacity:0; }
+#cta { position:absolute; left:70px; top:1420px; opacity:0; }
+.btn { display:inline-flex; align-items:center; gap:18px; background:var(--lima); color:#0A0A0A; font:800 42px Inter; border-radius:60px; padding:24px 44px; }
+.ctasub { margin-top:20px; font:500 30px Inter; color:#8E8E86; }
+#word { position:absolute; left:0; width:1080px; top:880px; text-align:center; font:900 92px Archivo; letter-spacing:-0.04em; color:var(--off); opacity:0; }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.045; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="49.6" data-fps="60">
+  <div id="bg"></div>
+  <div id="glow"></div>
+  <canvas id="gl" width="1080" height="1920" data-layout-allow-overflow></canvas>
+  <div id="typeCam" data-layout-allow-overlap><div id="type"></div></div>
+  <div id="src">Fonte: Grupo Brasileiro de Classificação de Risco</div>
+  <div id="cta"><div class="btn">Teste grátis: link na bio</div><div class="ctasub">7 dias · no seu número</div></div>
+  <div id="word">Kalli</div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="47.6" data-volume="1"></audio>
+  <audio id="a-m0" src="assets/sfx-monitor.mp3" data-start="0.05" data-duration="0.7" data-volume="0.45"></audio>
+  <audio id="a-m1" src="assets/sfx-monitor.mp3" data-start="1.25" data-duration="0.7" data-volume="0.35"></audio>
+  <audio id="a-m2" src="assets/sfx-monitor.mp3" data-start="2.45" data-duration="0.7" data-volume="0.35"></audio>
+  <audio id="a-wh0" src="assets/sfx-whoosh.mp3" data-start="6.0" data-duration="1.5" data-volume="0.4"></audio>
+  <audio id="a-s0" src="assets/sfx-snap.mp3" data-start="8.5" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a-s1" src="assets/sfx-snap.mp3" data-start="8.78" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-s2" src="assets/sfx-snap.mp3" data-start="9.06" data-duration="0.5" data-volume="0.45"></audio>
+  <audio id="a-c1" src="assets/sfx-pop.mp3" data-start="9.68" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-c2" src="assets/sfx-pop.mp3" data-start="12.08" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-c3" src="assets/sfx-pop.mp3" data-start="14.70" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-c4" src="assets/sfx-pop.mp3" data-start="17.20" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-wh1" src="assets/sfx-whoosh.mp3" data-start="24.1" data-duration="2" data-volume="0.6"></audio>
+  <audio id="a-t1" src="assets/sfx-tick.mp3" data-start="32.14" data-duration="1.1" data-volume="0.45"></audio>
+  <audio id="a-s3" src="assets/sfx-snap.mp3" data-start="34.0" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-wh2" src="assets/sfx-whoosh.mp3" data-start="37.55" data-duration="1.5" data-volume="0.45"></audio>
+  <audio id="a-vib" src="assets/sfx-vibra.mp3" data-start="40.08" data-duration="1" data-volume="0.7"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="40.1" data-duration="0.6" data-volume="0.8"></audio>
+  <audio id="a-wh3" src="assets/sfx-whoosh.mp3" data-start="44.2" data-duration="2" data-volume="0.55"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="46.0" data-duration="0.6" data-volume="0.7"></audio>
+</div>
+<script>
+const DUR = 49.6;
+// ---------------- utilidades (também usadas pelo módulo 3D) ----------------
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eOut = (x) => 1 - Math.pow(1 - x, 3);
+const backOut = (x, s = 1.7) => { const c = s + 1; return 1 + c * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, x) => a + (b - a) * x;
+const L3 = (a, b, x) => [lerp(a[0], b[0], x), lerp(a[1], b[1], x), lerp(a[2], b[2], x)];
+function keys(K, t) {
+  if (t <= K[0].t) return K[0];
+  for (let i = 0; i < K.length - 1; i++) {
+    const a = K[i], b = K[i + 1];
+    if (t <= b.t) { const x = ease((t - a.t) / (b.t - a.t)); const o = {}; for (const k in a) if (k !== "t") o[k] = L3(a[k], b[k], x); return o; }
+  }
+  return K[K.length - 1];
+}
+let seed = 20261008;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+
+// ---------------- timeline GSAP (letra, cores, fim) ----------------
+const tl0 = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl0.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+// tempos de cada palavra: ElevenLabs Scribe (voz Sandro Dutra)
+const LINES = [
+  { a: 0.05, b: 4.25, rows: [["sm", [["Num", 0.08], ["pronto-socorro,", 0.24]]], ["big", [["ninguém", 1.44], ["é", 1.96], ["atendido", 2.08]]], ["serif", [["por", 2.64], ["ordem", 2.92], ["de", 3.16], ["chegada.", 3.28, "rd"]]]] },
+  { a: 4.5, b: 9.45, rows: [["sm", [["Na", 4.53], ["porta,", 4.64], ["a", 5.28], ["enfermeira", 5.36], ["faz", 5.92], ["a", 6.12]]], ["big", [["triagem.", 6.24, "lm"]]], ["serif", [["Cada", 7.2], ["paciente", 7.52], ["ganha", 8.16], ["uma", 8.4], ["pulseira.", 8.56]]]] },
+  { a: 19.75, b: 24.15, rows: [["sm", [["É", 19.82], ["o", 19.88]]], ["big", [["Protocolo", 20.0], ["de", 20.48], ["Manchester.", 20.64, "lm"]]], ["serif", [["Hospitais", 21.88], ["do", 22.44], ["Brasil", 22.56], ["e", 23.2], ["do", 23.28], ["mundo.", 23.44]]]] },
+  { a: 24.35, b: 26.8, rows: [["big", [["Agora,", 24.4], ["olha", 25.36], ["o", 25.6], ["seu", 25.68]]], ["serif", [["WhatsApp.", 25.84, "lm"]]]] },
+  { a: 26.95, b: 31.95, rows: [["sm", [["Quem", 27.02], ["quer", 27.2], ["visitar", 27.36], ["no", 27.84], ["sábado", 28.0]]], ["big", [["espera", 28.56], ["na", 29.04], ["mesma", 29.28], ["fila", 29.76]]], ["serif", [["de", 30.04], ["quem", 30.16], ["só", 30.4], ["perguntou", 30.64], ["o", 31.12], ["preço.", 31.28]]]] },
+  { a: 32.1, b: 33.7, rows: [["big", [["Por", 32.14], ["ordem", 32.24]]], ["serif", [["de", 32.56], ["chegada.", 32.72, "rd"]]]] },
+  { a: 33.8, b: 36.3, rows: [["sm", [["A", 33.82], ["Kalli", 34.0], ["faz", 34.56], ["a", 34.84]]], ["big", [["triagem", 34.96]]], ["serif", [["por", 35.52], ["você.", 35.64, "lm"]]]] },
+  { a: 36.35, b: 41.15, rows: [["sm", [["Pergunta", 36.39], ["o", 36.76], ["que", 36.84], ["importa,", 37.12]]], ["big", [["separa", 37.68], ["quem", 38.24], ["está", 38.4], ["pronto", 38.72, "lm"]]], ["serif", [["e", 39.8], ["te", 39.92], ["avisa", 40.08], ["primeiro.", 40.56, "lm"]]]] },
+  { a: 41.25, b: 44.35, rows: [["sm", [["O", 41.28], ["resto,", 41.36]]], ["big", [["ela", 42.08], ["atende", 42.24]]], ["serif", [["enquanto", 42.76], ["você", 43.2], ["vende.", 43.52, "lm"]]]] },
+  { a: 44.5, b: 999, rows: [["big", [["Teste", 44.52], ["7", 44.8, "lm"], ["dias", 45.2]]], ["serif", [["de", 45.8], ["graça.", 45.92, "lm"]]]] },
+];
+const typeEl = $("#type");
+LINES.forEach((Ln) => {
+  const ln = document.createElement("div"); ln.className = "ln";
+  Ln.rows.forEach(([cls, words]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    words.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = cls !== "sm";
+      F(s, { opacity: 0, yPercent: big ? 50 : 40, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.5 : 0.4, ease: big ? "back.out(1.4)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  typeEl.appendChild(ln);
+  if (Ln.b < 90) tl0.to(ln, { opacity: 0, y: -30, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, Ln.b - 0.3);
+});
+// as cores do protocolo (uma linha por cor, no tempo da voz)
+const CORES = [["#E5383B", "Vermelho", "atende agora", 9.68], ["#F28C28", "Laranja", "até 10 minutos", 12.08], ["#F5C518", "Amarelo", "até 1 hora", 14.7], ["#2FBF71", "Verde", "pode esperar", 17.2], ["#2D7FF9", "Azul", "pode esperar", 17.68]];
+const cores = document.createElement("div"); cores.className = "ln"; cores.style.top = "1150px";
+CORES.forEach(([c, n, d, t]) => {
+  const r = document.createElement("div"); r.className = "cr";
+  r.innerHTML = '<i style="background:' + c + '"></i><b style="color:' + c + '">' + n + "</b><span>" + d + "</span>";
+  cores.appendChild(r);
+  F(r, { opacity: 0, x: -40, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.4)" }, t - 0.04);
+});
+typeEl.appendChild(cores);
+tl0.to(cores, { opacity: 0, y: -30, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, 19.45);
+F("#src", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 20.6);
+tl0.to("#src", { opacity: 0, duration: 0.3 }, 23.9);
+F("#typeCam", { x: 0 }, { x: -14, duration: DUR, ease: "none" }, 0);
+F("#word", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 45.4);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, 46.7);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 47.6);
+for (let i = 0; i < DUR * 12; i++) tl0.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl0.set({}, {}, DUR);
+window.__timelines["main"] = tl0;
+
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "./assets/vendor/RoundedBoxGeometry.js";
+import { RoomEnvironment } from "./assets/vendor/RoomEnvironment.js";
+// ---------------- Three.js ----------------
+const canvas = $("#gl");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(1080, 1920, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(50, 1080 / 1920, 0.05, 100);
+const key = new THREE.DirectionalLight(0xffffff, 1.3); key.position.set(-2, 4, 3); scene.add(key);
+const rim = new THREE.PointLight(0xb8ff4f, 6, 7); rim.position.set(1.6, 1.2, -1.2); scene.add(rim);
+const LIMA = "#B8FF4F";
+
+// chão escuro (dá profundidade à fila)
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.MeshStandardMaterial({ color: 0x0b0c0b, roughness: 0.55, metalness: 0.3 }));
+floor.rotation.x = -Math.PI / 2; floor.position.set(0, -0.02, -2); scene.add(floor);
+
+// ---------------- desenho 2D ----------------
+function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function wrap(c, text, maxW) { const words = text.split(" "); const lines = []; let cur = ""; words.forEach((w) => { const t = cur ? cur + " " + w : w; if (c.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; }); if (cur) lines.push(cur); return lines; }
+function textTex(w, h, draw) { const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const c = cv.getContext("2d"); draw(c, w, h); const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8; return tx; }
+function cardMesh(tex, wU, hU) { const m = new THREE.Mesh(new THREE.PlaneGeometry(wU, hU), new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, depthWrite: false })); scene.add(m); m.visible = false; return m; }
+function place(m, p, s, op) { m.visible = s > 0.001 && op > 0.001; m.position.set(p[0], p[1], p[2]); m.scale.setScalar(Math.max(s, 0.0001)); m.material.opacity = op; m.quaternion.copy(camera.quaternion); }
+
+// a marca no chão: quem está aqui é atendido agora
+const spot = new THREE.Mesh(new THREE.RingGeometry(0.17, 0.2, 48), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.0, toneMapped: false }));
+spot.rotation.x = -Math.PI / 2; spot.position.set(-0.07, 0.003, 0); scene.add(spot);
+// ---------------- os pacientes ----------------
+const HEX = { r: 0xE5383B, o: 0xF28C28, y: 0xF5C518, g: 0x2FBF71, b: 0x2D7FF9 };
+const PAT = ["g", "b", "y", "r", "g", "o", "b", "y", "g", "o"];   // ordem de chegada
+const PRI = { r: 0, o: 1, y: 2, g: 3, b: 4 };
+const ST = [9.68, 12.08, 14.7, 17.2];                              // as cores entram na voz
+function orderAt(k) { // k = quantas cores já foram chamadas (0..4)
+  const idx = PAT.map((c, i) => i);
+  const called = idx.filter((i) => PRI[PAT[i]] < k || (k >= 4)).sort((a, b) => PRI[PAT[a]] - PRI[PAT[b]] || a - b);
+  const rest = idx.filter((i) => !called.includes(i));
+  return called.concat(rest);
+}
+const ORD = [0, 1, 2, 3, 4].map(orderAt);
+const slot = (i) => [(i % 2 ? 0.07 : -0.07), 0, -i * 0.5];
+const bodyMat = new THREE.MeshPhysicalMaterial({ color: 0xcfd2cc, roughness: 0.38, clearcoat: 0.6, clearcoatRoughness: 0.25 });
+const pats = PAT.map((c, i) => {
+  const g = new THREE.Group(); scene.add(g);
+  const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.115, 0.3, 8, 20), bodyMat); body.position.y = 0.27; g.add(body);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.088, 24, 16), bodyMat); head.position.y = 0.6; g.add(head);
+  const band = new THREE.Mesh(new THREE.TorusGeometry(0.122, 0.026, 14, 48), new THREE.MeshStandardMaterial({ color: HEX[c], emissive: HEX[c], emissiveIntensity: 0.45, roughness: 0.3, metalness: 0.1 }));
+  band.rotation.x = Math.PI / 2; band.position.y = 0.25; g.add(band);
+  return { g, band, c, i };
+});
+
+// ---------------- celular ----------------
+const phone = new THREE.Group(); scene.add(phone);
+phone.add(new THREE.Mesh(new RoundedBoxGeometry(0.78, 1.64, 0.09, 8, 0.1), new THREE.MeshPhysicalMaterial({ color: 0x151515, metalness: 0.75, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.12 })));
+const SW = 720, SH = 1560;
+const sc = document.createElement("canvas"); sc.width = SW; sc.height = SH; const sx = sc.getContext("2d");
+const stex = new THREE.CanvasTexture(sc); stex.colorSpace = THREE.SRGBColorSpace; stex.anisotropy = 8;
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 1.56), new THREE.MeshBasicMaterial({ map: stex, transparent: true, toneMapped: false }));
+screen.position.z = 0.0462; phone.add(screen);
+
+// ---------------- recursos ----------------
+const imgs = {}; let ready = false; const objs = {};
+const loadImg = (k, src) => new Promise((res) => { const im = new Image(); im.onload = () => { imgs[k] = im; res(); }; im.onerror = () => res(); im.src = src; });
+window.__hf = window.__hf || {}; window.__hf.buildReady = window.__hf.buildReady || {};
+window.__hf.buildReady["u03"] = (async () => {
+  await Promise.all(["500 30px Inter", "700 34px Inter", "800 34px Inter", "900 60px Archivo", "800 150px Archivo"].map((f) => document.fonts.load(f)));
+  await document.fonts.ready;
+  await loadImg("sym", "assets/simbolo-lima.png");
+  build(); ready = true; renderAt(window.__hfThreeTime || 0);
+})();
+function build() {
+  // senhas acima das cabeças
+  objs.tix = pats.map((p) => cardMesh(textTex(300, 120, (c) => { rr(c, 4, 4, 292, 112, 30); c.fillStyle = "#1A1A18"; c.fill(); c.lineWidth = 3; c.strokeStyle = "#3A3A36"; c.stroke(); c.fillStyle = "#8E8E86"; c.font = "700 26px Inter"; c.fillText("SENHA", 28, 50); c.fillStyle = "#ECECE4"; c.font = "900 60px Archivo"; c.fillText(String(41 + p.i).padStart(3, "0"), 128, 84); }), 0.21, 0.084));
+  // anéis que saem do celular na triagem
+  objs.rings = ["r", "o", "y", "g", "b"].map((c) => { const m = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.018, 12, 40), new THREE.MeshStandardMaterial({ color: HEX[c], emissive: HEX[c], emissiveIntensity: 0.5, roughness: 0.3 })); scene.add(m); m.visible = false; return m; });
+  const st = new THREE.Texture(imgs.sym); st.colorSpace = THREE.SRGBColorSpace; st.needsUpdate = true;
+  const ar = imgs.sym ? imgs.sym.height / imgs.sym.width : 1;
+  objs.sym = cardMesh(st, 0.7, 0.7 * ar);
+}
+
+// ---------------- telas do celular ----------------
+const CSS = { r: "#E5383B", o: "#F28C28", y: "#F5C518", g: "#2FBF71", b: "#2D7FF9" };
+const ROWS = [
+  ["Bruno", "Ainda está disponível?", "08:02", "g"],
+  ["Carla", "Qual o preço?", "08:05", "b"],
+  ["Diego", "Tem foto da cozinha?", "08:11", "y"],
+  ["Erika", "Aceita financiamento?", "08:14", "y"],
+  ["Fábio", "Ainda tem?", "08:20", "b"],
+  ["Ana", "Quero visitar no sábado!", "08:23", "r"],
+  ["Gabi", "Qual o bairro?", "08:31", "g"],
+  ["Hugo", "Tem vaga?", "08:40", "b"],
+];
+const SORTED = ROWS.map((r, i) => i).sort((a, b) => PRI[ROWS[a][3]] - PRI[ROWS[b][3]] || a - b);
+const T_TAG = 34.0, T_SORT = 37.68, T_AV = 40.08, T_RESP = 41.36;
+function inbox(c, t) {
+  c.fillStyle = "#ECECE4"; c.font = "800 52px Inter"; c.fillText("Conversas", 44, 175);
+  c.fillStyle = "#8E8E86"; c.font = "500 26px Inter"; c.fillText(t < T_TAG + 0.6 ? "por ordem de chegada" : "triagem da Kalli", 44, 220);
+  const so = ease(seg(t, T_SORT, T_SORT + 0.7));
+  let rspN = 0;
+  ROWS.forEach(([n, msg, hh, col], i) => {
+    const rank = SORTED.indexOf(i);
+    const y = 250 + lerp(i, rank, so) * 152;
+    const tg = seg(t, T_TAG + rank * 0.12, T_TAG + rank * 0.12 + 0.3);
+    const hot = col === "r";
+    rr(c, 24, y, SW - 48, 136, 24); c.fillStyle = hot && tg > 0.5 ? "#1E1414" : "#151513"; c.fill();
+    if (tg > 0) { c.save(); rr(c, 24, y, SW - 48, 136, 24); c.clip(); c.fillStyle = CSS[col]; c.fillRect(24, y, 12 * eOut(tg), 136); c.restore(); }
+    // número da ordem de chegada
+    const lit = t >= 32.14 + i * 0.13 && t < T_TAG + 0.4;
+    c.fillStyle = lit ? LIMA : "#2A2A27"; c.beginPath(); c.arc(84, y + 68, 30, 0, 7); c.fill();
+    c.fillStyle = lit ? "#0A0A0A" : "#9A9A92"; c.font = "800 26px Inter"; const num = (i + 1) + "º"; c.fillText(num, 84 - c.measureText(num).width / 2, y + 77);
+    c.fillStyle = "#ECECE4"; c.font = "700 31px Inter"; c.fillText(n, 136, y + 56);
+    c.fillStyle = "#6E6E68"; c.font = "500 22px Inter"; c.fillText(hh, SW - 110, y + 52);
+    const answered = !hot && t >= T_RESP + rspN * 0.16; if (!hot) rspN++;
+    if (answered) { c.fillStyle = LIMA; c.font = "700 25px Inter"; c.fillText("✓ Kalli respondeu", 136, y + 100); }
+    else { c.fillStyle = hot ? "#ECECE4" : "#9A9A92"; c.font = (hot ? "600 " : "500 ") + "26px Inter"; c.fillText(msg, 136, y + 100); }
+    if (tg > 0) {
+      const tag = hot ? "Qualificado" : "Nutrir"; c.save(); c.font = "800 20px Inter"; const tw = c.measureText(tag).width + 28; const s = backOut(tg); c.translate(SW - 56 - tw / 2, y + 102); c.scale(s, s);
+      rr(c, -tw / 2, -18, tw, 36, 18); c.fillStyle = hot ? LIMA : "#2E2E2A"; c.fill(); c.fillStyle = hot ? "#0A0A0A" : "#B8B8B0"; c.fillText(tag, -tw / 2 + 14, 7); c.restore();
+    }
+  });
+  // aviso de cliente pronto
+  const b = eOut(seg(t, T_AV, T_AV + 0.4));
+  if (b > 0) {
+    const y = -250 + b * 330; rr(c, 22, y, SW - 44, 220, 34); c.fillStyle = "#1C1C1A"; c.fill(); c.lineWidth = 4; c.strokeStyle = LIMA; c.stroke();
+    c.fillStyle = LIMA; c.beginPath(); c.arc(80, y + 60, 25, 0, 7); c.fill(); c.fillStyle = "#0A0A0A"; c.font = "900 28px Inter"; c.fillText("✓", 69, y + 70);
+    c.fillStyle = "#8E8E86"; c.font = "600 22px Inter"; c.fillText("KALLI · agora", 124, y + 52);
+    c.fillStyle = "#ECECE4"; c.font = "800 34px Inter"; c.fillText("Cliente pronto: Ana", 124, y + 94);
+    c.fillStyle = "#B8B8B0"; c.font = "500 25px Inter"; wrap(c, "Quer visitar no sábado · já tem carta de crédito · Apto 2 quartos, Braga", SW - 170).forEach((l, k) => c.fillText(l, 124, y + 136 + k * 34));
+  }
+}
+function drawScreen(t) {
+  const c = sx; c.clearRect(0, 0, SW, SH);
+  c.save(); rr(c, 0, 0, SW, SH, 92); c.clip(); c.fillStyle = "#0D0D0C"; c.fillRect(0, 0, SW, SH);
+  c.fillStyle = "#ECECE4"; c.font = "600 30px Inter"; c.textBaseline = "alphabetic"; c.fillText("08:41", 60, 70);
+  c.fillStyle = "#000"; rr(c, 260, 22, 200, 56, 28); c.fill(); c.fillStyle = "#ECECE4"; rr(c, 600, 48, 54, 26, 7); c.fill();
+  inbox(c, t);
+  if (t > T_TAG - 0.3 && t < T_TAG + 1.0) { const k = seg(t, T_TAG - 0.3, T_TAG + 1.0); c.fillStyle = `rgba(184,255,79,${Math.sin(k * Math.PI) * 0.18})`; c.fillRect(0, 0, SW, SH); }
+  c.restore(); stex.needsUpdate = true;
+}
+
+// ---------------- câmera ----------------
+const CK = [
+  { t: 0, p: [0.5, 0.75, 1.55], l: [0.0, 0.42, -0.8] },
+  { t: 4.4, p: [0.75, 1.15, 2.0], l: [0.0, 0.35, -1.2] },
+  { t: 9.3, p: [0.4, 2.8, 1.75], l: [-0.02, 0.15, -1.55] },
+  { t: 19.5, p: [0.3, 3.0, 1.5], l: [0.02, 0.1, -1.75] },
+  { t: 24.2, p: [0.8, 2.2, 2.6], l: [0.0, 0.1, -0.6] },
+  { t: 25.6, p: [0.0, 0.02, 4.5], l: [0.0, 0.02, 0.9] },
+  { t: 33.8, p: [0.06, 0.04, 4.4], l: [0.0, 0.02, 0.9] },
+  { t: 44.2, p: [-0.04, 0.0, 4.3], l: [0.0, 0.02, 0.9] },
+  { t: 49.6, p: [0.0, 0.0, 4.45], l: [0.0, 0.02, 0.9] },
+];
+const PHONE = [0, 0.02, 0.9];
+const origin = new THREE.Vector3();
+function renderAt(t) {
+  if (!ready) return;
+  const ck = keys(CK, t);
+  const P = [ck.p[0] + Math.sin(t * 0.4) * 0.035, ck.p[1] + Math.cos(t * 0.33) * 0.025, ck.p[2]], Lk = ck.l;
+  const oyk = lerp(0.15, 0.34, ease(seg(t, 8.8, 9.8)) * (1 - ease(seg(t, 24.0, 25.4))));
+  const oy = oyk * Math.hypot(P[0] - Lk[0], P[1] - Lk[1], P[2] - Lk[2]);  // objeto no terço de cima, letra embaixo
+  camera.position.set(P[0], P[1] - oy, P[2]); camera.lookAt(Lk[0], Lk[1] - oy, Lk[2]);
+  // celular: sobe no "agora, olha o seu WhatsApp" e desce no fim
+  const up = ease(seg(t, 24.35, 25.4)) * (1 - ease(seg(t, 44.3, 45.1)));
+  phone.position.set(PHONE[0], lerp(-2.6, PHONE[1], up), PHONE[2]);
+  let vib = t > T_AV && t < T_AV + 0.8 ? Math.sin(t * 95) * 0.035 * (1 - seg(t, T_AV, T_AV + 0.8)) : 0;
+  phone.rotation.set(Math.sin(t * 0.37) * 0.03 + (1 - up) * 0.6, -0.12 + Math.sin(t * 0.5) * 0.05, vib);
+  phone.visible = up > 0.001; phone.updateMatrixWorld(true); screen.getWorldPosition(origin);
+  rim.intensity = 6 + (t > T_AV && t < T_AV + 1.2 ? Math.sin(seg(t, T_AV, T_AV + 1.2) * Math.PI) * 18 : 0);
+  if (phone.visible) drawScreen(t);
+  // a fila: reordena por cor e depois entra no celular
+  const stage = ST.filter((s) => t >= s).length;
+  const k = stage > 0 ? ease(seg(t, ST[stage - 1], ST[stage - 1] + 0.9)) : 0;
+  pats.forEach((p, n) => {
+    const a = slot(ORD[Math.max(0, stage - 1)].indexOf(n)), b = slot(ORD[stage].indexOf(n));
+    let pos = stage > 0 ? L3(a, b, k) : slot(n);
+    // quem passa à frente dá um pulinho para o lado
+    const moving = stage > 0 && a[2] !== b[2] ? Math.sin(k * Math.PI) : 0;
+    pos = [pos[0] + moving * (b[2] > a[2] ? 0.32 : -0.0), pos[1], pos[2]];
+    let s = 1;
+    const fly = ease(seg(t, 24.4 + n * 0.05, 25.2 + n * 0.05));
+    if (fly > 0) { pos = L3(pos, [origin.x, origin.y - 0.2, origin.z], fly); s = 1 - fly; }
+    p.g.visible = s > 0.01; p.g.position.set(pos[0], pos[1], pos[2]); p.g.scale.setScalar(Math.max(s, 0.001));
+    p.g.rotation.y = Math.sin(t * 0.6 + n) * 0.15;
+    const bs = backOut(seg(t, 8.3 + n * 0.07, 8.75 + n * 0.07)); p.band.scale.setScalar(Math.max(bs, 0.001)); p.band.visible = bs > 0.01;
+    // a senha: aparece na chegada, some quando a pulseira manda
+    const to = eOut(seg(t, 0.2 + n * 0.12, 0.6 + n * 0.12)) * (1 - seg(t, 19.0, 19.6));
+    place(objs.tix[n], [pos[0], pos[1] + 0.8 * s, pos[2]], s, to);
+    // quem tem a cor chamada acende
+    const called = stage > 0 && PRI[p.c] < stage;
+    p.band.material.emissiveIntensity = 0.45 + (called ? 0.5 + Math.sin(t * 5) * 0.15 : 0);
+  });
+  spot.material.opacity = 0.5 * seg(t, 9.4, 9.9) * (1 - seg(t, 23.8, 24.4)); spot.material.color.set(t > 9.68 ? 0xE5383B : 0xffffff);
+  // anéis saem da tela na triagem e voltam
+  objs.rings.forEach((m, j) => {
+    const a = T_TAG + j * 0.1; const p = eOut(seg(t, a, a + 0.5)); const back = ease(seg(t, 36.2 + j * 0.05, 36.7 + j * 0.05));
+    const tgt = [0.55, 0.62 - j * 0.2, 1.3];
+    const pos = L3(L3([origin.x, origin.y, origin.z], tgt, p), [origin.x, origin.y, origin.z], back);
+    m.visible = p > 0 && back < 1; m.position.set(pos[0], pos[1], pos[2]); m.scale.setScalar(Math.max(backOut(seg(t, a, a + 0.45)) * (1 - back), 0.001));
+    m.rotation.set(t * 1.3 + j, t * 0.9, 0);
+  });
+  // símbolo
+  { const p = backOut(seg(t, 44.8, 45.6), 1.4); place(objs.sym, [0, 0.12, 0.9], p, 1); objs.sym.rotateY(Math.sin(t * 0.8) * 0.12); }
+  renderer.render(scene, camera);
+}
+const clock = { t: 0 };
+tl0.to(clock, { t: DUR, duration: DUR, ease: "none", onUpdate: () => renderAt(clock.t) }, 0);
+window.addEventListener("hf-seek", (e) => renderAt(e.detail.time));
+
+</script>
+</body></html>

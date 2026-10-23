@@ -1,0 +1,33 @@
+
+=== Building landscape master ===
+D:\dev\.tools\product-film\imobiflow\src\blender\build_product_film.py:83: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+Info: Saved as "ImobiFlow_ProductFilm_landscape.blend"
+Rendering landscape shot 1/5 at frame 20
+06:43.828  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\landscape\shot_01.png'
+Rendering landscape shot 2/5 at frame 78
+06:45.437  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\landscape\shot_02.png'
+Rendering landscape shot 3/5 at frame 152
+06:46.656  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\landscape\shot_03.png'
+Rendering landscape shot 4/5 at frame 191
+06:47.906  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\landscape\shot_04.png'
+Rendering landscape shot 5/5 at frame 248
+06:49.015  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\landscape\shot_05.png'
+Saved editable Blender project: D:\dev\.tools\product-film\imobiflow\project\ImobiFlow_ProductFilm_landscape.blend
+
+=== Building portrait master ===
+Info: Saved as "ImobiFlow_ProductFilm_portrait.blend"
+Rendering portrait shot 1/5 at frame 20
+07:04.328  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\portrait\shot_01.png'
+Rendering portrait shot 2/5 at frame 78
+07:07.500  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\portrait\shot_02.png'
+Rendering portrait shot 3/5 at frame 152
+07:10.187  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\portrait\shot_03.png'
+Rendering portrait shot 4/5 at frame 191
+07:12.937  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\portrait\shot_04.png'
+Rendering portrait shot 5/5 at frame 248
+07:15.140  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\portrait\shot_05.png'
+Saved editable Blender project: D:\dev\.tools\product-film\imobiflow\project\ImobiFlow_ProductFilm_portrait.blend
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

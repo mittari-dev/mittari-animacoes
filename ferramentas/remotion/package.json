@@ -1,0 +1,24 @@
+{
+  "name": "estudio-animacoes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Estúdio de animações da Mittari (Remotion + React + TypeScript). Cada animação mora em src/animacoes/<nome>.",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts",
+    "still": "remotion still src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.531",
+    "@remotion/google-fonts": "4.0.531",
+    "lucide-react": "^0.575.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.531"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "typescript": "^5.9.0"
+  }
+}

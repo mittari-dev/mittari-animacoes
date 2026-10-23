@@ -1,0 +1,11 @@
+
+=== Building portrait master ===
+D:\dev\.tools\product-film\imobiflow\src\blender\build_product_film.py:83: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+Info: Saved as "ImobiFlow_ProductFilm_portrait.blend"
+Rendering portrait shot 5/1 at frame 248
+07:39.922  render           | Saved: 'D:\dev\.tools\product-film\imobiflow\previews\portrait\shot_05.png'
+Saved editable Blender project: D:\dev\.tools\product-film\imobiflow\project\ImobiFlow_ProductFilm_portrait.blend
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)
+
+Blender quit

@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script type="importmap">
+{ "imports": { "three": "./assets/vendor/three.module.js" } }
+</script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --off:#ECECE4; --dim:#8E8E86; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:1920px; height:1080px; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 60% 70% at 68% 50%, #15180f 0%, #0a0a0a 55%, #060606 100%); }
+#glow { position:absolute; left:900px; top:90px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.10) 0%, rgba(184,255,79,0) 62%); }
+#gl { position:absolute; inset:0; width:1920px; height:1080px; display:block; }
+#typeCam { position:absolute; inset:0; }
+#type { position:absolute; inset:0; color:var(--off); }
+.ln { position:absolute; left:130px; width:780px; top:200px; text-align:left; }
+.row { display:block; position:relative; }
+.sm { font:500 38px/1.3 Inter; color:#9A9A92; margin-bottom:14px; }
+.big { font-family:Archivo; font-weight:900; font-size:90px; line-height:0.96; letter-spacing:-0.035em; text-transform:uppercase; }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:78px; line-height:1.06; letter-spacing:-0.01em; margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+#rail { position:absolute; left:130px; top:752px; width:620px; opacity:0; }
+.st { display:flex; align-items:center; gap:20px; height:46px; font:600 27px Inter; color:#5E5E58; }
+.st i { width:34px; height:34px; border-radius:50%; border:3px solid #3A3A36; flex:none; display:flex; align-items:center; justify-content:center; font:900 20px Inter; font-style:normal; color:#7A7A72; }
+#foot { position:absolute; left:130px; top:690px; width:760px; font:500 28px/1.45 Inter; color:#8E8E86; opacity:0; }
+#foot b { color:var(--off); font-weight:700; }
+#count { position:absolute; left:130px; top:800px; font:900 56px Archivo; color:var(--lima); letter-spacing:-0.02em; opacity:0; font-variant-numeric:tabular-nums; }
+#cta { position:absolute; left:130px; top:690px; opacity:0; }
+.btn { display:inline-flex; align-items:center; gap:18px; background:var(--lima); color:#0A0A0A; font:800 40px Inter; border-radius:60px; padding:26px 46px; }
+.ctasub { margin-top:22px; font:500 28px Inter; color:#8E8E86; }
+.wa { font:600 40px/1.3 Inter; color:var(--off); width:760px; }
+.wa b { font-weight:800; color:#0A0A0A; background:var(--lima); border-radius:12px; padding:4px 14px; }
+#word { position:absolute; left:998px; top:800px; width:600px; text-align:center; font:900 92px Archivo; letter-spacing:-0.04em; color:var(--off); opacity:0; }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.045; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 55% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="65.17" data-fps="60">
+  <div id="bg"></div>
+  <div id="glow"></div>
+  <canvas id="gl" width="1920" height="1080" data-layout-allow-overflow></canvas>
+  <div id="typeCam" data-layout-allow-overlap><div id="type"></div></div>
+  <div id="rail">
+    <div class="st" id="s0"><i>✓</i>respondeu, com os dados</div>
+    <div class="st" id="s1"><i>✓</i>perguntou o que importa</div>
+    <div class="st" id="s2"><i>✓</i>separou quem está pronto</div>
+    <div class="st" id="s3"><i>✓</i>marcou com o corretor certo</div>
+    <div class="st" id="s4"><i>✓</i>você vê tudo</div>
+    <div class="st" id="s5"><i>✓</i>você assume quando quiser</div>
+  </div>
+  <div id="foot">Imóvel de <b>R$ 400 mil</b> × <b>6%</b> de comissão = <b>R$ 24 mil</b><br>÷ <b>R$ 697</b> por mês (plano Imobiliária) = <b>34 meses</b></div>
+  <div id="count">0 meses</div>
+  <div id="cta"><div class="btn">Começar o teste grátis →</div><div class="ctasub">7 dias · na sua imobiliária · kalli.mittari.com.br</div></div>
+  <div id="word">Kalli</div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao-sandro-imob-v2.mp3" data-start="0" data-duration="63.05" data-volume="1"></audio>
+  <audio id="a-p1" src="assets/sfx-pop.mp3" data-start="0.08" data-duration="0.3" data-volume="0.6"></audio>
+  <audio id="a-p2" src="assets/sfx-pop.mp3" data-start="1.84" data-duration="0.3" data-volume="0.6"></audio>
+  <audio id="a-p3" src="assets/sfx-pop.mp3" data-start="3.17" data-duration="0.3" data-volume="0.6"></audio>
+  <audio id="a-caos0" src="assets/sfx-caos.mp3" data-start="3.51" data-duration="1" data-volume="0.25"></audio>
+  <audio id="a-caos1" src="assets/sfx-caos.mp3" data-start="4.35" data-duration="1" data-volume="0.29"></audio>
+  <audio id="a-caos2" src="assets/sfx-caos.mp3" data-start="5.50" data-duration="1" data-volume="0.33"></audio>
+  <audio id="a-caos3" src="assets/sfx-caos.mp3" data-start="6.28" data-duration="1" data-volume="0.37"></audio>
+  <audio id="a-ping" src="assets/sfx-notif.mp3" data-start="8.80" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-wh1" src="assets/sfx-whoosh.mp3" data-start="14.66" data-duration="2" data-volume="0.65"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="19.14" data-duration="0.5" data-volume="0.7"></audio>
+  <audio id="a-p4" src="assets/sfx-pop.mp3" data-start="22.36" data-duration="0.3" data-volume="0.6"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="23.22" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a-t1" src="assets/sfx-tick.mp3" data-start="29.55" data-duration="0.25" data-volume="0.5"></audio>
+  <audio id="a-p5" src="assets/sfx-pop.mp3" data-start="32.08" data-duration="0.3" data-volume="0.6"></audio>
+  <audio id="a-vib" src="assets/sfx-vibra.mp3" data-start="35.28" data-duration="1" data-volume="0.7"></audio>
+  <audio id="a-n3" src="assets/sfx-notif.mp3" data-start="35.34" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-t2" src="assets/sfx-tick.mp3" data-start="38.20" data-duration="0.25" data-volume="0.6"></audio>
+  <audio id="a-wh2" src="assets/sfx-whoosh.mp3" data-start="47.82" data-duration="2" data-volume="0.6"></audio>
+  <audio id="a-n4" src="assets/sfx-notif.mp3" data-start="62.97" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-f1" src="assets/sfx-pop.mp3" data-start="49.23" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a-f2" src="assets/sfx-pop.mp3" data-start="52.36" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a-f3" src="assets/sfx-pop.mp3" data-start="54.20" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a-fw" src="assets/sfx-whoosh.mp3" data-start="56.72" data-duration="1" data-volume="0.45"></audio>
+  <audio id="a-fn" src="assets/sfx-notif.mp3" data-start="58.50" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-fv" src="assets/sfx-vibra.mp3" data-start="58.50" data-duration="1" data-volume="0.6"></audio>
+  <audio id="a-ft" src="assets/sfx-tick.mp3" data-start="55.69" data-duration="0.5" data-volume="0.6"></audio>
+</div>
+<script>
+const DUR = 65.17;
+const MAPO = [0.0, 0.08, 0.4, 0.56, 2.0, 2.12, 2.36, 3.4, 3.64, 4.84, 4.96, 5.4, 5.68, 5.92, 7.2, 7.52, 7.68, 8.04, 8.48, 8.64, 9.04, 9.36, 9.52, 10.28, 10.4, 10.64, 10.88, 11.6, 14.08, 14.88, 15.0, 15.12, 16.464, 16.56, 16.8, 17.24, 17.36, 17.88, 18.08, 18.44, 18.56, 18.8, 19.0, 19.16, 19.76, 19.92, 20.08, 20.2, 21.12, 21.467, 21.52, 21.6, 22.68, 23.12, 23.36, 23.68, 24.04, 24.8, 24.96, 25.28, 25.44, 25.573, 26.64, 27.08, 27.28, 27.6, 28.0, 28.107, 28.24, 28.56, 29.66, 29.84, 30.04, 30.2, 30.56, 30.667, 30.8, 31.04, 31.8, 33.2, 33.44, 33.6, 34.2, 34.64, 34.827, 34.88, 37.36, 37.68, 38.08, 38.24, 38.56, 38.8, 39.04, 39.2, 39.28, 40.227, 40.32, 40.48, 40.8, 41.04, 41.2, 41.44, 41.72, 41.84, 42.04, 42.24, 42.64, 43.6, 43.84, 43.96, 44.5, 44.5005, 45.0, 46.2, 46.48, 47.0, 47.12, 49.8], MAPN = [0.0, 0.082, 0.402, 0.562, 1.842, 1.962, 2.202, 3.168, 3.362, 4.482, 4.642, 5.242, 5.602, 5.842, 6.802, 7.362, 7.602, 7.922, 8.642, 8.802, 9.282, 9.682, 9.842, 10.642, 12.082, 12.242, 12.682, 12.882, 16.082, 16.882, 17.042, 17.282, 18.242, 18.362, 18.642, 19.082, 19.202, 19.762, 19.922, 20.362, 20.482, 20.802, 21.002, 21.162, 21.789, 21.922, 22.162, 22.362, 23.113, 23.562, 23.642, 23.762, 24.722, 25.282, 25.562, 25.922, 26.282, 26.962, 27.242, 27.602, 27.762, 27.882, 28.562, 29.042, 29.202, 29.549, 30.002, 30.122, 30.322, 30.562, 31.522, 31.682, 31.962, 32.082, 32.562, 32.669, 32.802, 33.149, 35.282, 36.802, 37.095, 37.202, 37.815, 38.242, 38.442, 38.562, 40.402, 40.722, 41.042, 41.242, 41.522, 41.842, 42.162, 42.282, 42.442, 43.122, 43.202, 43.482, 43.882, 44.042, 44.322, 44.482, 44.802, 44.962, 45.202, 45.362, 45.895, 47.362, 47.602, 47.762, 48.529, 59.3, 59.85, 61.45, 61.85, 62.383, 62.49, 65.17];
+const interp = (x, A, B) => { if (x <= A[0]) return B[0] + (x - A[0]); for (let i = 0; i < A.length - 1; i++) { if (x <= A[i + 1]) { const k = (x - A[i]) / ((A[i + 1] - A[i]) || 1); return B[i] + (B[i + 1] - B[i]) * k; } } return B[B.length - 1] + (x - A[A.length - 1]); };
+const M = (x) => interp(x, MAPO, MAPN), MI = (x) => interp(x, MAPN, MAPO);
+const VARIANT = "site";
+const AUD = "imob";
+const IMOB = {"2": {"abs": true, "a": 6.752, "b": 15.932, "rows": [["sm", [["Mas,", 6.802], ["no", 7.362], ["meio", 7.602], ["delas,", 7.922]]], ["big", [["o", 8.802], ["comprador", 9.282, "lm"]]], ["serif", [["espera", 12.242], ["na", 12.682], ["fila,", 12.882]]], ["sm", [["no", 13.335], ["WhatsApp", 13.442], ["de", 14.002], ["quem", 14.135], ["estiver", 14.322], ["livre.", 14.762]]]]}, "7": {"abs": true, "a": 31.381999999999998, "b": 36.745, "rows": [["sm", [["E", 31.561999999999998], ["marca", 31.682], ["a", 31.962], ["visita,", 32.082], ["com", 33.655], ["o", 33.762], ["corretor", 33.922], ["certo.", 34.562]]], ["big", [["você", 35.282], ["vê", 35.682], ["tudo.", 36.082, "lm"]]]]}, "9": {"abs": true, "a": 39.552, "b": 43.001999999999995, "rows": [["big", [["Sua", 39.602], ["equipe", 39.762], ["só", 40.402], ["fala", 40.722]]], ["serif", [["com", 41.042], ["quem", 41.242], ["já", 41.522], ["quer", 41.842], ["ver", 42.162], ["o", 42.282], ["imóvel.", 42.442, "lm"]]]]}, "10": {"abs": true, "a": 43.122, "b": 48.829, "rows": [["sm", [["Uma", 43.202], ["venda", 43.482], ["que", 43.882], ["não", 44.042], ["se", 44.322], ["perde", 44.482], ["na", 44.802], ["fila", 45.362]]], ["big", [["paga", 45.895], ["quase", 46.322], ["3", 46.882, "lm"], ["anos", 47.362, "lm"], ["de", 47.602], ["Kalli.", 47.762]]]]}, "11": {"abs": true, "a": 59.800000000000004, "b": 999, "rows": [["big", [["Teste", 59.85], ["na", 60.25], ["sua", 60.357], ["imobiliária.", 60.49]]], ["serif", [["Sete", 61.45], ["dias,", 61.85], ["de", 62.383], ["graça.", 62.49, "lm"]]]]}};
+const COUNT = AUD === "imob" ? 34 : 60;
+const FMT = "h";
+const FEAT = {"G0": 48.529, "G1": 59.3, "B1": 48.879, "B2": 52.01, "B3": 53.85, "B4": 56.97, "B5": 58.45, "SW": 55.69, "LINES": [{"a": 48.829, "b": 51.89, "rows": [["sm", [["E", 48.879], ["ela", 48.97], ["ainda", 49.21]]], ["big", [["responde", 49.49]]], ["serif", [["às", 49.89], ["22h", 50.17, "lm"], ["de", 50.97], ["sábado.", 51.13]]]]}, {"a": 51.96, "b": 53.730000000000004, "rows": [["big", [["lembra", 52.01], ["o", 52.29], ["cliente", 52.53]]], ["serif", [["da", 52.77], ["visita.", 52.89, "lm"]]]]}, {"a": 53.800000000000004, "b": 56.85, "rows": [["sm", [["e,", 53.85], ["se", 54.17], ["um", 54.29], ["corretor", 54.41], ["não", 54.837], ["atende,", 55.05]]], ["big", [["passa", 55.69], ["para", 56.01], ["o", 56.13], ["próximo.", 56.25, "lm"]]]]}, {"a": 56.92, "b": 59.550000000000004, "rows": [["sm", [["O", 56.97], ["próximo", 57.21], ["comprador", 57.69]]], ["big", [["pode", 58.25], ["chamar", 58.45]]], ["serif", [["hoje", 58.77, "lm"], ["à", 58.93], ["noite.", 59.05, "lm"]]]]}]};
+
+// ---------------- utilidades ----------------
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eOut = (x) => 1 - Math.pow(1 - x, 3);
+const backOut = (x, s = 1.7) => { const c = s + 1; return 1 + c * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); };
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, x) => a + (b - a) * x;
+const L3 = (a, b, x) => [lerp(a[0], b[0], x), lerp(a[1], b[1], x), lerp(a[2], b[2], x)];
+function keys(K, t) {
+  if (t <= K[0].t) return K[0];
+  for (let i = 0; i < K.length - 1; i++) {
+    const a = K[i], b = K[i + 1];
+    if (t <= b.t) { const x = ease((t - a.t) / (b.t - a.t)); const o = {}; for (const k in a) if (k !== "t") o[k] = L3(a[k], b[k], x); return o; }
+  }
+  return K[K.length - 1];
+}
+let seed = 20261007;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+
+// ---------------- timeline GSAP (texto, trilho, grão) ----------------
+const tl0 = gsap.timeline({ paused: true });
+const tl = { to: (a, b, c) => tl0.to(a, b, c === undefined ? c : M(c)), fromTo: (a, b, d, c) => tl0.fromTo(a, b, d, c === undefined ? c : M(c)), set: (a, b, c) => tl0.set(a, b, c === undefined ? c : M(c)) };
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const F0 = (target, from, to, at) => tl0.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const LINES = [
+  { a: 0.6, b: 4.55, rows: [["big", [["Quantas", 0.7], ["dessas", 1.0]]], ["serif", [["você", 1.5], ["respondeu", 1.7], ["hoje?", 2.0, "lm"]]]] },
+  { a: 4.8, b: 7.05, rows: [["sm", [["A", 4.84], ["maioria", 4.96], ["está", 5.4]]], ["big", [["só", 5.68], ["olhando.", 5.92]]]] },
+  { a: 7.15, b: 12.85, rows: [["sm", [["Mas,", 7.2], ["no", 7.52], ["meio", 7.68], ["delas,", 8.04]]], ["big", [["o", 8.64], ["comprador", 9.04, "lm"]]], ["serif", [["espera", 10.64], ["na", 10.88], ["mesma", 11.24], ["fila.", 11.6]]]] },
+  { a: 13.95, b: 16.3, rows: [["big", [["Agora,", 14.08]]], ["serif", [["com", 14.88], ["a", 15.0], ["Kalli.", 15.12, "lm"]]]] },
+  { a: 16.4, b: 21.0, rows: [["sm", [["A", 16.46], ["Kalli", 16.56], ["responde", 16.8]]], ["big", [["com", 18.44], ["os", 18.56], ["dados", 18.8], ["do", 19.0], ["imóvel", 19.16]]], ["serif", [["e", 19.76], ["manda", 19.92], ["as", 20.08], ["fotos.", 20.2, "lm"]]]] },
+  { a: 21.06, b: 26.5, rows: [["sm", [["Pergunta", 21.12], ["o", 21.47], ["que", 21.52], ["importa:", 21.6]]], ["big", [["onde,", 22.68], ["até", 23.12], ["quanto,", 23.36], ["para", 24.8], ["quando.", 24.96, "lm"]]]] },
+  { a: 26.58, b: 29.7, rows: [["sm", [["Separa", 26.64]]], ["big", [["quem", 27.08], ["está", 27.28], ["pronto", 27.6, "lm"]]], ["serif", [["de", 28.0], ["quem", 28.11], ["está", 28.24], ["pesquisando.", 28.56]]]] },
+  { a: 29.62, b: 33.1, rows: [["sm", [["E", 29.66], ["marca", 29.84], ["a", 30.04], ["visita.", 30.2]]], ["big", [["você", 31.8], ["recebe", 32.04], ["esse.", 32.48, "lm"]]]] },
+  { a: 33.15, b: 36.4, rows: [["serif", [["E,", 33.2], ["se", 33.44], ["quiser,", 33.6]]], ["big", [["você", 34.2], ["assume.", 34.64, "lm"]]]] },
+  { a: 36.9, b: 40.1, rows: [["big", [["Você", 37.15], ["só", 37.36], ["fala", 37.68], ["com", 38.08], ["quem", 38.24]]], ["serif", [["já", 38.56], ["quer", 38.8], ["ver", 39.04], ["o", 39.2], ["imóvel.", 39.28, "lm"]]]] },
+  { a: 40.2, b: 44.85, rows: [["sm", [["Uma", 40.32], ["venda", 40.48], ["que", 40.8], ["não", 41.04], ["se", 41.2], ["perde", 41.44], ["na", 41.72], ["fila", 42.24]]], ["big", [["paga", 42.64], ["5", 43.12, "lm"], ["anos", 43.6, "lm"], ["de", 43.84], ["Kalli.", 43.96]]]] },
+  { a: 44.95, b: 99, rows: [["big", [["Teste", 45.0], ["no", 45.12], ["seu", 45.24], ["número.", 45.4]]], ["serif", [["Sete", 46.2], ["dias,", 46.48], ["de", 47.0], ["graça.", 47.12, "lm"]]]] },
+];
+const typeEl = $("#type");
+const ALL = LINES.slice(0, 11).concat(FEAT.LINES.map((L) => Object.assign({ abs: true }, L)), [LINES[11]]);
+ALL.forEach((Ln0, idx0) => {
+  const idx = idx0 >= 15 ? 11 : (idx0 >= 11 ? -1 : idx0);
+  const Ln = (AUD === "imob" && IMOB[idx]) ? IMOB[idx] : Ln0;
+  const FF = Ln.abs ? F0 : F, TT = Ln.abs ? tl0 : tl;
+  const ln = document.createElement("div"); ln.className = "ln";
+  Ln.rows.forEach(([cls, words]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    words.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = cls !== "sm";
+      FF(s, { opacity: 0, yPercent: big ? 50 : 40, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.5 : 0.4, ease: big ? "back.out(1.4)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  typeEl.appendChild(ln);
+  if (Ln.b < 90) TT.to(ln, { opacity: 0, y: -30, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, Ln.b - 0.3);
+  if (idx0 === 10 && !Ln.abs) tl0.to(ln, { opacity: 0, y: -30, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, FEAT.G0);
+});
+F("#typeCam", { x: 0 }, { x: -18, duration: DUR, ease: "none" }, 0);
+// trilho de passos
+F("#rail", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "expo.out" }, 16.5);
+[17.25, 21.12, 26.64, 29.84, 31.8, 33.2].forEach((t, i) => {
+  tl.to(`#s${i}`, { color: "#ECECE4", duration: 0.25 }, t);
+  tl.to(`#s${i} i`, { backgroundColor: "#B8FF4F", borderColor: "#B8FF4F", color: "#0A0A0A", duration: 0.25 }, t);
+  F(`#s${i} i`, { scale: 1.5 }, { scale: 1, duration: 0.4, ease: "back.out(3)" }, t);
+});
+tl.to("#rail", { opacity: 0, duration: 0.4 }, 36.3);
+// a conta
+F("#foot", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 41.2);
+F("#count", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 40.9);
+const cnt = { v: 0 };
+tl.to(cnt, { v: COUNT, duration: COUNT === 60 ? 2.1 : 1.2, ease: "none", onUpdate: () => { $("#count").textContent = Math.round(cnt.v) + " meses"; } }, 40.95);
+tl0.to(["#foot", "#count"], { opacity: 0, duration: 0.35 }, FEAT.G0);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "expo.out" }, 47.35);
+if (VARIANT === "site") F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 48.7);
+F("#word", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 46.1);
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+
+
+tl0.set({}, {}, DUR);
+window.__timelines["main"] = tl0;
+
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoundedBoxGeometry } from "./assets/vendor/RoundedBoxGeometry.js";
+import { RoomEnvironment } from "./assets/vendor/RoomEnvironment.js";
+// ---------------- Three.js ----------------
+const canvas = $("#gl");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+const VW = FMT === "v" ? 1080 : 1920, VH = FMT === "v" ? 1920 : 1080;
+renderer.setPixelRatio(1); renderer.setSize(VW, VH, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(FMT === "v" ? 54 : 32, VW / VH, 0.05, 100);
+const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(-2, 3, 4); scene.add(key);
+const rim = new THREE.PointLight(0xb8ff4f, 8, 6); rim.position.set(1.7, 0.8, -1.0); scene.add(rim);
+
+// celular
+const phone = new THREE.Group(); scene.add(phone);
+const body = new THREE.Mesh(new RoundedBoxGeometry(0.78, 1.64, 0.09, 8, 0.1),
+  new THREE.MeshPhysicalMaterial({ color: 0x151515, metalness: 0.75, roughness: 0.28, clearcoat: 1, clearcoatRoughness: 0.12 }));
+phone.add(body);
+const SW = 720, SH = 1560;
+const sc = document.createElement("canvas"); sc.width = SW; sc.height = SH;
+const sx = sc.getContext("2d");
+const stex = new THREE.CanvasTexture(sc); stex.colorSpace = THREE.SRGBColorSpace; stex.anisotropy = 8;
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 1.56), new THREE.MeshBasicMaterial({ map: stex, transparent: true, toneMapped: false }));
+screen.position.z = 0.0462; phone.add(screen);
+
+// ---------------- desenho 2D ----------------
+function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function wrap(c, text, maxW) {
+  const words = text.split(" "); const lines = []; let cur = "";
+  words.forEach((w) => { const test = cur ? cur + " " + w : w; if (c.measureText(test).width > maxW && cur) { lines.push(cur); cur = w; } else cur = test; });
+  if (cur) lines.push(cur); return lines;
+}
+const LIMA = "#B8FF4F";
+function textTex(w, h, draw) {
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h; const c = cv.getContext("2d"); draw(c, w, h);
+  const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = 8; return tx;
+}
+function cardMesh(tex, wU, hU) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(wU, hU), new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, depthWrite: false }));
+  scene.add(m); m.visible = false; return m;
+}
+
+// ---------------- recursos (fontes e fotos) ----------------
+const imgs = {};
+const loadImg = (k, src) => new Promise((res) => { const im = new Image(); im.onload = () => { imgs[k] = im; res(); }; im.onerror = () => res(); im.src = src; });
+let ready = false;
+const objs = {};
+window.__hf = window.__hf || {};
+window.__hf.buildReady = window.__hf.buildReady || {};
+window.__hf.buildReady["w02-3d"] = (async () => {
+  await Promise.all(["500 30px Inter", "600 46px Inter", "700 34px Inter", "800 34px Inter", "900 120px Archivo", "800 150px Archivo"].map((f) => document.fonts.load(f)));
+  await document.fonts.ready;
+  await Promise.all([loadImg("f1", "assets/foto-sala.png"), loadImg("f2", "assets/foto-cozinha.png"), loadImg("f3", "assets/foto-varanda.png"), loadImg("sym", "assets/simbolo-lima.png")]);
+  build();
+  ready = true;
+  renderAt(window.__hfThreeTime || 0);
+})();
+
+// ---------------- a torre de perguntas ----------------
+const Q = ["Ainda está disponível?", "Qual o valor?", "Quantos quartos?", "Onde fica?", "Tem foto?", "Aceita financiamento?", "Tem vaga?", "Quanto é o condomínio?", "Aceita pet?", "Ainda tem?", "Qual o bairro?", "Tem varanda?", "Pode baixar?", "Quero visitar no sábado.", "Tem mais fotos?", "É perto da praia?", "Qual o IPTU?", "Aceita permuta?", "Tem elevador?", "Ainda está à venda?", "Quanto fica a entrada?", "Tem área de lazer?", "É mobiliado?", "Qual o andar?", "Aceita FGTS?", "Tem portaria?", "Dá pra negociar?", "Qual o tamanho?", "Tem suíte?", "Ainda disponível?", "Tem garagem?", "Valor final?", "Aceita proposta?", "Manda o endereço?"];
+const EXTRA = ["Oi?", "Tem algum mais barato?", "Ainda tem??", "Qual o valor mesmo?", "Me liga?", "Tem vídeo?"];
+const BUY = 13;
+const TX = 1.22, TZ = -0.25;
+const bubbles = [];
+function bubbleTex(text, lime) {
+  const c0 = document.createElement("canvas").getContext("2d"); c0.font = "600 46px Inter";
+  const w = Math.ceil(c0.measureText(text).width) + 90, h = 116;
+  return { tex: textTex(w, h, (c) => { rr(c, 4, 4, w - 8, h - 8, 44); c.fillStyle = lime ? LIMA : "#232321"; c.fill(); if (!lime) { c.strokeStyle = "#3a3a36"; c.lineWidth = 3; c.stroke(); } c.font = "600 46px Inter"; c.fillStyle = lime ? "#0A0A0A" : "#E6E6DE"; c.textBaseline = "middle"; c.fillText(text, 45, h / 2 + 2); }), w, h };
+}
+function build() {
+  // emissão: as 3 primeiras na voz, depois acelerando
+  const em = [0.08, 2.0, 3.4]; let t = 3.9, dt = 0.3;
+  while (em.length < Q.length) { em.push(t); t += dt; dt = Math.max(0.06, dt * 0.88); }
+  Q.forEach((q, i) => {
+    const a = i === BUY ? Math.PI / 2 : i * 0.92;
+    const slot = [TX + Math.cos(a) * 0.5, 0.55 + i * 0.16, TZ + Math.sin(a) * 0.5];
+    const g = bubbleTex(q, false); const m = cardMesh(g.tex, g.w / 1000, g.h / 1000);
+    const b = { m, slot, e: em[i], i };
+    if (i === BUY) { const gl = bubbleTex(q, true); b.lime = cardMesh(gl.tex, gl.w / 1000, gl.h / 1000); }
+    bubbles.push(b);
+  });
+  const B = bubbles[BUY].slot;
+  EXTRA.forEach((q, k) => {
+    const g = bubbleTex(q, false); const m = cardMesh(g.tex, g.w / 1000, g.h / 1000);
+    const slot = [B[0] + (k % 2 ? 0.28 : -0.3) + (rnd() - 0.5) * 0.1, B[1] - 0.12 + k * 0.08, B[2] + 0.12 + rnd() * 0.18];
+    bubbles.push({ m, slot, e: 10.6 + k * 0.14, fall: true, i: 40 + k });
+  });
+  objs.B = new THREE.Vector3(...B);
+  // fotos em 3D
+  objs.photos = ["f1", "f2", "f3"].map((k) => {
+    const tex = textTex(600, 600, (c) => { rr(c, 0, 0, 600, 600, 40); c.save(); c.clip(); if (imgs[k]) { const im = imgs[k]; const s = Math.max(600 / im.width, 600 / im.height); c.drawImage(im, (600 - im.width * s) / 2, (600 - im.height * s) / 2, im.width * s, im.height * s); } c.restore(); });
+    return cardMesh(tex, 0.36, 0.36);
+  });
+  // cartões de cliente
+  const CL = [["Ana", "Qualificado", "Quer comprar · Braga · até R$ 400 mil · 3 meses", true], ["Bruno", "Nutrir", "Só olhando fotos · sem prazo", false], ["Diego", "Nutrir", "Pesquisando preço", false], ["Carla", "Desqualificado", "Procura aluguel", false]];
+  objs.leads = CL.map(([n, tag, why, hot]) => {
+    const tex = textTex(1240, 300, (c) => {
+      rr(c, 6, 6, 1228, 288, 46); c.fillStyle = hot ? "#1B2410" : "#1A1A18"; c.fill(); c.lineWidth = hot ? 6 : 3; c.strokeStyle = hot ? LIMA : "#3A3A36"; c.stroke();
+      c.fillStyle = "#2c2c28"; c.beginPath(); c.arc(110, 150, 62, 0, 7); c.fill();
+      c.fillStyle = "#ECECE4"; c.font = "700 56px Inter"; c.textBaseline = "alphabetic"; c.fillText(n, 210, 128);
+      c.font = "500 38px Inter"; c.fillStyle = "#8E8E86"; c.fillText(why, 210, 200);
+      c.font = "800 34px Inter"; const tw = c.measureText(tag).width + 50; rr(c, 1200 - tw, 44, tw, 62, 31); c.fillStyle = hot ? LIMA : "#2E2E2A"; c.fill(); c.fillStyle = hot ? "#0A0A0A" : "#B8B8B0"; c.fillText(tag, 1225 - tw, 88);
+    });
+    return cardMesh(tex, 0.62, 0.15);
+  });
+  // cartão da agenda
+  objs.agenda = cardMesh(textTex(1000, 420, (c) => {
+    rr(c, 6, 6, 988, 408, 54); c.fillStyle = LIMA; c.fill();
+    c.fillStyle = "#0A0A0A"; c.font = "800 44px Inter"; c.fillText("SÁB · 10 DE OUTUBRO", 60, 110);
+    c.font = "900 120px Archivo"; c.fillText("10:00", 60, 250);
+    c.font = "700 46px Inter"; c.fillText("Visita com Ana · Apto 2 quartos, Braga", 60, 340);
+  }), 0.6, 0.252);
+  // grade dos 60 meses
+  const geo = new THREE.BoxGeometry(0.085, 0.085, 0.085);
+  const mat = new THREE.MeshStandardMaterial({ color: 0xb8ff4f, emissive: 0x4f7a12, emissiveIntensity: 0.7, roughness: 0.35, metalness: 0.1 });
+  objs.grid = new THREE.InstancedMesh(geo, mat, 60); objs.grid.frustumCulled = false; scene.add(objs.grid);
+  objs.dummy = new THREE.Object3D();
+  // cartões dos recursos (final v2)
+  const FC = [["22h", "Sábado, 22h", "responde na hora"], ["1d", "Lembrete", "1 dia e 1 hora antes"],
+    AUD === "imob" ? ["→", "Repasse", "passa para o próximo"] : ["QR", "Seu site", "com QR Code"]];
+  objs.fcards = FC.map(([ic, ti, su]) => cardMesh(textTex(960, 300, (c) => {
+    rr(c, 6, 6, 948, 288, 50); c.fillStyle = "#141413"; c.fill(); c.lineWidth = 5; c.strokeStyle = LIMA; c.stroke();
+    c.fillStyle = LIMA; c.beginPath(); c.arc(150, 150, 92, 0, 7); c.fill();
+    c.fillStyle = "#0A0A0A";
+    if (ic === "→") { c.lineWidth = 14; c.lineCap = "round"; c.strokeStyle = "#0A0A0A"; c.beginPath(); c.moveTo(108, 150); c.lineTo(192, 150); c.moveTo(160, 116); c.lineTo(194, 150); c.lineTo(160, 184); c.stroke(); }
+    else { c.font = "900 62px Archivo"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(ic, 150, 155); c.textAlign = "left"; }
+    c.textBaseline = "alphabetic"; c.fillStyle = "#ECECE4"; c.font = "800 66px Inter"; c.fillText(ti, 280, 138);
+    c.fillStyle = "#9A9A92"; c.font = "500 42px Inter"; c.fillText(su, 280, 210);
+  }), 0.54, 0.169));
+  // símbolo
+  const st = new THREE.Texture(imgs.sym); st.colorSpace = THREE.SRGBColorSpace; st.needsUpdate = true;
+  const ar = imgs.sym ? imgs.sym.height / imgs.sym.width : 1;
+  objs.sym = cardMesh(st, 0.8, 0.8 * ar);
+}
+
+// ---------------- telas do celular ----------------
+const NAMES = ["Ana", "Bruno", "Carla", "Diego", "Erika", "Fábio", "Gabi", "Hugo", "Iara", "João", "Karen", "Lucas", "Marta", "Nina", "Otávio", "Paula", "Rafa", "Sara", "Téo", "Vera"];
+function status(c, clk = "10:42") {
+  c.fillStyle = "#ECECE4"; c.font = "600 30px Inter"; c.textBaseline = "alphabetic"; c.fillText(clk, 60, 70);
+  c.fillStyle = "#000"; rr(c, 260, 22, 200, 56, 28); c.fill();
+  c.fillStyle = "#ECECE4"; rr(c, 600, 48, 54, 26, 7); c.fill();
+}
+function header(c, title, sub) {
+  c.fillStyle = "#ECECE4"; c.font = "800 34px Inter"; c.fillText("‹", 36, 170);
+  c.fillStyle = "#2c2c28"; c.beginPath(); c.arc(120, 158, 38, 0, 7); c.fill();
+  c.fillStyle = "#ECECE4"; c.font = "700 34px Inter"; c.fillText(title, 176, 152);
+  c.fillStyle = "#8E8E86"; c.font = "500 24px Inter"; c.fillText(sub, 176, 186);
+  c.fillStyle = "#1E1E1C"; c.fillRect(0, 222, SW, 2);
+}
+function inbox(c, t) {
+  const n = bubbles.length ? bubbles.filter((b) => !b.fall && t >= b.e).length : 0;
+  c.fillStyle = "#ECECE4"; c.font = "800 52px Inter"; c.fillText("Conversas", 44, 175);
+  c.font = "800 30px Inter"; const tw = c.measureText(String(n)).width + 40; rr(c, 330, 135, tw, 52, 26); c.fillStyle = LIMA; c.fill(); c.fillStyle = "#0A0A0A"; c.fillText(String(n), 350, 172);
+  const shown = Math.min(n, 9);
+  for (let k = 0; k < shown; k++) {
+    const idx = n - 1 - k; const q = Q[idx] || ""; const y = 235 + k * 146;
+    c.fillStyle = "#2c2c28"; c.beginPath(); c.arc(90, y + 70, 44, 0, 7); c.fill();
+    c.fillStyle = "#ECECE4"; c.font = "700 32px Inter"; c.fillText(NAMES[idx % NAMES.length], 156, y + 58);
+    c.fillStyle = "#9A9A92"; c.font = "500 27px Inter"; c.fillText(q.length > 26 ? q.slice(0, 25) + "…" : q, 156, y + 100);
+    c.fillStyle = "#6E6E68"; c.font = "500 22px Inter"; c.fillText("agora", 600, y + 56);
+    rr(c, 618, y + 76, 50, 36, 18); c.fillStyle = LIMA; c.fill(); c.fillStyle = "#0A0A0A"; c.font = "800 22px Inter"; c.fillText(String(1 + (idx % 3)), 636, y + 102);
+  }
+}
+const MSGS = [
+  { t: 15.7, side: "in", text: "Oi! Ainda está disponível? Qual o valor?" },
+  { t: 17.25, side: "out", text: "Está sim! Apartamento de 2 quartos no Braga, 68 m², 1 vaga. R$ 380 mil." },
+  { t: 20.15, side: "out", photos: true },
+  { t: 21.15, side: "out", text: "Pra te ajudar: em qual região quer morar, até quanto pode investir e pra quando pensa em se mudar?" },
+  { t: 24.1, side: "in", text: "Braga ou Centro. Até R$ 400 mil. Em até 3 meses." },
+];
+function chat(c, t, msgs, typing, title = "Ana", sub = "cliente · Apto 2 quartos, Braga") {
+  header(c, title, sub);
+  c.save(); c.beginPath(); c.rect(0, 226, SW, SH - 226); c.clip();
+  c.font = "500 35px Inter";
+  const items = msgs.map((m) => {
+    if (m.photos) return { m, h: 200 };
+    const lines = wrap(c, m.text, 500); return { m, lines, h: lines.length * 47 + 50 + (m.side === "out" ? 34 : 0) };
+  });
+  let total = 0; items.forEach((it) => { const p = eOut(seg(t, it.m.t, it.m.t + 0.35)); total += (it.h + 22) * p; });
+  if (typing && t >= typing[0] && t < typing[1]) total += 90;
+  const areaTop = 250, areaH = SH - 250 - 60; const off = Math.max(0, total - areaH);
+  let y = areaTop - off;
+  items.forEach((it) => {
+    const p = eOut(seg(t, it.m.t, it.m.t + 0.35)); if (p <= 0) return;
+    c.globalAlpha = p; const out = it.m.side === "out";
+    if (it.m.photos) {
+      ["f1", "f2", "f3"].forEach((k, j) => { const x = 160 + j * 180; c.save(); rr(c, x, y, 168, 168, 22); c.clip(); const im = imgs[k]; if (im) { const s = Math.max(168 / im.width, 168 / im.height); c.drawImage(im, x + (168 - im.width * s) / 2, y + (168 - im.height * s) / 2, im.width * s, im.height * s); } c.restore(); });
+    } else {
+      let yy = y;
+      if (out) { c.fillStyle = LIMA; c.font = "800 20px Inter"; c.fillText("KALLI · IA", SW - 40 - 150, yy + 22); yy += 34; }
+      c.font = "500 35px Inter"; const bw = Math.max(...it.lines.map((l) => c.measureText(l).width)) + 52; const bh = it.lines.length * 47 + 36;
+      const bx = out ? SW - 40 - bw : 40;
+      rr(c, bx, yy, bw, bh, 26); c.fillStyle = out ? LIMA : "#232321"; c.fill();
+      c.fillStyle = out ? "#0A0A0A" : "#ECECE4"; it.lines.forEach((l, k) => c.fillText(l, bx + 26, yy + 54 + k * 47));
+    }
+    c.globalAlpha = 1; y += (it.h + 22) * p;
+  });
+  if (typing && t >= typing[0] && t < typing[1]) {
+    rr(c, SW - 40 - 130, y, 130, 66, 33); c.fillStyle = "#2a2a26"; c.fill();
+    for (let k = 0; k < 3; k++) { c.fillStyle = "#B8B8B0"; c.beginPath(); c.arc(SW - 40 - 100 + k * 34, y + 33 + Math.sin(t * 12 - k) * 5, 8, 0, 7); c.fill(); }
+  }
+  c.restore();
+}
+function clients(c, t) {
+  c.fillStyle = "#ECECE4"; c.font = "800 52px Inter"; c.fillText("Clientes", 44, 175);
+  if (t < 29.5) { for (let k = 0; k < 4; k++) { rr(c, 30, 240 + k * 190, SW - 60, 170, 28); c.fillStyle = "#141413"; c.fill(); } c.fillStyle = "#6E6E68"; c.font = "500 26px Inter"; c.fillText("4 conversas novas", 44, 222); return; }
+  const rows = [["Ana", "Qualificado", "Quer comprar · até R$ 400 mil", true, 27.0], ["Bruno", "Nutrir", "Só olhando fotos", false, 27.4], ["Diego", "Nutrir", "Pesquisando preço", false, 28.0], ["Carla", "Desqualificado", "Procura aluguel", false, 28.4]];
+  rows.forEach(([n, tag, why, hot, tt], k) => {
+    const y = 240 + k * 190;
+    rr(c, 30, y, SW - 60, 170, 28); c.fillStyle = "#171715"; c.fill();
+    if (hot && t > 27.6) { c.lineWidth = 4; c.strokeStyle = LIMA; c.stroke(); }
+    c.fillStyle = "#2c2c28"; c.beginPath(); c.arc(100, y + 85, 42, 0, 7); c.fill();
+    c.fillStyle = "#ECECE4"; c.font = "700 32px Inter"; c.fillText(n, 160, y + 72);
+    c.fillStyle = "#8E8E86"; c.font = "500 25px Inter"; c.fillText(why, 160, y + 116);
+    const p = backOut(seg(t, tt, tt + 0.35)); if (p > 0) { c.save(); c.font = "800 22px Inter"; const tw = c.measureText(tag).width + 34; const tx = SW - 50 - tw, ty = y + 26; c.translate(tx + tw / 2, ty + 22); c.scale(p, p); rr(c, -tw / 2, -22, tw, 44, 22); c.fillStyle = hot ? LIMA : "#2E2E2A"; c.fill(); c.fillStyle = hot ? "#0A0A0A" : "#B8B8B0"; c.fillText(tag, -tw / 2 + 17, 8); c.restore(); }
+  });
+}
+function agenda(c, t) {
+  c.fillStyle = "#ECECE4"; c.font = "800 52px Inter"; c.fillText("Agenda", 44, 175);
+  c.fillStyle = "#8E8E86"; c.font = "500 28px Inter"; c.fillText("Sábado, 10 de outubro", 44, 222);
+  ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"].forEach((h, k) => { const y = 300 + k * 170; c.fillStyle = "#6E6E68"; c.font = "500 24px Inter"; c.fillText(h, 44, y + 8); c.fillStyle = "#1E1E1C"; c.fillRect(140, y, SW - 180, 2); });
+  const p = backOut(seg(t, 30.0, 30.45));
+  if (p > 0) { c.save(); c.translate(150 + 265, 470 + 140); c.scale(p, p); rr(c, -265, -140, 530, 280, 30); c.fillStyle = LIMA; c.fill(); c.fillStyle = "#0A0A0A"; c.font = "800 34px Inter"; c.fillText("10:00 · Visita com Ana", -235, -70); c.font = "500 26px Inter"; c.fillText("Apto 2 quartos · Braga", -235, -28); rr(c, -235, 30, 230, 50, 25); c.fillStyle = "#0A0A0A"; c.fill(); c.fillStyle = LIMA; c.font = "800 22px Inter"; c.fillText("Visita agendada", -215, 63); c.restore(); }
+  const b = eOut(seg(t, 31.8, 32.2));
+  if (b > 0) {
+    const y = -260 + b * 360; rr(c, 24, y, SW - 48, 230, 34); c.fillStyle = "#1C1C1A"; c.fill(); c.lineWidth = 4; c.strokeStyle = LIMA; c.stroke();
+    c.fillStyle = LIMA; c.beginPath(); c.arc(84, y + 62, 26, 0, 7); c.fill(); c.fillStyle = "#0A0A0A"; c.font = "900 30px Inter"; c.fillText("✓", 72, y + 73);
+    c.fillStyle = "#8E8E86"; c.font = "600 22px Inter"; c.fillText("KALLI · agora", 128, y + 54);
+    c.fillStyle = "#ECECE4"; c.font = "800 34px Inter"; c.fillText(AUD === "imob" ? "Visita marcada: Ana" : "Cliente pronto: Ana", 128, y + 96);
+    c.fillStyle = "#B8B8B0"; c.font = "500 25px Inter"; wrap(c, AUD === "imob" ? "Com Rafael (corretor) · sáb 10h · Apto 2 quartos, Braga · até R$ 400.000" : "Quer comprar · apartamento · Braga · até R$ 400.000 · em até 3 meses", SW - 190).forEach((l, k) => c.fillText(l, 128, y + 140 + k * 34));
+  }
+}
+function assume(c, t) {
+  chat(c, t, [{ t: 0, side: "in", text: "Braga ou Centro. Até R$ 400 mil. Em até 3 meses." }, { t: 0, side: "out", text: "Perfeito, Ana! Visita marcada no sábado, às 10h." }], null);
+  const pressed = t >= 34.6; const k = pressed ? 1 - Math.sin(seg(t, 34.6, 34.8) * Math.PI) * 0.06 : 1;
+  c.save(); c.translate(SW / 2, 1420); c.scale(k, k); rr(c, -300, -50, 600, 100, 50);
+  c.fillStyle = pressed ? LIMA : "transparent"; c.fill(); c.lineWidth = 4; c.strokeStyle = LIMA; c.stroke();
+  c.fillStyle = pressed ? "#0A0A0A" : LIMA; c.font = "800 32px Inter"; const s = pressed ? "Você está na conversa" : "Assumir conversa"; c.fillText(s, -c.measureText(s).width / 2, 12); c.restore();
+  const q = eOut(seg(t, 34.85, 35.2));
+  if (q > 0) { c.globalAlpha = q; rr(c, 40, 1150, SW - 80, 150, 26); c.fillStyle = "#1B2410"; c.fill(); c.lineWidth = 2; c.strokeStyle = LIMA; c.stroke(); c.fillStyle = "#ECECE4"; c.font = "500 26px Inter"; wrap(c, "Você está no controle. A Kalli não responde enquanto a conversa estiver com você.", SW - 140).forEach((l, i) => c.fillText(l, 70, 1205 + i * 36)); c.globalAlpha = 1; }
+}
+function lock(c, t) {
+  c.fillStyle = "#ECECE4"; c.font = "800 150px Archivo"; const s = "10:42"; c.fillText(s, (SW - c.measureText(s).width) / 2, 380);
+  c.fillStyle = "#8E8E86"; c.font = "500 30px Inter"; const d = "sábado, 10 de outubro"; c.fillText(d, (SW - c.measureText(d).width) / 2, 440);
+  const p = eOut(seg(t, 37.3, 37.7));
+  if (p > 0) { c.globalAlpha = p; const y = 600 + (1 - p) * 40; rr(c, 34, y, SW - 68, 190, 34); c.fillStyle = "#1C1C1A"; c.fill(); c.lineWidth = 3; c.strokeStyle = LIMA; c.stroke(); c.fillStyle = "#8E8E86"; c.font = "600 22px Inter"; c.fillText("KALLI · agora", 74, y + 52); c.fillStyle = "#ECECE4"; c.font = "800 34px Inter"; c.fillText(AUD === "imob" ? "Visita marcada: Ana" : "Cliente pronto: Ana", 74, y + 100); c.fillStyle = "#B8B8B0"; c.font = "500 26px Inter"; c.fillText(AUD === "imob" ? "Com Rafael · sáb 10h · Apto 2 quartos" : "Visita sáb 10h · Apto 2 quartos, Braga", 74, y + 145); c.globalAlpha = 1; }
+}
+// ---------------- telas do final v2 (tempo real) ----------------
+const inFeat = (tn) => tn >= FEAT.G0 && tn < FEAT.G1 + 0.6;
+const QRP = Array.from({ length: 441 }, (_, i) => ((i * 7919 + (i % 21) * 31) % 17) < 8);
+function night(c, tn) {
+  chat(c, tn, [{ t: FEAT.B1 - 0.05, side: "in", text: "Oi! A casa ainda está disponível?" }, { t: FEAT.B1 + 1.25, side: "out", text: "Está sim! Casa de 3 quartos no Centro, R$ 520 mil. Quer ver as fotos?" }], [FEAT.B1 + 0.35, FEAT.B1 + 1.25], "Novo cliente", "sábado, 22:04");
+}
+function remind(c, tn) {
+  chat(c, tn, [{ t: FEAT.B2 + 0.05, side: "out", text: "Oi, Ana! Passando para lembrar: sua visita é amanhã, sábado, às 10h. Apto 2 quartos, Braga." }, { t: FEAT.B2 + 1.35, side: "in", text: "Confirmado! Até amanhã." }], null, "Ana", "lembrete automático · 1 dia antes");
+}
+function cover(c, k, x, y, w, h, r) { c.save(); rr(c, x, y, w, h, r); c.clip(); const im = imgs[k]; if (im) { const s = Math.max(w / im.width, h / im.height); c.drawImage(im, x + (w - im.width * s) / 2, y + (h - im.height * s) / 2, im.width * s, im.height * s); } c.restore(); }
+function site(c, tn) {
+  const ap = (k) => eOut(seg(tn, FEAT.B3 + k * 0.14, FEAT.B3 + k * 0.14 + 0.35));
+  c.globalAlpha = ap(0); rr(c, 40, 104, SW - 80, 64, 32); c.fillStyle = "#1A1A18"; c.fill(); c.fillStyle = LIMA; c.beginPath(); c.arc(84, 136, 10, 0, 7); c.fill(); c.fillStyle = "#B8B8B0"; c.font = "600 26px Inter"; c.fillText("Meu site · no ar", 108, 145);
+  c.globalAlpha = ap(1); cover(c, "f1", 30, 196, SW - 60, 460, 36);
+  const gr = c.createLinearGradient(0, 470, 0, 656); gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(1, "rgba(0,0,0,0.75)"); c.fillStyle = gr; rr(c, 30, 196, SW - 60, 460, 36); c.fill();
+  c.fillStyle = "#FFFFFF"; c.font = "800 40px Inter"; c.fillText("Apto 2 quartos · Braga", 66, 590); c.fillStyle = LIMA; c.font = "700 32px Inter"; c.fillText("R$ 380 mil", 66, 632);
+  c.globalAlpha = ap(2); c.fillStyle = "#2c2c28"; c.beginPath(); c.arc(92, 740, 48, 0, 7); c.fill();
+  c.fillStyle = "#ECECE4"; c.font = "700 36px Inter"; c.fillText("Seu nome", 160, 732); c.fillStyle = "#8E8E86"; c.font = "500 25px Inter"; c.fillText("Corretor de imóveis · CRECI", 160, 772);
+  c.globalAlpha = ap(3);
+  [["f2", "Casa · Centro", "R$ 520 mil", 30], ["f3", "Apto · Mar", "R$ 690 mil", 372]].forEach(([k, a, b, x]) => { rr(c, x, 830, 318, 300, 28); c.fillStyle = "#171715"; c.fill(); cover(c, k, x, 830, 318, 190, 28); c.fillStyle = "#ECECE4"; c.font = "700 28px Inter"; c.fillText(a, x + 20, 1062); c.fillStyle = LIMA; c.font = "700 26px Inter"; c.fillText(b, x + 20, 1102); });
+  c.globalAlpha = ap(4); rr(c, 30, 1166, SW - 60, 100, 50); c.fillStyle = LIMA; c.fill(); c.fillStyle = "#0A0A0A"; c.font = "800 34px Inter"; const bt = "Chamar no WhatsApp"; c.fillText(bt, (SW - c.measureText(bt).width) / 2, 1228);
+  c.globalAlpha = ap(5); rr(c, 30, 1296, SW - 60, 210, 30); c.fillStyle = "#1A1A18"; c.fill();
+  rr(c, 56, 1318, 166, 166, 12); c.fillStyle = "#ECECE4"; c.fill(); c.fillStyle = "#0A0A0A";
+  for (let i = 0; i < 441; i++) { const x = i % 21, y = Math.floor(i / 21); const fd = (x < 7 && y < 7) || (x > 13 && y < 7) || (x < 7 && y > 13); const on = fd ? (x % 6 === 0 || y % 6 === 0 || x === 20 || y === 20 || ((x % 14 >= 2 && x % 14 <= 4) && (y % 14 >= 2 && y % 14 <= 4))) : QRP[i]; if (on) c.fillRect(66 + x * 7, 1328 + y * 7, 7, 7); }
+  c.fillStyle = "#ECECE4"; c.font = "700 30px Inter"; c.fillText("QR Code do seu site", 248, 1378); c.fillStyle = "#8E8E86"; c.font = "500 25px Inter"; c.fillText("Para a placa, a bio", 248, 1420); c.fillText("e o cartão.", 248, 1454);
+  c.globalAlpha = 1;
+}
+function repasse(c, tn) {
+  c.fillStyle = "#ECECE4"; c.font = "800 52px Inter"; c.fillText("Conversas", 44, 175);
+  c.fillStyle = "#8E8E86"; c.font = "500 26px Inter"; c.fillText("quem atende cada uma", 44, 222);
+  const sw = seg(tn, FEAT.SW, FEAT.SW + 0.35);
+  const rows = [["Ana", "Apto 2 quartos · Braga", "Rafael"], ["Bruno", "Casa · Centro", "Júlia"], ["Carla", "Apto · Mar", "Marcos"], ["Diego", "Terreno · Norte", "Rafael"]];
+  rows.forEach(([n, im, who], k) => {
+    const y = 262 + k * 200; rr(c, 30, y, SW - 60, 180, 28); c.fillStyle = "#171715"; c.fill();
+    if (k === 0) { c.lineWidth = 4; c.strokeStyle = sw >= 0.5 ? LIMA : "#E0703A"; c.stroke(); }
+    c.fillStyle = "#2c2c28"; c.beginPath(); c.arc(98, y + 74, 42, 0, 7); c.fill();
+    c.fillStyle = "#ECECE4"; c.font = "700 32px Inter"; c.fillText(n, 160, y + 66); c.fillStyle = "#8E8E86"; c.font = "500 25px Inter"; c.fillText(im, 160, y + 106);
+    let tag = "atende: " + who, bg = "#2E2E2A", fg = "#B8B8B0", sc = 1;
+    if (k === 0) { if (sw < 0.5) { tag = "Rafael · sem resposta há 15 min"; bg = "#3A2318"; fg = "#FFB088"; } else { tag = "Júlia · atendendo agora"; bg = LIMA; fg = "#0A0A0A"; sc = backOut(seg(tn, FEAT.SW + 0.17, FEAT.SW + 0.5)); } }
+    c.save(); c.font = "800 22px Inter"; const tw = c.measureText(tag).width + 34; c.translate(160 + tw / 2, y + 140); c.scale(sc, sc); rr(c, -tw / 2, -20, tw, 40, 20); c.fillStyle = bg; c.fill(); c.fillStyle = fg; c.fillText(tag, -tw / 2 + 17, 8); c.restore();
+  });
+  const q = eOut(seg(tn, FEAT.SW + 0.35, FEAT.SW + 0.75));
+  if (q > 0) { c.globalAlpha = q; rr(c, 40, 1100, SW - 80, 150, 26); c.fillStyle = "#1B2410"; c.fill(); c.lineWidth = 2; c.strokeStyle = LIMA; c.stroke(); c.fillStyle = "#ECECE4"; c.font = "500 26px Inter"; wrap(c, "Rafael não atendeu no prazo. A Kalli passou a conversa para a Júlia.", SW - 140).forEach((l, i) => c.fillText(l, 70, 1155 + i * 36)); c.globalAlpha = 1; }
+}
+function lockN(c, tn) {
+  c.fillStyle = "#ECECE4"; c.font = "800 150px Archivo"; const s = "22:04"; c.fillText(s, (SW - c.measureText(s).width) / 2, 380);
+  c.fillStyle = "#8E8E86"; c.font = "500 30px Inter"; const d = "sábado, 10 de outubro"; c.fillText(d, (SW - c.measureText(d).width) / 2, 440);
+  const p = eOut(seg(tn, FEAT.B5, FEAT.B5 + 0.4));
+  if (p > 0) { c.globalAlpha = p; const y = 600 + (1 - p) * 40; rr(c, 34, y, SW - 68, 190, 34); c.fillStyle = "#1C1C1A"; c.fill(); c.lineWidth = 3; c.strokeStyle = "#3A3A36"; c.stroke(); c.fillStyle = "#8E8E86"; c.font = "600 22px Inter"; c.fillText("WHATSAPP · agora", 74, y + 52); c.fillStyle = "#ECECE4"; c.font = "800 34px Inter"; c.fillText("Novo cliente", 74, y + 100); c.fillStyle = "#B8B8B0"; c.font = "500 26px Inter"; c.fillText("Oi! Ainda está disponível?", 74, y + 145); c.globalAlpha = 1; }
+  const q = eOut(seg(tn, FEAT.B5 + 0.7, FEAT.B5 + 1.1));
+  if (q > 0) { c.globalAlpha = q; const y = 816 + (1 - q) * 40; rr(c, 34, y, SW - 68, 150, 34); c.fillStyle = "#1B2410"; c.fill(); c.lineWidth = 3; c.strokeStyle = LIMA; c.stroke(); c.fillStyle = LIMA; c.font = "800 22px Inter"; c.fillText("KALLI · IA", 74, y + 52); c.fillStyle = "#ECECE4"; c.font = "700 32px Inter"; c.fillText("Respondendo agora…", 74, y + 104); c.globalAlpha = 1; }
+}
+function drawFeat(c, tn) {
+  const st = [[-1, "night", "22:04"], [FEAT.B2 - 0.15, "remind", "10:00"], [FEAT.B3 - 0.15, AUD === "imob" ? "repasse" : "site", "10:42"], [FEAT.B4 - 0.15, "lockN", "22:04"]];
+  let si = 0; st.forEach((x, i) => { if (tn >= x[0]) si = i; });
+  const [s0, mode, clk] = st[si];
+  status(c, clk); c.textBaseline = "alphabetic";
+  c.globalAlpha = si === 0 ? 1 : eOut(seg(tn, s0, s0 + 0.3));
+  if (mode === "night") night(c, tn);
+  if (mode === "remind") remind(c, tn);
+  if (mode === "site") site(c, tn);
+  if (mode === "repasse") repasse(c, tn);
+  if (mode === "lockN") lockN(c, tn);
+  c.globalAlpha = 1;
+}
+function drawScreen(t, tn) {
+  const c = sx; c.clearRect(0, 0, SW, SH);
+  c.save(); rr(c, 0, 0, SW, SH, 92); c.clip(); c.fillStyle = "#0D0D0C"; c.fillRect(0, 0, SW, SH);
+  if (inFeat(tn)) { drawFeat(c, tn); c.restore(); stex.needsUpdate = true; return; }
+  status(c); c.textBaseline = "alphabetic";
+  const modes = [[0, "inbox"], [15.45, "chat"], [26.6, "clients"], [29.8, "agenda"], [33.15, "assume"], [36.9, "lock"]];
+  let mi = 0; modes.forEach((m, i) => { if (t >= m[0]) mi = i; });
+  const [t0, mode] = modes[mi];
+  const fade = mi === 0 ? 1 : eOut(seg(t, t0, t0 + 0.3));
+  c.globalAlpha = fade;
+  if (mode === "inbox") inbox(c, t);
+  if (mode === "chat") chat(c, t, MSGS, [16.5, 17.25]);
+  if (mode === "clients") clients(c, t);
+  if (mode === "agenda") agenda(c, t);
+  if (mode === "assume") assume(c, t);
+  if (mode === "lock") lock(c, t);
+  c.globalAlpha = 1;
+  if (t > 13.4 && t < 15.45) { const k = seg(t, 13.4, 15.45); c.fillStyle = `rgba(184,255,79,${Math.sin(k * Math.PI) * 0.85})`; c.fillRect(0, 0, SW, SH); }
+  c.restore();
+  stex.needsUpdate = true;
+}
+
+// ---------------- poses e câmera ----------------
+const PK = [
+  { t: 0, p: [0.8, -0.55, 0.1], r: [-0.78, -0.15, 0.22] },
+  { t: 13.5, p: [0.8, -0.55, 0.1], r: [-0.78, -0.15, 0.22] },
+  { t: 16.2, p: [0.62, 0.0, 0.0], r: [0.0, -0.26, 0.0] },
+  { t: 36.8, p: [0.62, 0.0, 0.0], r: [0.0, -0.2, 0.0] },
+  { t: 40.0, p: [0.62, 0.0, 0.0], r: [0.0, -0.18, 0.0] },
+  { t: 40.9, p: [0.62, -2.8, -0.6], r: [0.5, -0.3, 0.0] },
+  { t: 49.8, p: [0.62, -2.8, -0.6], r: [0.5, -0.3, 0.0] },
+];
+let CK = null;
+function camKeys() {
+  const B = objs.B;
+  return [
+    { t: 0, p: [0.5, 0.25, 2.6], l: [0.62, -0.25, 0] },
+    { t: 3.2, p: [0.45, 0.6, 3.0], l: [0.55, 0.3, 0] },
+    { t: 6.6, p: [0.3, 1.5, 3.6], l: [0.4, 1.35, 0] },
+    { t: 8.3, p: [B.x - 0.4, B.y + 0.15, B.z + 2.1], l: [B.x - 0.4, B.y, B.z] },
+    { t: 10.2, p: [B.x - 0.33, B.y + 0.05, B.z + 1.25], l: [B.x - 0.33, B.y, B.z] },
+    { t: 12.7, p: [B.x - 0.42, B.y + 0.3, B.z + 2.3], l: [B.x - 0.42, B.y, B.z] },
+    { t: 14.4, p: [0.3, 0.9, 3.9], l: [0.6, 0.0, 0] },
+    { t: 16.3, p: [0.0, 0.0, 3.1], l: [0, 0, 0] },
+    { t: 26.5, p: [0.1, 0.04, 3.0], l: [0.04, 0, 0] },
+    { t: 36.8, p: [0.0, 0.0, 3.15], l: [0, 0, 0] },
+    { t: 44.5, p: [0.0, 0.05, 3.65], l: [0, 0, 0] },
+    { t: 49.8, p: [0.0, 0.0, 3.35], l: [0, 0, 0] },
+  ];
+}
+const DXK = [[0, 0.18], [3.2, 0.3], [6.6, 0.55], [8.3, 0.4], [12.7, 0.4], [14.4, 0.3], [16.3, 0.62], [999, 0.62]];
+const ZK = [[0, 1.0], [3.2, 1.1], [6.6, 1.15], [8.3, 1.4], [12.7, 1.3], [14.4, 1.0], [999, 1.0]];
+const OYK = [[0, 0.3], [3.2, 0.25], [6.6, 0.17], [999, 0.17]];
+const pl = (K, t) => { for (let i = 0; i < K.length - 1; i++) if (t <= K[i + 1][0]) return lerp(K[i][1], K[i + 1][1], ease(seg(t, K[i][0], K[i + 1][0]))); return K[K.length - 1][1]; };
+function vcam(p, l, t, up) {
+  const dx = lerp(pl(DXK, t), 0.66, up), z = lerp(pl(ZK, t), 1.0, up);
+  const P = [l[0] + (p[0] - l[0]) * z, l[1] + (p[1] - l[1]) * z, l[2] + (p[2] - l[2]) * z];
+  const oy = lerp(pl(OYK, t), 0.17, up) * Math.hypot(P[0] - l[0], P[1] - l[1], P[2] - l[2]);
+  return [[P[0] + dx, P[1] - oy, P[2]], [l[0] + dx, l[1] - oy, l[2]]];
+}
+const tmpV = new THREE.Vector3(), origin = new THREE.Vector3();
+function place(m, p, s, op) { m.visible = s > 0.001 && op > 0.001; m.position.set(p[0], p[1], p[2]); m.scale.setScalar(Math.max(s, 0.0001)); m.material.opacity = op; m.quaternion.copy(camera.quaternion); }
+
+function renderAt(tn) {
+  if (!ready) return;
+  const t = MI(tn);
+  // o trecho dos recursos: o celular volta e a câmera anda devagar
+  const up = ease(seg(tn, FEAT.G0, FEAT.G0 + 0.8)) * (1 - ease(seg(tn, FEAT.G1 - 0.25, FEAT.G1 + 0.45)));
+  if (!CK) CK = camKeys();
+  // câmera
+  const ck = keys(CK, t);
+  let cp = [ck.p[0] + Math.sin(t * 0.4) * 0.04, ck.p[1] + Math.cos(t * 0.33) * 0.03, ck.p[2]], cl = ck.l.slice();
+  if (up > 0) { const g = seg(tn, FEAT.G0, FEAT.G1); cp = L3(cp, [Math.sin(tn * 0.5) * 0.08 - 0.05, 0.03 + Math.cos(tn * 0.4) * 0.03, FMT === "v" ? lerp(3.85, 3.45, g) : lerp(3.45, 3.0, g)], up); cl = L3(cl, [0.05, 0, 0], up); }
+  if (FMT === "v") [cp, cl] = vcam(cp, cl, t, up);
+  camera.position.set(cp[0], cp[1], cp[2]);
+  camera.lookAt(cl[0], cl[1], cl[2]);
+  // celular
+  const pk = keys(PK, t);
+  let pp = pk.p.slice(), pr = pk.r;
+  if (FMT === "v") pp[1] -= 2.2 * seg(t, 40.0, 40.9);
+  if (up > 0) { pp = L3(pp, [FMT === "v" ? 0.42 : 0.62, 0, 0], up); pr = L3(pr, [Math.sin(tn * 0.37) * 0.03, -0.22 + Math.sin(tn * 0.5) * 0.05, 0], up); }
+  phone.position.set(pp[0], pp[1], pp[2]);
+  let vib = 0; if (t > 31.8 && t < 32.6) vib = Math.sin(t * 95) * 0.035 * (1 - seg(t, 31.8, 32.6));
+  if (tn > FEAT.B5 && tn < FEAT.B5 + 0.8) vib += Math.sin(tn * 95) * 0.035 * (1 - seg(tn, FEAT.B5, FEAT.B5 + 0.8));
+  const drift = t > 16.2 && t < 40 ? 1 : 0;
+  phone.rotation.set(pr[0] + drift * Math.sin(t * 0.37) * 0.03, pr[1] + drift * Math.sin(t * 0.5) * 0.05, pr[2] + vib);
+  phone.updateMatrixWorld(true);
+  screen.getWorldPosition(origin);
+  rim.intensity = 8 + (t > 31.8 && t < 33 ? Math.sin(seg(t, 31.8, 33) * Math.PI) * 20 : 0) + (tn > FEAT.B5 && tn < FEAT.B5 + 1.2 ? Math.sin(seg(tn, FEAT.B5, FEAT.B5 + 1.2) * Math.PI) * 20 : 0);
+  drawScreen(t, tn);
+  // cartões dos recursos
+  objs.fcards.forEach((m, k) => {
+    const a = [FEAT.B1, FEAT.B2, FEAT.B3][k] + 0.35;
+    const p = eOut(seg(tn, a, a + 0.5)), s = backOut(seg(tn, a, a + 0.45));
+    const back = ease(seg(tn, FEAT.B4 - 0.1 + k * 0.05, FEAT.B4 + 0.35 + k * 0.05));
+    const tgt = FMT === "v" ? [1.1, 0.42 - k * 0.24, 0.6] : [1.12, 0.4 - k * 0.27, 0.5];
+    const pos = L3(L3([origin.x, origin.y, origin.z], tgt, p), [origin.x, origin.y, origin.z], back);
+    place(m, pos, s * (1 - back) * (FMT === "v" ? 0.85 : 1), 1);
+  });
+  // torre de perguntas
+  bubbles.forEach((b) => {
+    const slot = b.slot;
+    if (t < b.e || t > 15.9) { b.m.visible = false; if (b.lime) b.lime.visible = false; return; }
+    let pos, s;
+    if (b.fall) { const p = eOut(seg(t, b.e, b.e + 0.55)); pos = [slot[0], lerp(slot[1] + 2.2, slot[1], p), slot[2]]; s = 1; }
+    else { const p = eOut(seg(t, b.e, b.e + 0.7)); pos = L3([origin.x, origin.y, origin.z], slot, p); s = backOut(seg(t, b.e, b.e + 0.4)); }
+    const cs = b.i * 0.008; const k = ease(seg(t, 13.55 + (b.i % 40) * 0.012, 14.75 + (b.i % 40) * 0.012));
+    if (k > 0) { pos = L3(pos, [origin.x, origin.y, origin.z], k); s *= 1 - k; }
+    let op = 1;
+    if (b.i !== BUY && t > 8.64 && t < 13.5) op = 0.55;
+    place(b.m, pos, s, op);
+    if (b.lime) { const L = seg(t, 8.64, 8.9); place(b.lime, [pos[0], pos[1], pos[2] + 0.002], s * (1 + Math.sin(seg(t, 8.64, 9.2) * Math.PI) * 0.12), L); }
+  });
+  // o comprador volta no alívio
+  if (bubbles[BUY] && t > 37.1) {
+    const p = backOut(seg(t, 37.1, 37.55)); const o = 1 - seg(t, 39.7, 40.1);
+    place(bubbles[BUY].lime, [0.32, 0.66 + Math.sin(t * 1.3) * 0.015, 0.42], p, o);
+  }
+  // fotos saindo da tela
+  objs.photos.forEach((m, j) => {
+    const a = 20.15 + j * 0.08; const out = eOut(seg(t, a, a + 0.5)); const back = ease(seg(t, 21.5 + j * 0.05, 21.95 + j * 0.05));
+    const tgt = [0.24 + j * 0.38, 0.04 + (j === 1 ? 0.06 : 0), 0.48 + (j === 1 ? 0.1 : 0)];
+    const pos = L3(L3([origin.x, origin.y, origin.z], tgt, out), [origin.x, origin.y - 0.4, origin.z], back);
+    place(m, pos, out * (1 - back), 1);
+    m.rotation.z = (j - 1) * -0.08 * (1 - back);
+  });
+  // clientes separados
+  objs.leads.forEach((m, j) => {
+    const a = 26.7 + j * 0.12; const p = eOut(seg(t, a, a + 0.45));
+    let pos = [0.62, 0.42 - j * 0.28, 0.06 + p * 0.3]; let s = p, op = 1;
+    if (j === 0) { const h = ease(seg(t, 27.6, 28.0)); pos = [0.62 - h * 0.05, pos[1] + h * 0.04, pos[2] + h * 0.25]; s *= 1 + h * 0.12; }
+    else { const r = ease(seg(t, 28.5 + j * 0.06, 29.1 + j * 0.06)); pos = [pos[0] + r * 0.55, pos[1], pos[2] - r * 1.1]; op = 1 - r * 0.75; }
+    const g = ease(seg(t, 29.4, 29.85)); pos = L3(pos, [origin.x, origin.y, origin.z], g); s *= 1 - g;
+    place(m, pos, s, op);
+  });
+  // a visita marcada sai da tela
+  { const p = backOut(seg(t, 30.0, 30.5)); const g = ease(seg(t, 31.45, 31.85)); const pos = L3(L3([origin.x, origin.y, origin.z], [0.5, 0.18, 0.62], eOut(seg(t, 30.0, 30.5))), [origin.x, origin.y, origin.z], g); place(objs.agenda, pos, p * (1 - g), 1); }
+  // grade dos 60 meses
+  const D = objs.dummy;
+  const NR = Math.ceil(COUNT / 12);
+  for (let i = 0; i < 60; i++) {
+    const c = i % 12, r = Math.floor(i / 12);
+    const tx = 0.62 + (c - 5.5) * 0.105, ty = ((NR - 1) / 2 - r) * 0.105 + 0.02;
+    const s0 = 40.95 + i * 0.035; const p = seg(t, s0, s0 + 0.45);
+    const k = ease(seg(t, 44.9 + (Math.abs(c - 5.5) + Math.abs(r - 2)) * 0.03, 45.6 + (Math.abs(c - 5.5) + Math.abs(r - 2)) * 0.03));
+    let x = tx, y = ty + (1 - backOut(p, 1.3)) * 1.6, sc2 = p > 0 && i < COUNT ? 1 : 0;
+    x = lerp(x, 0.62, k); y = lerp(y, 0.05, k); sc2 *= 1 - k;
+    const kill = tn < FEAT.G0 ? 0 : ease(seg(tn, FEAT.G0, FEAT.G0 + 0.5 + (i % 12) * 0.02)); y -= kill * 1.2; sc2 *= 1 - kill;
+    D.position.set(x, y, 0); D.rotation.set((1 - p) * 2.4, (1 - p) * 1.6 + t * 0.2 * (p >= 1 ? 0 : 1), 0); D.scale.setScalar(Math.max(sc2, 0.0001));
+    D.updateMatrix(); objs.grid.setMatrixAt(i, D.matrix);
+  }
+  objs.grid.instanceMatrix.needsUpdate = true;
+  // símbolo
+  { const p = backOut(seg(t, 45.25, 46.05), 1.4); place(objs.sym, [0.62, 0.12, 0], p, 1); objs.sym.rotateY(Math.sin(t * 0.8) * 0.12); }
+  renderer.render(scene, camera);
+}
+
+const clock = { t: 0 };
+tl0.to(clock, { t: DUR, duration: DUR, ease: "none", onUpdate: () => renderAt(clock.t) }, 0);
+window.addEventListener("hf-seek", (e) => renderAt(e.detail.time));
+
+</script>
+</body></html>

@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>brag — o número que caiu</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Archivo"; src: url("assets/archivo-latin.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #000; color: #e8e8e0; font-family: Inter, sans-serif; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; }
+      .clip { position: absolute; inset: 0; }
+      .display { font-family: Archivo, Inter, sans-serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.02; color: #e8e8e0; }
+      .cap { position: absolute; left: 72px; right: 72px; font-family: Archivo, Inter, sans-serif; font-weight: 800; font-size: 78px; line-height: 1.08; letter-spacing: -0.015em; color: #e8e8e0; }
+      .cap .lime { color: #b8ff4f; }
+
+      /* faixa real: FaixaWhatsAppCaiu (escala ~2.6x) */
+      .faixa { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: flex-start; gap: 28px;
+        padding: 40px 48px; background: #1f0b0d; border-bottom: 3px solid #5c1f24; color: #ffb3ba; font-size: 34px; line-height: 1.45; }
+      .faixa svg { width: 44px; height: 44px; flex: none; margin-top: 4px; }
+      .faixa strong { color: #ffd6da; font-weight: 600; }
+      .faixa-btn { display: table; margin-top: 22px; padding: 16px 30px; border-radius: 6px; background: #ff8f9a; color: #1f0b0d; font-weight: 700; font-size: 30px; }
+
+      /* app: caixa de entrada (conversas-page) */
+      .app { position: absolute; left: 0; right: 0; background: #000; }
+      .app-head { padding: 52px 64px 40px; border-bottom: 3px solid #1a1a1a; }
+      .kicker { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: 0.14em; color: #9a9a8e; margin-bottom: 10px; }
+      .h1 { font-weight: 800; font-size: 64px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 22px; }
+      .pill { display: inline-block; font-size: 30px; font-weight: 700; color: #000; background: #b8ff4f; border-radius: 999px; padding: 6px 20px; }
+      .item { padding: 34px 64px; border-bottom: 3px solid #141414; }
+      .item.ativa { background: #141a0d; }
+      .item-top, .item-bot { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+      .item-nome { font-weight: 700; font-size: 38px; color: #e8e8e0; }
+      .item-hora { font-size: 26px; color: #7a7a72; }
+      .item-prev { font-size: 32px; color: #888880; margin-top: 6px; }
+      .badge { min-width: 48px; height: 48px; padding: 0 12px; border-radius: 999px; background: #b8ff4f; color: #000; font-size: 26px; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; }
+
+      /* thread */
+      .thread-head { display: flex; align-items: center; justify-content: space-between; padding: 40px 56px; border-bottom: 3px solid #1a1a1a; }
+      .lead-nome { font-weight: 800; font-size: 46px; }
+      .lead-sub { font-size: 26px; color: #888880; margin-top: 4px; }
+      .btn-assumir { display: flex; align-items: center; gap: 14px; height: 84px; padding: 0 30px; border-radius: 6px; font-size: 28px; font-weight: 700;
+        background: #1a1710; color: #e8c34f; border: 3px solid #3a3420; }
+      .btn-assumir svg { width: 32px; height: 32px; }
+      .controle { padding: 26px 56px; background: #1a1710; border-bottom: 3px solid #3a3420; font-size: 30px; color: #e8c34f; }
+      .msgs { padding: 44px 56px; display: flex; flex-direction: column; gap: 22px; }
+      .msg { max-width: 82%; border-radius: 6px; padding: 26px 32px; font-size: 38px; line-height: 1.35; }
+      .msg.in { background: #111111; border: 3px solid #2a2a2a; color: #e8e8e0; }
+      .msg.out { background: #b8ff4f; color: #000; margin-left: auto; }
+      .msg .meta { font-size: 24px; opacity: 0.7; margin-top: 10px; }
+      .tap { position: absolute; width: 120px; height: 120px; border-radius: 50%; border: 6px solid #e8c34f; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="22">
+
+      <!-- 1 · HOOK · 0–3.4 -->
+      <section id="c1" class="clip" data-start="0" data-duration="3.4" data-track-index="1">
+        <div id="c1-faixa" class="faixa">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff8f9a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <div><strong>Seu WhatsApp está desconectado desde 02/10, 09:14.</strong> O agente não está respondendo os seus leads até você conectar de novo.<div class="faixa-btn">Conectar de novo</div></div>
+        </div>
+        <div id="c1-t" class="display" style="position:absolute; left:72px; right:72px; top:820px; font-size:168px;">Seu número caiu.</div>
+      </section>
+
+      <!-- 2 · MAS · 3.4–8.4 -->
+      <section id="c2" class="clip" data-start="3.4" data-duration="5" data-track-index="1">
+        <div id="c2-app" class="app" style="top: 330px;">
+          <div class="app-head"><div class="kicker">CAIXA DE ENTRADA</div><div class="h1">Conversas <span id="c2-pill" class="pill">7</span></div></div>
+          <div class="item c2-item"><div class="item-top"><span class="item-nome">Carla Menezes</span><span class="item-hora">09:21</span></div><div class="item-bot"><span class="item-prev">O apto de 2 quartos ainda está disponível?</span><span class="badge">1</span></div></div>
+          <div class="item c2-item"><div class="item-top"><span class="item-nome">Rodrigo Alves</span><span class="item-hora">09:26</span></div><div class="item-bot"><span class="item-prev">Vi a casa no portal, aceita financiamento?</span><span class="badge">2</span></div></div>
+          <div class="item c2-item"><div class="item-top"><span class="item-nome">Patrícia Lima</span><span class="item-hora">09:33</span></div><div class="item-bot"><span class="item-prev">Dá pra visitar hoje à tarde?</span><span class="badge">1</span></div></div>
+          <div class="item c2-item"><div class="item-top"><span class="item-nome">Marcos Teixeira</span><span class="item-hora">09:41</span></div><div class="item-bot"><span class="item-prev">Oi? Alguém aí?</span><span class="badge">3</span></div></div>
+        </div>
+        <div id="c2-faixa" class="faixa">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff8f9a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          <div><strong>Seu WhatsApp está desconectado desde 02/10, 09:14.</strong> O agente não está respondendo os seus leads até você conectar de novo.<div class="faixa-btn">Conectar de novo</div></div>
+        </div>
+        <div id="c2-cap" class="cap" style="top: 1420px;">E os leads continuam <span class="lime">chegando.</span></div>
+      </section>
+
+      <!-- 3 · PORTANTO · 8.4–15 -->
+      <section id="c3" class="clip" data-start="8.4" data-duration="6.6" data-track-index="1">
+        <div id="c3-app" class="app" style="top: 0;">
+          <div class="thread-head"><div><div class="lead-nome">Carla Menezes</div><div class="lead-sub">WhatsApp · número oficial</div></div>
+            <div class="btn-assumir"><svg viewBox="0 0 24 24" fill="none" stroke="#e8c34f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>Assumir conversa</div></div>
+          <div class="msgs">
+            <div id="c3-in" class="msg in">Oi! O apartamento de 2 quartos no Centro ainda está disponível?<div class="meta">02/10/2026 21:47</div></div>
+            <div id="c3-out" class="msg out">Está sim, Carla! Posso te mandar as fotos e já marcar uma visita?<div class="meta">02/10/2026 21:47 · IA</div></div>
+          </div>
+        </div>
+        <div id="c3-cap1" class="cap" style="top: 1300px;">No número oficial, <span class="lime">o agente responde.</span></div>
+        <div id="c3-cap2" class="cap" style="top: 1300px;">Em segundos. Mesmo com você <span class="lime">longe do celular.</span></div>
+      </section>
+
+      <!-- 4 · CONTROLE · 15–18.6 -->
+      <section id="c4" class="clip" data-start="15" data-duration="3.6" data-track-index="1">
+        <div class="app" style="top: 0;">
+          <div class="thread-head"><div><div class="lead-nome">Carla Menezes</div><div class="lead-sub">WhatsApp · número oficial</div></div>
+            <div style="position: relative; width: 420px; height: 84px;">
+              <div id="c4-b1" class="btn-assumir" style="position:absolute; right:0; top:0;"><svg viewBox="0 0 24 24" fill="none" stroke="#e8c34f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>Assumir conversa</div>
+              <div id="c4-b2" class="btn-assumir" style="position:absolute; right:0; top:0; background:#000; color:#888880; border-color:#2a2a2a;"><svg viewBox="0 0 24 24" fill="none" stroke="#888880" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>Devolver a IA</div>
+              <div id="c4-tap" class="tap" style="right: 150px; top: -18px;"></div>
+            </div></div>
+          <div id="c4-ctrl" class="controle">Você está no controle. IA não responde enquanto a conversa estiver com você.</div>
+          <div class="msgs">
+            <div class="msg in">Oi! O apartamento de 2 quartos no Centro ainda está disponível?<div class="meta">02/10/2026 21:47</div></div>
+            <div class="msg out">Está sim, Carla! Posso te mandar as fotos e já marcar uma visita?<div class="meta">02/10/2026 21:47 · IA</div></div>
+          </div>
+        </div>
+        <div id="c4-cap" class="cap" style="top: 1300px;">Quando quiser, <span class="lime">você assume.</span></div>
+      </section>
+
+      <!-- 5 · ASSINATURA · 18.6–22 -->
+      <section id="c5" class="clip" data-start="18.6" data-duration="3.4" data-track-index="1">
+        <div id="c5-t" class="display" style="position:absolute; left:72px; right:72px; top:520px; font-size:150px;">Aconteceu com a gente.</div>
+        <div style="position:absolute; left:72px; top:1080px; width:240px; height:10px;"><span id="c5-line" style="display:block; width:100%; height:100%; background:#b8ff4f; transform-origin:left center;"></span></div>
+        <div id="c5-s" style="position:absolute; left:72px; right:72px; top:1140px; font-size:58px; font-weight:600; line-height:1.25; color:#e8e8e0;">Foi por isso que construímos o sistema.</div>
+      </section>
+
+      <audio id="m-trilha" src="assets/trilha.mp3" data-start="0" data-duration="22" data-volume="0.55"></audio>
+      <audio id="x-erro" src=".media/audio/sfx/sfx_002.mp3" data-start="0.25" data-duration="1.6" data-volume="0.55"></audio>
+      <audio id="x-c1" src=".media/audio/sfx/sfx_003.mp3" data-start="4.0" data-duration="0.4" data-volume="0.3"></audio>
+      <audio id="x-c2" src=".media/audio/sfx/sfx_003.mp3" data-start="4.5" data-duration="0.4" data-volume="0.3"></audio>
+      <audio id="x-c3" src=".media/audio/sfx/sfx_003.mp3" data-start="5.0" data-duration="0.4" data-volume="0.3"></audio>
+      <audio id="x-c4" src=".media/audio/sfx/sfx_003.mp3" data-start="5.5" data-duration="0.4" data-volume="0.3"></audio>
+      <audio id="x-ping" src=".media/audio/sfx/sfx_001.mp3" data-start="10.2" data-duration="2.5" data-volume="0.45"></audio>
+      <audio id="x-tap" src=".media/audio/sfx/sfx_003.mp3" data-start="15.55" data-duration="0.4" data-volume="0.45"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // 1 · hook
+      tl.from("#c1-faixa", { yPercent: -100, duration: 0.45, ease: "power3.out" }, 0.15);
+      tl.from("#c1-t", { y: 60, opacity: 0, duration: 0.5, ease: "expo.out" }, 0.7);
+
+      // 2 · inbox enchendo
+      tl.from("#c2-app", { opacity: 0, y: 40, duration: 0.45, ease: "power2.out" }, 3.4);
+      tl.from(".c2-item", { x: -60, opacity: 0, duration: 0.35, ease: "back.out(1.6)", stagger: 0.5 }, 4.0);
+      tl.from("#c2-pill", { scale: 0.5, opacity: 0, duration: 0.35, ease: "back.out(2.5)" }, 5.6);
+      tl.from("#c2-cap", { y: 40, opacity: 0, duration: 0.5, ease: "power3.out" }, 5.9);
+      tl.to("#c2-faixa", { yPercent: -100, duration: 0.4, ease: "power2.in" }, 8.0);
+
+      // 3 · agente responde
+      tl.from("#c3-app", { opacity: 0, duration: 0.35, ease: "none" }, 8.4);
+      tl.from("#c3-in", { x: -50, opacity: 0, duration: 0.4, ease: "power2.out" }, 8.8);
+      tl.from("#c3-cap1", { y: 40, opacity: 0, duration: 0.5, ease: "power3.out" }, 9.2);
+      tl.from("#c3-out", { x: 60, opacity: 0, duration: 0.45, ease: "back.out(1.4)" }, 10.2);
+      tl.to("#c3-cap1", { y: -30, opacity: 0, duration: 0.35, ease: "power2.in" }, 12.0);
+      tl.from("#c3-cap2", { y: 40, opacity: 0, duration: 0.5, ease: "power3.out" }, 12.45);
+
+      // 4 · assumir a conversa
+      tl.fromTo("#c4-tap", { scale: 0.3, opacity: 0 }, { scale: 1.3, opacity: 1, duration: 0.25, ease: "power2.out" }, 15.45);
+      tl.to("#c4-tap", { opacity: 0, scale: 1.6, duration: 0.35, ease: "power1.out" }, 15.7);
+      tl.fromTo("#c4-b2", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "none" }, 15.6);
+      tl.to("#c4-b1", { opacity: 0, duration: 0.2, ease: "none" }, 15.6);
+      tl.from("#c4-ctrl", { height: 0, paddingTop: 0, paddingBottom: 0, opacity: 0, duration: 0.4, ease: "power2.out" }, 15.8);
+      tl.from("#c4-cap", { y: 40, opacity: 0, duration: 0.5, ease: "power3.out" }, 16.1);
+
+      // 5 · assinatura
+      tl.from("#c5-t", { y: 70, opacity: 0, duration: 0.6, ease: "expo.out" }, 18.8);
+      tl.from("#c5-line", { scaleX: 0, duration: 0.5, ease: "power3.inOut" }, 19.3);
+      tl.from("#c5-s", { y: 30, opacity: 0, duration: 0.5, ease: "power2.out" }, 19.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

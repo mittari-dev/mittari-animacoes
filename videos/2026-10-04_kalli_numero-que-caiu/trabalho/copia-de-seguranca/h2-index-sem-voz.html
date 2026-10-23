@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>H2 — O número que caiu</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg: #0f1718;
+        --bg2: #16211f;
+        --fg: #f4f1e8;
+        --mute: #a9b3a8;
+        --lime: #c6f432;
+        --red: #ff5a4e;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: var(--bg); color: var(--fg); font-family: Montserrat, sans-serif; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+      .clip { position: absolute; inset: 0; }
+      .scene { width: 100%; height: 100%; padding: 120px 80px; display: flex; flex-direction: column; }
+
+      /* fundo persistente */
+      .glow { position: absolute; width: 1400px; height: 1400px; border-radius: 50%; left: -160px; top: 260px;
+        background: radial-gradient(circle, rgba(198,244,50,0.20) 0%, rgba(198,244,50,0) 62%); }
+      .glow-red { background: radial-gradient(circle, rgba(255,90,78,0.30) 0%, rgba(255,90,78,0) 62%); }
+      .grid { position: absolute; inset: 0;
+        background-image: linear-gradient(rgba(244,241,232,0.06) 2px, transparent 2px), linear-gradient(90deg, rgba(244,241,232,0.06) 2px, transparent 2px);
+        background-size: 120px 120px; }
+      .ghost { position: absolute; font-family: "Archivo Black", sans-serif; font-size: 300px; line-height: 1; color: rgba(244,241,232,0.06); white-space: nowrap; }
+
+      .label { font-family: "Space Mono", monospace; font-size: 34px; letter-spacing: 0.12em; color: var(--lime); text-transform: uppercase; }
+      .label.red { color: var(--red); }
+      .rule { width: 100%; height: 4px; background: rgba(244,241,232,0.25); margin-top: 28px; }
+      .rule-fill { display: block; width: 100%; height: 100%; background: var(--lime); transform-origin: left center; }
+      .headline { font-family: "Archivo Black", sans-serif; font-size: 96px; line-height: 1.04; letter-spacing: -0.01em; color: var(--fg); }
+      .body { font-family: Montserrat, sans-serif; font-weight: 600; font-size: 48px; line-height: 1.25; color: var(--fg); }
+      .muted { color: var(--mute); }
+
+      /* celular */
+      .phone { position: relative; width: 760px; height: 1060px; margin: 60px auto 0; border-radius: 64px; background: #0a1112;
+        border: 6px solid rgba(244,241,232,0.22); padding: 44px 34px; overflow: hidden; }
+      .phone-top { display: flex; justify-content: space-between; font-family: "Space Mono", monospace; font-size: 26px; color: var(--mute); margin-bottom: 30px; }
+      .row { display: flex; align-items: center; gap: 22px; padding: 20px 18px; border-radius: 26px; background: var(--bg2); margin-bottom: 16px; }
+      .avatar { width: 76px; height: 76px; border-radius: 50%; background: rgba(244,241,232,0.18); flex: none; }
+      .row-txt { flex: 1; }
+      .row-name { font-weight: 700; font-size: 34px; color: var(--fg); }
+      .row-msg { font-size: 26px; color: var(--mute); margin-top: 4px; }
+      .tick { font-family: "Space Mono", monospace; font-size: 26px; color: var(--lime); }
+      .freeze { position: absolute; inset: 0; background: rgba(10,17,18,0.72); }
+      .alert { position: absolute; left: 50px; right: 50px; top: 360px; padding: 46px 40px; border-radius: 36px; background: #2a1312;
+        border: 4px solid var(--red); text-align: center; }
+      .alert-icon { width: 96px; height: 96px; border-radius: 50%; border: 6px solid var(--red); margin: 0 auto 24px;
+        font-family: "Archivo Black", sans-serif; font-size: 60px; line-height: 84px; color: var(--red); }
+      .alert-txt { font-family: "Archivo Black", sans-serif; font-size: 50px; line-height: 1.15; color: var(--fg); }
+      .alert-sub { font-size: 28px; color: var(--mute); margin-top: 14px; }
+
+      .bottom { margin-top: auto; }
+      .sk { height: 22px; border-radius: 11px; background: rgba(244,241,232,0.22); }
+      .sk-a { width: 60%; margin-bottom: 14px; }
+      .sk-b { width: 85%; background: rgba(244,241,232,0.12); }
+      .sk-dot { width: 26px; height: 26px; border-radius: 50%; background: var(--red); flex: none; }
+      .stack .line { display: block; }
+
+      /* chat da virada */
+      .notif { display: flex; align-items: center; gap: 20px; padding: 24px 26px; border-radius: 28px; background: var(--lime); color: #0f1718; margin-bottom: 34px; }
+      .notif-dot { width: 22px; height: 22px; border-radius: 50%; background: #0f1718; flex: none; }
+      .notif-txt { font-weight: 800; font-size: 32px; }
+      .bubble { max-width: 560px; padding: 24px 28px; border-radius: 30px; font-size: 32px; line-height: 1.3; margin-bottom: 22px; }
+      .bubble.in { background: var(--bg2); color: var(--fg); border-bottom-left-radius: 8px; }
+      .bubble.out { margin-left: auto; background: #213a1f; color: var(--fg); border-bottom-right-radius: 8px; border: 3px solid rgba(198,244,50,0.55); }
+      .auto-tag { font-family: "Space Mono", monospace; font-size: 22px; color: var(--lime); text-align: right; margin: -10px 4px 22px 0; }
+      .card { display: flex; align-items: center; gap: 24px; padding: 28px; border-radius: 30px; border: 4px solid var(--lime); background: rgba(198,244,50,0.10); }
+      .card-check { width: 72px; height: 72px; border-radius: 50%; background: var(--lime); color: #0f1718; flex: none;
+        font-family: "Archivo Black", sans-serif; font-size: 44px; line-height: 72px; text-align: center; }
+      .card-title { font-weight: 800; font-size: 36px; }
+      .card-sub { font-size: 28px; color: var(--mute); margin-top: 4px; }
+      .phone.small { height: 980px; margin-top: 40px; }
+
+      .center-col { justify-content: center; }
+      .sig-line { width: 220px; height: 8px; background: var(--lime); margin: 48px 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="30">
+
+      <!-- ===== CENA 1 · 0–7s ===== -->
+      <section id="s1" class="clip" data-start="0" data-duration="7" data-track-index="1">
+        <div class="grid"></div>
+        <div id="s1-glow" class="glow"></div>
+        <div id="s1-ghost" class="ghost" aria-hidden="true" data-layout-allow-overflow style="left:-40px; top:1500px;">09:00</div>
+        <div class="scene">
+          <div id="s1-label" class="label">Segunda-feira · 09:00</div>
+          <div class="rule"><span id="s1-rule" class="rule-fill"></span></div>
+          <div id="s1-phone" class="phone">
+            <div class="phone-top"><span>Conversas</span><span>09:02</span></div>
+            <div class="row s1-row"><div class="avatar"></div><div class="row-txt"><div class="row-name">Carla</div><div class="row-msg">Apto 2 quartos · Centro</div></div><div class="tick">✓✓</div></div>
+            <div class="row s1-row"><div class="avatar"></div><div class="row-txt"><div class="row-name">Rodrigo</div><div class="row-msg">Casa com quintal</div></div><div class="tick">✓✓</div></div>
+            <div class="row s1-row"><div class="avatar"></div><div class="row-txt"><div class="row-name">Patrícia</div><div class="row-msg">Cobertura · visita?</div></div><div class="tick">✓✓</div></div>
+            <div class="row s1-row"><div class="avatar"></div><div class="row-txt"><div class="row-name">Marcos</div><div class="row-msg">Terreno 360 m²</div></div><div class="tick">✓✓</div></div>
+            <div class="row s1-row"><div class="avatar"></div><div class="row-txt"><div class="row-name">Juliana</div><div class="row-msg">Aluguel até R$ 2.500</div></div><div class="tick">✓✓</div></div>
+            <div class="row s1-row"><div class="avatar"></div><div class="row-txt"><div class="row-name">Fernando</div><div class="row-msg">Sala comercial</div></div><div class="tick">✓✓</div></div>
+          </div>
+          <div class="bottom"><p id="s1-cap" class="body">Mais um dia mandando mensagem para cliente.</p></div>
+        </div>
+      </section>
+
+      <!-- ===== CENA 2 · MAS · 7–14s ===== -->
+      <section id="s2" class="clip" data-start="7" data-duration="7" data-track-index="1">
+        <div class="grid"></div>
+        <div id="s2-glow" class="glow glow-red"></div>
+        <div id="s2-ghost" class="ghost" aria-hidden="true" data-layout-allow-overflow style="left:-60px; top:1460px; color: rgba(255,90,78,0.08);">BLOQUEADO</div>
+        <div class="scene">
+          <div id="s2-label" class="label red">09:14 · número bloqueado</div>
+          <div id="s2-rulebox" class="rule"><span id="s2-rule" class="rule-fill" style="background: var(--red);"></span></div>
+          <div id="s2-phone" class="phone">
+            <div class="phone-top"><span>Conversas</span><span>09:14</span></div>
+            <div class="row"><div class="avatar"></div><div class="row-txt"><div class="sk sk-a"></div><div class="sk sk-b"></div></div><div class="sk sk-dot"></div></div>
+            <div class="row"><div class="avatar"></div><div class="row-txt"><div class="sk sk-a"></div><div class="sk sk-b"></div></div><div class="sk sk-dot"></div></div>
+            <div class="row"><div class="avatar"></div><div class="row-txt"><div class="sk sk-a"></div><div class="sk sk-b"></div></div><div class="sk sk-dot"></div></div>
+            <div class="row"><div class="avatar"></div><div class="row-txt"><div class="sk sk-a"></div><div class="sk sk-b"></div></div><div class="sk sk-dot"></div></div>
+            <div class="row"><div class="avatar"></div><div class="row-txt"><div class="sk sk-a"></div><div class="sk sk-b"></div></div><div class="sk sk-dot"></div></div>
+            <div id="s2-freeze" class="freeze"></div>
+            <div id="s2-alert" class="alert">
+              <div class="alert-icon">!</div>
+              <div class="alert-txt">Este número foi bloqueado.</div>
+              <div class="alert-sub">Não é possível iniciar conversas.</div>
+            </div>
+          </div>
+        </div>
+        <div id="s2-stack" class="scene stack" style="position:absolute; inset:0; justify-content:flex-end; padding-bottom:200px;">
+          <span id="s2-l1" class="line headline">O número do anúncio.</span>
+          <span id="s2-l2" class="line headline">Do portal.</span>
+          <span id="s2-l3" class="line headline">Da placa.</span>
+          <p id="s2-l4" class="body muted" style="margin-top: 56px; max-width: 880px;">Tudo apontando para um número que não responde mais.</p>
+        </div>
+      </section>
+
+      <!-- ===== CENA 3 · PORTANTO · 14–26s ===== -->
+      <section id="s3" class="clip" data-start="14" data-duration="12" data-track-index="1">
+        <div class="grid"></div>
+        <div id="s3-glow" class="glow"></div>
+        <div class="scene" style="justify-content:center;">
+          <div id="s3-q" class="headline" style="font-size: 84px;">E se o seu atendimento não dependesse de um número que pode cair?</div>
+        </div>
+        <div id="s3-chat" class="scene" style="position:absolute; inset:0;">
+          <div id="s3-label" class="label">Sexta · 21:47</div>
+          <div class="rule"><span id="s3-rule" class="rule-fill"></span></div>
+          <div class="phone small">
+            <div class="phone-top"><span>Número oficial</span><span>21:47</span></div>
+            <div id="s3-notif" class="notif"><div class="notif-dot"></div><div class="notif-txt">Novo lead · Portal de imóveis</div></div>
+            <div id="s3-in" class="bubble in">Oi, o apartamento no Centro ainda está disponível?</div>
+            <div id="s3-out" class="bubble out">Oi! Vi que você se interessou pelo apartamento no Centro. Posso te mandar fotos e marcar uma visita?</div>
+            <div id="s3-tag" class="auto-tag">resposta automática</div>
+            <div id="s3-card" class="card"><div class="card-check">✓</div><div><div class="card-title">Visita marcada</div><div class="card-sub">Sábado, 10h</div></div></div>
+          </div>
+          <div class="bottom"><p id="s3-cap" class="body">Número oficial. Resposta em segundos. Mesmo quando você está em outra visita.</p></div>
+        </div>
+      </section>
+
+      <!-- ===== CENA 4 · ASSINATURA · 26–30s ===== -->
+      <section id="s4" class="clip" data-start="26" data-duration="4" data-track-index="1">
+        <div class="grid"></div>
+        <div id="s4-glow" class="glow" style="top: 700px;"></div>
+        <div class="scene" style="justify-content:center;">
+          <div id="s4-h" class="headline" style="font-size: 132px;">Aconteceu com a gente.</div>
+          <div class="sig-line"><span id="s4-line" class="rule-fill"></span></div>
+          <p id="s4-sub" class="body" style="font-size: 50px; white-space: nowrap;">Foi por isso que construímos a</p>
+          <div id="s4-name" class="headline" style="font-size: 190px; color: var(--lime); margin-top: 18px; letter-spacing: -0.03em;">Kalli</div>
+        </div>
+      </section>
+
+      <!-- ===== ÁUDIO ===== -->
+      <audio id="a-click1" src=".media/audio/sfx/sfx_004.mp3" data-start="1.0" data-duration="0.4" data-volume="0.55"></audio>
+      <audio id="a-click2" src=".media/audio/sfx/sfx_004.mp3" data-start="1.55" data-duration="0.4" data-volume="0.55"></audio>
+      <audio id="a-click3" src=".media/audio/sfx/sfx_004.mp3" data-start="2.1" data-duration="0.4" data-volume="0.55"></audio>
+      <audio id="a-click4" src=".media/audio/sfx/sfx_004.mp3" data-start="2.65" data-duration="0.4" data-volume="0.55"></audio>
+      <audio id="a-click5" src=".media/audio/sfx/sfx_004.mp3" data-start="3.2" data-duration="0.4" data-volume="0.55"></audio>
+      <audio id="a-click6" src=".media/audio/sfx/sfx_004.mp3" data-start="3.75" data-duration="0.4" data-volume="0.55"></audio>
+      <audio id="a-error" src=".media/audio/sfx/sfx_002.mp3" data-start="7.2" data-duration="1.6" data-volume="0.9"></audio>
+      <audio id="a-whoosh" src=".media/audio/sfx/sfx_003.mp3" data-start="8.6" data-duration="5.5" data-volume="0.55"></audio>
+      <audio id="a-ping" src=".media/audio/sfx/sfx_001.mp3" data-start="18.0" data-duration="2.5" data-volume="0.9"></audio>
+      <audio id="a-click7" src=".media/audio/sfx/sfx_004.mp3" data-start="19.8" data-duration="0.4" data-volume="0.6"></audio>
+      <audio id="a-click8" src=".media/audio/sfx/sfx_004.mp3" data-start="21.3" data-duration="0.4" data-volume="0.7"></audio>
+      <audio id="a-click9" src=".media/audio/sfx/sfx_004.mp3" data-start="26.2" data-duration="0.4" data-volume="0.7"></audio>
+      <audio id="a-ping2" src=".media/audio/sfx/sfx_001.mp3" data-start="27.8" data-duration="2.2" data-volume="0.7"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // ---- ambiente: respiração e deriva (finitos, dentro da janela de cada cena)
+      tl.fromTo("#s1-glow", { scale: 0.9, opacity: 0.7 }, { scale: 1.12, opacity: 1, duration: 7, ease: "sine.inOut" }, 0);
+      tl.fromTo("#s1-ghost", { x: 0 }, { x: -120, duration: 7, ease: "none" }, 0);
+      tl.fromTo("#s2-glow", { scale: 1.15, opacity: 0.6 }, { scale: 0.95, opacity: 1, duration: 7, ease: "sine.inOut" }, 7);
+      tl.fromTo("#s2-ghost", { x: -40 }, { x: -200, duration: 7, ease: "none" }, 7);
+      tl.fromTo("#s3-glow", { scale: 0.85, opacity: 0.5 }, { scale: 1.15, opacity: 1, duration: 12, ease: "sine.inOut" }, 14);
+      tl.fromTo("#s4-glow", { scale: 0.9, opacity: 0.6 }, { scale: 1.1, opacity: 1, duration: 4, ease: "sine.inOut" }, 26);
+
+      // ---- CENA 1 · rotina
+      tl.from("#s1-label", { x: -50, opacity: 0, duration: 0.5, ease: "power3.out" }, 0.2);
+      tl.from("#s1-rule", { scaleX: 0, duration: 0.8, ease: "expo.out" }, 0.3);
+      tl.from("#s1-phone", { y: 90, opacity: 0, duration: 0.7, ease: "power2.out" }, 0.4);
+      tl.from(".s1-row", { y: 40, opacity: 0, duration: 0.4, ease: "back.out(1.6)", stagger: 0.55 }, 1.0);
+      tl.from("#s1-cap", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 4.3);
+
+      // ---- CENA 2 · o bloqueio
+      tl.from("#s2-label", { opacity: 0, duration: 0.2, ease: "none" }, 7.05);
+      tl.from("#s2-rule", { scaleX: 0, duration: 0.5, ease: "expo.out" }, 7.1);
+      tl.from("#s2-freeze", { opacity: 0, duration: 0.15, ease: "none" }, 7.2);
+      tl.from("#s2-alert", { scale: 0.8, opacity: 0, duration: 0.45, ease: "back.out(2)" }, 7.25);
+      tl.to("#s2-alert", { keyframes: { x: [0, -22, 20, -14, 10, -4, 0] }, duration: 0.5, ease: "none" }, 7.6);
+      tl.to(["#s2-phone", "#s2-label", "#s2-rulebox"], { opacity: 0, y: -40, duration: 0.45, ease: "power2.in" }, 9.4);
+      tl.from("#s2-l1", { y: 50, opacity: 0, duration: 0.5, ease: "power3.out" }, 9.9);
+      tl.from("#s2-l2", { y: 50, opacity: 0, duration: 0.5, ease: "power3.out" }, 10.5);
+      tl.from("#s2-l3", { y: 50, opacity: 0, duration: 0.5, ease: "power3.out" }, 11.0);
+      tl.from("#s2-l4", { opacity: 0, duration: 0.8, ease: "sine.out" }, 11.8);
+
+      // ---- CENA 3 · a virada
+      tl.from("#s3-q", { y: 60, opacity: 0, duration: 0.7, ease: "power3.out" }, 14.2);
+      tl.to("#s3-q", { y: -40, opacity: 0, duration: 0.45, ease: "power2.in" }, 17.2);
+      tl.fromTo("#s3-chat", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "none" }, 17.6);
+      tl.from("#s3-label", { x: -50, opacity: 0, duration: 0.5, ease: "power3.out" }, 17.6);
+      tl.from("#s3-rule", { scaleX: 0, duration: 0.8, ease: "expo.out" }, 17.7);
+      tl.from("#s3-notif", { y: -70, opacity: 0, duration: 0.5, ease: "back.out(1.8)" }, 18.0);
+      tl.from("#s3-in", { x: -60, opacity: 0, duration: 0.45, ease: "power2.out" }, 18.8);
+      tl.from("#s3-out", { x: 60, opacity: 0, duration: 0.5, ease: "power3.out" }, 19.8);
+      tl.from("#s3-tag", { opacity: 0, duration: 0.4, ease: "none" }, 20.3);
+      tl.from("#s3-card", { scale: 0.85, opacity: 0, duration: 0.5, ease: "back.out(2)" }, 21.3);
+      tl.from("#s3-cap", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 22.4);
+
+      // ---- CENA 4 · assinatura
+      tl.from("#s4-h", { y: 70, opacity: 0, duration: 0.7, ease: "expo.out" }, 26.2);
+      tl.from("#s4-line", { scaleX: 0, duration: 0.6, ease: "power3.inOut" }, 26.8);
+      tl.from("#s4-sub", { y: 30, opacity: 0, duration: 0.6, ease: "power2.out" }, 27.2);
+      tl.from("#s4-name", { y: 50, scale: 0.92, opacity: 0, duration: 0.7, ease: "back.out(1.6)", transformOrigin: "left center" }, 27.8);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

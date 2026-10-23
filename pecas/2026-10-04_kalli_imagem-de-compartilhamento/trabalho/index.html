@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Archivo"; src: url("assets/archivo-latin.woff2") format("woff2"); font-weight: 100 900; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden;
+  background: radial-gradient(circle at 18% 22%, rgba(184,255,79,0.14) 0%, rgba(0,0,0,0) 45%), #000; font-family: Inter, sans-serif; }
+.clip { position:absolute; inset:0; }
+.brand { position:absolute; left:72px; top:64px; display:flex; align-items:center; gap:18px; }
+.logo { width:56px; height:56px; border-radius:12px; background:#b8ff4f; display:flex; align-items:center; justify-content:center; }
+.logo svg { width:32px; height:32px; }
+.name { font-family:Archivo, sans-serif; font-weight:800; font-size:34px; color:#e8e8e0; letter-spacing:-0.01em; }
+h1 { position:absolute; left:72px; top:188px; width:680px; font-family:Archivo, sans-serif; font-weight:800; font-size:62px; line-height:1.1; color:#e8e8e0; letter-spacing:-0.02em; }
+h1 span { color:#b8ff4f; }
+.sub { position:absolute; left:72px; top:450px; font-size:24px; color:#9a9a92; }
+.foot { position:absolute; left:72px; top:548px; font-size:19px; color:#5f5f58; }
+.b { position:absolute; right:88px; padding:12px 18px; border-radius:10px; font-size:19px; line-height:1.35; }
+.in { background:#121211; border:2px solid #2b2b27; color:#e8e8e0; }
+.out { background:#b8ff4f; color:#000; font-weight:600; width:330px; }
+</style></head>
+<body><div id="root" data-composition-id="main" data-start="0" data-width="1200" data-height="630" data-duration="1">
+<section id="og" class="clip" data-start="0" data-duration="1">
+  <div class="brand"><div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="name">Kalli</div></div>
+  <h1>Seu WhatsApp atende, qualifica e separa <span>quem está pronto.</span></h1>
+  <div class="sub">Agente de IA para corretores de imóveis</div>
+  <div class="foot">14 dias grátis · um produto Mittari</div>
+  <div class="b in" style="top:150px; right:88px;">Oi! Quero um apê de 2 quartos</div>
+  <div class="b in" style="top:204px; right:102px;">Méier, Botafogo ou Flamengo</div>
+  <div class="b in" style="top:258px; right:262px;">até 800 mil</div>
+  <div class="b out" style="top:322px; right:40px;">O Méier fica na Zona Norte; Botafogo e Flamengo, na Zona Sul. Qual região você prefere?</div>
+</section></div>
+<script>const tl = gsap.timeline({ paused: true }); window.__timelines["main"] = tl;</script>
+</body></html>

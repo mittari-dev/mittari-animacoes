@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          background: #0f1718;
+          overflow: hidden;
+          font-family: Montserrat, sans-serif;
+          color: #f4f1e8;
+        }
+        #s4-glow {
+          position: absolute;
+          left: -200px;
+          top: 420px;
+          width: 1100px;
+          height: 1100px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(244, 241, 232, 0.1) 0%, rgba(15, 23, 24, 0) 65%);
+        }
+        #s4-rule {
+          position: absolute;
+          left: 96px;
+          top: 740px;
+          width: 160px;
+          height: 6px;
+          background: #f4f1e8;
+          transform-origin: 0 50%;
+        }
+        #s4-main {
+          position: absolute;
+          left: 96px;
+          right: 96px;
+          top: 800px;
+          font-size: 112px;
+          font-weight: 800;
+          line-height: 1.02;
+          letter-spacing: -0.035em;
+        }
+        #s4-main .w {
+          display: inline-block;
+          margin-right: 0.2em;
+          opacity: 0;
+        }
+        #s4-sub {
+          position: absolute;
+          left: 96px;
+          right: 96px;
+          top: 1120px;
+          font-size: 50px;
+          font-weight: 600;
+          line-height: 1.25;
+          color: #c9c6bc;
+          opacity: 0;
+        }
+      </style>
+
+      <div data-hf-id="hf-cn0k" id="root" data-composition-id="s4-assinatura" data-width="1080" data-height="1920">
+        <div data-hf-id="hf-cl7a" id="s4-glow"></div>
+        <div data-hf-id="hf-2k83" id="s4-rule"></div>
+        <div data-hf-id="hf-ch22" id="s4-main"><span data-hf-id="hf-fd5l" class="w">Aconteceu</span><span data-hf-id="hf-h1tx" class="w">com</span><span data-hf-id="hf-b7a3" class="w">a</span><span data-hf-id="hf-3njl" class="w">gente.</span></div>
+        <div data-hf-id="hf-0y02" id="s4-sub">Foi por isso que construímos o sistema.</div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const F = 1 / 30;
+          tl.fromTo("#s4-glow", { scale: 0.85, opacity: 0.5 }, { scale: 1.05, opacity: 1, duration: 4, ease: "sine.inOut" }, 0);
+          tl.fromTo("#s4-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power3.out" }, 0.2);
+
+          let at = 0.3;
+          gsap.utils.toArray("#s4-main .w").forEach((el, i) => {
+            const heavy = i === 0 || i === 3;
+            const dur = heavy ? 0.2 : 0.13;
+            tl.set(el, { opacity: 1, y: heavy ? 80 : 46 }, at);
+            tl.to(el, { y: 0, duration: dur, ease: "power4.out" }, at);
+            at += dur - F;
+          });
+
+          tl.fromTo("#s4-sub", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 1.2);
+
+          window.__timelines["s4-assinatura"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

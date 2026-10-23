@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; background:#000; overflow:hidden; }
+.clip { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+.ring { position:absolute; width:620px; height:620px; border-radius:50%;
+  background: radial-gradient(circle, rgba(184,255,79,0.16) 0%, rgba(184,255,79,0) 68%); }
+.ico { position:relative; width:300px; height:300px; }
+</style></head>
+<body><div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="5">
+<section id="d1" class="clip" data-start="0" data-duration="1"><div class="ring"></div>
+ <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B8FF4F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z" fill="#B8FF4F"/></svg></section>
+<section id="d2" class="clip" data-start="1" data-duration="1"><div class="ring"></div>
+ <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B8FF4F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg></section>
+<section id="d3" class="clip" data-start="2" data-duration="1"><div class="ring"></div>
+ <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B8FF4F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r="1.2" fill="#B8FF4F"/></svg></section>
+<section id="d4" class="clip" data-start="3" data-duration="1"><div class="ring"></div>
+ <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B8FF4F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></section>
+<section id="d5" class="clip" data-start="4" data-duration="1"><div class="ring"></div>
+ <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="#B8FF4F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></section>
+</div>
+<script>const tl = gsap.timeline({ paused: true }); window.__timelines["main"] = tl;</script>
+</body></html>

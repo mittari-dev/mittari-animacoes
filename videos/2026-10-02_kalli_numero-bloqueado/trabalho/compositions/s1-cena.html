@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          background: #0f1718;
+          overflow: hidden;
+          font-family: Montserrat, sans-serif;
+          color: #f4f1e8;
+        }
+        #s1-glow {
+          position: absolute;
+          left: 90px;
+          top: 760px;
+          width: 900px;
+          height: 900px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(64, 104, 104, 0.55) 0%, rgba(15, 23, 24, 0) 68%);
+        }
+        #s1-head {
+          position: absolute;
+          left: 96px;
+          right: 96px;
+          top: 170px;
+          height: 400px;
+        }
+        .s1-title {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        #s1-t1 .w {
+          display: block;
+          font-size: 116px;
+          font-weight: 800;
+          line-height: 1.04;
+          letter-spacing: -0.03em;
+          opacity: 0;
+        }
+        #s1-t1 .w.acc {
+          color: #f4f1e8;
+        }
+        #s1-t2 {
+          font-size: 74px;
+          font-weight: 800;
+          line-height: 1.12;
+          letter-spacing: -0.02em;
+          max-width: 880px;
+        }
+        #s1-t2 .w {
+          display: inline-block;
+          opacity: 0;
+          margin-right: 0.22em;
+        }
+        /* telefone */
+        #s1-phone-wrap {
+          position: absolute;
+          left: 160px;
+          top: 620px;
+          width: 760px;
+          height: 1400px;
+        }
+        #s1-phone {
+          position: absolute;
+          inset: 0;
+          border-radius: 96px;
+          background: #1b2526;
+          box-shadow: 0 0 0 4px #2c3a3b, 0 40px 120px rgba(0, 0, 0, 0.6);
+        }
+        #s1-screen {
+          position: absolute;
+          left: 20px;
+          top: 20px;
+          right: 20px;
+          bottom: 20px;
+          border-radius: 78px;
+          background: #131e20;
+          overflow: hidden;
+        }
+        #s1-status {
+          position: absolute;
+          left: 56px;
+          right: 56px;
+          top: 30px;
+          height: 44px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 30px;
+          font-weight: 700;
+        }
+        .s1-bars {
+          display: flex;
+          gap: 6px;
+          align-items: flex-end;
+        }
+        .s1-bars i {
+          display: block;
+          width: 8px;
+          background: #f4f1e8;
+          border-radius: 2px;
+        }
+        #s1-appbar {
+          position: absolute;
+          left: 48px;
+          right: 48px;
+          top: 104px;
+          height: 90px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+        #s1-appbar h2 {
+          font-size: 54px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+        .s1-search {
+          width: 74px;
+          height: 74px;
+          border-radius: 50%;
+          background: #1f2d2f;
+          position: relative;
+        }
+        .s1-search::before {
+          content: "";
+          position: absolute;
+          left: 20px;
+          top: 18px;
+          width: 26px;
+          height: 26px;
+          border: 4px solid #a9b4b0;
+          border-radius: 50%;
+        }
+        .s1-search::after {
+          content: "";
+          position: absolute;
+          left: 46px;
+          top: 46px;
+          width: 14px;
+          height: 4px;
+          background: #a9b4b0;
+          transform: rotate(45deg);
+          transform-origin: 0 0;
+        }
+        #s1-listmask {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 216px;
+          bottom: 0;
+          overflow: hidden;
+        }
+        #s1-list {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+        }
+        .s1-row {
+          height: 136px;
+          display: flex;
+          align-items: center;
+          padding: 0 44px;
+          gap: 26px;
+          border-bottom: 2px solid #1c292b;
+        }
+        .s1-av {
+          flex: 0 0 88px;
+          height: 88px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+          font-weight: 700;
+          color: #0f1718;
+        }
+        .s1-txt {
+          flex: 1 1 auto;
+          min-width: 0;
+        }
+        .s1-name {
+          font-size: 34px;
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .s1-prev {
+          font-size: 27px;
+          font-weight: 500;
+          color: #a9b4b0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-top: 6px;
+        }
+        .s1-meta {
+          flex: 0 0 auto;
+          text-align: right;
+          font-size: 24px;
+          color: #a9b4b0;
+          font-weight: 600;
+        }
+        /* bolhas enviadas */
+        .s1-bubble {
+          position: absolute;
+          right: 44px;
+          bottom: 70px;
+          max-width: 560px;
+          padding: 24px 30px 20px;
+          border-radius: 34px 34px 8px 34px;
+          background: #f4f1e8;
+          color: #0f1718;
+          font-size: 32px;
+          font-weight: 600;
+          line-height: 1.25;
+          box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+          transform-origin: 100% 100%;
+          opacity: 0;
+        }
+        .s1-bubble small {
+          display: block;
+          text-align: right;
+          font-size: 22px;
+          font-weight: 700;
+          color: #4d6563;
+          margin-top: 6px;
+        }
+        #s1-dim {
+          position: absolute;
+          inset: 0;
+          background: #070c0d;
+          opacity: 0;
+        }
+        /* alerta de bloqueio */
+        #s1-alert {
+          position: absolute;
+          left: 50px;
+          right: 50px;
+          top: 380px;
+          padding: 64px 48px 56px;
+          border-radius: 48px;
+          background: #2a1315;
+          border: 4px solid #e5484d;
+          box-shadow: 0 30px 120px rgba(229, 72, 77, 0.35);
+          text-align: center;
+          opacity: 0;
+        }
+        #s1-alert-icon {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto 40px;
+          display: block;
+        }
+        #s1-alert h3 {
+          font-size: 60px;
+          font-weight: 800;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          color: #f4f1e8;
+        }
+        #s1-alert p {
+          margin-top: 26px;
+          font-size: 32px;
+          font-weight: 500;
+          line-height: 1.3;
+          color: #f0b8ba;
+        }
+        /* mão */
+        #s1-hand-back,
+        #s1-hand-front {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1920px;
+        }
+      </style>
+
+      <div data-hf-id="hf-oah7" id="root" data-composition-id="s1-cena" data-width="1080" data-height="1920">
+        <div data-hf-id="hf-4z5d" id="s1-glow"></div>
+
+        <div data-hf-id="hf-ihdk" id="s1-head">
+          <div data-hf-id="hf-9dtd" class="s1-title" id="s1-t1">
+            <span data-hf-id="hf-73wt" class="w">Segunda-feira.</span>
+            <span data-hf-id="hf-1jtw" class="w acc">9h.</span>
+          </div>
+          <div data-hf-id="hf-dbxe" class="s1-title" id="s1-t2">
+            <span data-hf-id="hf-zv8e" class="w">Mais</span><span data-hf-id="hf-osa6" class="w">um</span><span data-hf-id="hf-ukr6" class="w">dia</span><span data-hf-id="hf-8obe" class="w">mandando</span><span data-hf-id="hf-0k7z" class="w">mensagem</span><span data-hf-id="hf-0rpa" class="w">para</span><span data-hf-id="hf-u560" class="w">cliente.</span>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-a4i4" id="s1-phone-wrap" data-layout-allow-overflow="">
+          <svg data-hf-id="hf-8tio" id="s1-hand-back" data-layout-allow-overflow="" viewBox="0 0 1080 1920" style="left:-160px;top:-620px" aria-hidden="true">
+            <!-- dedos aparecendo na borda direita -->
+            <rect data-hf-id="hf-wdht" x="860" y="1150" width="120" height="104" rx="52" fill="#c7a387" />
+            <rect data-hf-id="hf-ibck" x="868" y="1272" width="124" height="108" rx="54" fill="#c7a387" />
+            <rect data-hf-id="hf-9k1k" x="862" y="1398" width="118" height="104" rx="52" fill="#bd987c" />
+            <!-- palma -->
+            <path data-hf-id="hf-1naj" d="M150 1560 C 260 1500, 860 1500, 960 1600 L 1000 1980 L 120 1980 Z" fill="#b8937a" />
+          </svg>
+          <div data-hf-id="hf-mnde" id="s1-phone">
+            <div data-hf-id="hf-bw9a" id="s1-screen">
+              <div data-hf-id="hf-rs20" id="s1-status">
+                <span data-hf-id="hf-186e">9:00</span>
+                <span data-hf-id="hf-hbmc" class="s1-bars"><i data-hf-id="hf-vg97" style="height:12px"></i><i data-hf-id="hf-nc1t" style="height:18px"></i><i data-hf-id="hf-fxg4" style="height:24px"></i><i data-hf-id="hf-gcjn" style="height:30px"></i></span>
+              </div>
+              <div data-hf-id="hf-2l5a" id="s1-appbar">
+                <h2 data-hf-id="hf-dmav">Conversas</h2>
+                <div data-hf-id="hf-wq3x" class="s1-search"></div>
+              </div>
+              <div data-hf-id="hf-6dm6" id="s1-listmask">
+                <div data-hf-id="hf-dkto" id="s1-list" data-layout-allow-overlap="" data-layout-allow-occlusion=""></div>
+              </div>
+              <div data-hf-id="hf-jd0a" class="s1-bubble" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s1-b1">Bom dia! Separei 3 opções pra você.<small data-hf-id="hf-5tc8">enviada ✓✓</small></div>
+              <div data-hf-id="hf-akmz" class="s1-bubble" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s1-b2">Segue o link do imóvel.<small data-hf-id="hf-kd34">enviada ✓✓</small></div>
+              <div data-hf-id="hf-q6vv" class="s1-bubble" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s1-b3">Consegue visitar amanhã?<small data-hf-id="hf-j661">enviada ✓✓</small></div>
+              <div data-hf-id="hf-j3wu" class="s1-bubble" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s1-b4">Ainda tem interesse no apê?<small data-hf-id="hf-jkh2">enviada ✓✓</small></div>
+              <div data-hf-id="hf-53xy" id="s1-dim" data-layout-allow-occlusion=""></div>
+              <div data-hf-id="hf-ttd4" id="s1-alert" data-layout-allow-overlap="">
+                <svg data-hf-id="hf-3lpx" id="s1-alert-icon" viewBox="0 0 150 150" aria-hidden="true">
+                  <circle data-hf-id="hf-st4z" cx="75" cy="75" r="64" fill="none" stroke="#e5484d" stroke-width="12" />
+                  <line data-hf-id="hf-xo51" x1="30" y1="120" x2="120" y2="30" stroke="#e5484d" stroke-width="12" stroke-linecap="round" />
+                </svg>
+                <h3 data-hf-id="hf-qk2y">Este número foi bloqueado.</h3>
+                <p data-hf-id="hf-va4p">Não é possível enviar nem receber mensagens.</p>
+              </div>
+            </div>
+          </div>
+          <svg data-hf-id="hf-v5dz" id="s1-hand-front" viewBox="0 0 1080 1920" style="left:-160px;top:-620px" aria-hidden="true">
+            <!-- polegar sobre a borda esquerda -->
+            <path data-hf-id="hf-9b8d" d="M40 1920 C 40 1780, 90 1640, 160 1540 C 186 1504, 238 1516, 230 1564 C 214 1660, 206 1780, 214 1920 Z" fill="#d1ae92" />
+            <path data-hf-id="hf-t9cr" d="M166 1548 C 182 1526, 216 1528, 222 1556 C 202 1566, 182 1566, 166 1548 Z" fill="#e4c7b0" />
+          </svg>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const contacts = [
+            ["CA", "Carla · Apto Centro", "Você: Te mando as fotos", "8:58", "#9fc3bd"],
+            ["RL", "Roberto Lima", "Você: Bom dia, Roberto!", "8:57", "#d9c7a3"],
+            ["JU", "Juliana (Jardins)", "Você: Posso te ligar hoje?", "8:55", "#b7c9a8"],
+            ["MS", "Marcos · casa 3 quartos", "Você: Segue a planta", "8:52", "#c9b2c4"],
+            ["FE", "Fernanda", "Você: O condomínio é R$ 680", "8:49", "#a8bccf"],
+            ["PS", "Paulo Souza", "Você: Visita confirmada?", "8:44", "#d4b8a0"],
+            ["AB", "Ana Beatriz", "Você: Tem vaga de garagem sim", "8:41", "#9fc3bd"],
+            ["LM", "Lucas M.", "Você: Mandei o endereço", "8:37", "#d9c7a3"],
+            ["RE", "Renata · locação", "Você: Aceita pet, sim!", "8:30", "#b7c9a8"],
+            ["DG", "Diego", "Você: Bom dia, Diego!", "8:26", "#c9b2c4"],
+            ["TA", "Tatiane", "Você: Te mando o vídeo", "8:21", "#a8bccf"],
+            ["GU", "Gustavo · cobertura", "Você: Pode ser às 15h?", "8:15", "#d4b8a0"],
+            ["CL", "Cláudia", "Você: Documentos recebidos", "8:09", "#9fc3bd"],
+            ["VI", "Vinícius", "Você: Bom dia!", "8:02", "#d9c7a3"],
+          ];
+          const list = document.getElementById("s1-list");
+          list.innerHTML = contacts
+            .map(
+              (c) =>
+                `<div class="s1-row"><div class="s1-av" style="background:${c[4]}">${c[0]}</div>` +
+                `<div class="s1-txt"><div class="s1-name" data-layout-allow-overlap>${c[1]}</div><div class="s1-prev" data-layout-allow-overlap>${c[2]}</div></div>` +
+                `<div class="s1-meta" data-layout-allow-overlap>${c[3]}</div></div>`,
+            )
+            .join("");
+
+          const tl = gsap.timeline({ paused: true });
+          const F = 1 / 30;
+
+          // telefone entra subindo
+          tl.fromTo("#s1-phone-wrap", { y: 520 }, { y: 0, duration: 1.0, ease: "power3.out" }, 0.1);
+          // glow ambiente respirando
+          tl.fromTo("#s1-glow", { scale: 0.92, opacity: 0.7 }, { scale: 1.06, opacity: 1, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+          // título 1 — waterfall
+          const t1 = gsap.utils.toArray("#s1-t1 .w");
+          tl.set(t1[0], { opacity: 1, y: 80 }, 0.35);
+          tl.to(t1[0], { y: 0, duration: 0.2, ease: "power4.out" }, 0.35);
+          tl.set(t1[1], { opacity: 1, y: 60 }, 0.35 + 0.2 + 2 * F);
+          tl.to(t1[1], { y: 0, duration: 0.16, ease: "power4.out" }, 0.35 + 0.2 + 2 * F);
+          tl.to("#s1-t1", { y: -50, opacity: 0, duration: 0.3, ease: "power2.in" }, 2.75);
+
+          // título 2 — waterfall palavra a palavra
+          const t2 = gsap.utils.toArray("#s1-t2 .w");
+          let at = 3.1;
+          t2.forEach((el, i) => {
+            const heavy = i === 3 || i === 4 || i === 6;
+            const dur = heavy ? 0.17 : 0.13;
+            tl.set(el, { opacity: 1, y: heavy ? 64 : 44 }, at);
+            tl.to(el, { y: 0, duration: dur, ease: "power4.out" }, at);
+            at += dur - F;
+          });
+          tl.to("#s1-t2", { opacity: 0, duration: 0.12, ease: "none" }, 6.95);
+
+          // lista rolando — nudge-curve em quatro empurrões
+          const steps = [
+            [2.6, 0, -272],
+            [3.9, -272, -544],
+            [5.15, -544, -816],
+            [6.3, -816, -1020],
+          ];
+          steps.forEach(([t, from, to]) => {
+            const d = to - from;
+            tl.fromTo("#s1-list", { y: from }, { y: from + d * 0.1, duration: 0.12, ease: "power3.in", immediateRender: false }, t);
+            tl.to("#s1-list", { y: from + d * 0.75, duration: 0.1, ease: "none" }, t + 0.12);
+            tl.to("#s1-list", { y: to, duration: 0.36, ease: "power4.out" }, t + 0.22);
+          });
+
+          // mensagens saindo — pop + sobe e some
+          ["#s1-b1", "#s1-b2", "#s1-b3", "#s1-b4"].forEach((id, i) => {
+            const t = 3.4 + i * 0.8;
+            tl.fromTo(id, { scale: 0, opacity: 0, y: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, t);
+            tl.to(id, { y: -420, opacity: 0, duration: 0.6, ease: "power2.in" }, t + 0.45);
+          });
+
+          // 7.0 — a tela trava: tremor quantizado (chromatic-glitch, envelope + hash)
+          const glitchHash = (n) => {
+            const x = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+            return x - Math.floor(x);
+          };
+          const amp = { a: 0 };
+          tl.set(amp, { a: 1 }, 7.0);
+          tl.to(
+            amp,
+            {
+              a: 0,
+              duration: 0.32,
+              ease: "power3.in",
+              onUpdate: () => {
+                const step = Math.floor(tl.time() / (1 / 15));
+                gsap.set("#s1-screen", {
+                  x: (glitchHash(step * 13) * 2 - 1) * 14 * amp.a,
+                  y: (glitchHash(step * 29 + 7) * 2 - 1) * 6 * amp.a,
+                });
+              },
+            },
+            7.0,
+          );
+          tl.set("#s1-screen", { x: 0, y: 0 }, 7.32);
+          tl.fromTo("#s1-dim", { opacity: 0 }, { opacity: 0.62, duration: 0.2, ease: "power2.out" }, 7.05);
+          // as conversas somem junto com o número
+          tl.fromTo("#s1-listmask", { opacity: 1 }, { opacity: 0, duration: 0.25, ease: "power2.in" }, 7.25);
+
+          // 7.3 — aviso vermelho
+          tl.fromTo("#s1-alert", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.42, ease: "power3.out" }, 7.3);
+          tl.fromTo("#s1-alert-icon", { rotation: -30 }, { rotation: 0, duration: 0.5, ease: "power3.out" }, 7.3);
+          // leve aproximação do telefone enquanto o aviso é lido
+          tl.fromTo("#s1-phone-wrap", { scale: 1 }, { scale: 1.06, duration: 1.9, ease: "sine.out", immediateRender: false }, 7.35);
+
+          window.__timelines["s1-cena"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>O cliente do feriado — Kalli</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Archivo"; src: url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      body { color: #e8e8e0; font-family: Inter, sans-serif; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #000; }
+      .clip { position: absolute; inset: 0; background: #000; }
+
+      /* tipografia */
+      .display { position: absolute; left: 72px; right: 72px; font-family: Archivo, Inter, sans-serif; font-weight: 900; letter-spacing: -0.025em; line-height: 1.0; color: #e8e8e0; }
+      .cap { position: absolute; left: 72px; right: 72px; font-family: Archivo, Inter, sans-serif; font-weight: 800; font-size: 80px; line-height: 1.08; letter-spacing: -0.015em; color: #e8e8e0; }
+      .lime { color: #b8ff4f; }
+      .orange { color: #ff6b2b; }
+      .kicker { font-family: Inter, sans-serif; font-weight: 600; font-size: 28px; letter-spacing: 0.16em; color: #9a9a92; text-transform: uppercase; }
+
+      /* tela do app (conversas-page) */
+      .tela { position: absolute; left: 56px; right: 56px; background: #0a0a09; border: 3px solid #1b1b19; border-radius: 22px; overflow: hidden; }
+      .thread-head { display: flex; align-items: center; gap: 26px; padding: 34px 44px; border-bottom: 3px solid #1b1b19; background: #121211; }
+      .avatar { width: 84px; height: 84px; border-radius: 50%; background: #201f1d; color: #e8e8e0; font-weight: 700; font-size: 34px; display: flex; align-items: center; justify-content: center; flex: none; }
+      .lead-nome { font-weight: 800; font-size: 42px; }
+      .lead-sub { font-size: 26px; color: #9a9a92; margin-top: 4px; }
+      .msgs { padding: 40px 44px 48px; display: flex; flex-direction: column; gap: 24px; }
+      .msg { max-width: 84%; border-radius: 10px; padding: 26px 32px; font-size: 38px; line-height: 1.35; }
+      .msg.in { background: #121211; border: 3px solid #2a2a28; color: #e8e8e0; }
+      .msg.out { background: #b8ff4f; color: #000; margin-left: auto; }
+      .msg.humano { background: #e8e8e0; color: #000; margin-left: auto; }
+      .msg .meta { font-size: 24px; opacity: 0.65; margin-top: 10px; }
+
+      .item { display: flex; align-items: center; gap: 26px; padding: 30px 44px; border-bottom: 3px solid #141413; }
+      .item:last-child { border-bottom: 0; }
+      .item-txt { flex: 1; min-width: 0; }
+      .item-nome { font-weight: 700; font-size: 38px; color: #e8e8e0; }
+      .item-prev { font-size: 30px; color: #8a8a82; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .dot { width: 22px; height: 22px; border-radius: 50%; background: #4f4f48; flex: none; }
+      .badge { min-width: 52px; height: 52px; padding: 0 14px; border-radius: 999px; background: #ff6b2b; color: #000; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; }
+      .pill { display: inline-flex; align-items: center; line-height: 1; white-space: nowrap; height: 54px; padding: 0 24px; border-radius: 999px; font-size: 28px; font-weight: 700; flex: none; }
+      .pill.lime { background: #b8ff4f; color: #000; }
+      .pill.cinza { background: #1b1b19; color: #9a9a92; }
+      .ticks { font-size: 30px; color: #6f6f68; flex: none; letter-spacing: -0.2em; }
+
+      .aviso { position: absolute; left: 56px; right: 56px; display: flex; align-items: center; gap: 28px; padding: 36px 44px; border-radius: 18px; background: #b8ff4f; color: #000; }
+      .aviso svg { width: 64px; height: 64px; flex: none; }
+      .aviso-t { font-family: Archivo, Inter, sans-serif; font-weight: 900; font-size: 46px; letter-spacing: -0.01em; }
+      .aviso-s { font-size: 30px; font-weight: 600; margin-top: 4px; }
+
+      .cartao { position: absolute; left: 56px; right: 56px; padding: 40px 44px; border-radius: 18px; background: #121211; border: 3px solid #2a2a28; }
+      .cartao-t { font-weight: 800; font-size: 44px; color: #e8e8e0; margin-top: 14px; }
+      .cartao-s { font-size: 32px; color: #9a9a92; margin-top: 8px; }
+
+      /* praia */
+      .sol { position: absolute; width: 360px; height: 360px; border-radius: 50%; background: #ff6b2b; }
+      .onda { position: absolute; left: 0; right: 0; height: 6px; background: #e8e8e0; border-radius: 3px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="36">
+
+      <!-- 1 · O CLIENTE · 0–5 -->
+      <section id="c1" class="clip" data-start="0" data-duration="5" data-track-index="1">
+        <div id="c1-praia" style="position:absolute; left:560px; right:0; top:540px; height:330px; overflow:hidden;">
+          <div class="sol" style="width:260px; height:260px; left:120px; top:40px;"></div>
+          <div style="position:absolute; left:0; right:0; top:170px; bottom:0; background:#000;"></div>
+          <div class="onda c1-onda" style="top:196px; left:40px; right:60px;"></div>
+          <div class="onda c1-onda" style="top:236px; left:160px; right:0; opacity:.55;"></div>
+          <div class="onda c1-onda" style="top:276px; left:0; right:200px; opacity:.3;"></div>
+        </div>
+        <div id="c1-k" class="kicker" style="position:absolute; left:72px; top:150px;">Cabo Frio · feriado prolongado</div>
+        <div id="c1-t1" class="display" style="top:230px; font-size:128px;">Sábado de feriado.</div>
+        <div id="c1-t2" class="display orange" style="top:580px; font-size:128px;">15h47.</div>
+        <div id="c1-tela" class="tela" style="top:900px;">
+          <div class="thread-head"><div class="avatar">RC</div><div><div class="lead-nome">Rafael Costa</div><div class="lead-sub">WhatsApp · veio do anúncio</div></div></div>
+          <div class="msgs" style="min-height:400px;">
+            <div id="c1-in" class="msg in">Oi! Vi a casa no Peró. Ainda está disponível? Volto pro Rio amanhã.<div class="meta">sábado 15:47</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 · NINGUÉM VÊ · 5–10 -->
+      <section id="c2" class="clip" data-start="5" data-duration="5" data-track-index="1">
+        <div class="kicker" style="position:absolute; left:72px; top:150px;">Sábado</div>
+        <div style="position:absolute; left:72px; right:72px; top:210px; height:240px;">
+          <div id="c2-h1" class="display orange" style="left:0; right:0; top:0; font-size:220px;">16h00</div>
+          <div id="c2-h2" class="display orange" style="left:0; right:0; top:0; font-size:220px;">18h00</div>
+          <div id="c2-h3" class="display orange" style="left:0; right:0; top:0; font-size:220px;">21h00</div>
+        </div>
+        <div id="c2-tela" class="tela" style="top:560px;">
+          <div class="item c2-item"><span class="dot"></span><div class="item-txt"><div class="item-nome">João · corretor</div><div class="item-prev">Em visita no Braga</div></div></div>
+          <div class="item c2-item"><span class="dot"></span><div class="item-txt"><div class="item-nome">Ana · corretora</div><div class="item-prev">De folga</div></div></div>
+          <div class="item c2-item"><span class="dot"></span><div class="item-txt"><div class="item-nome">Você · dono</div><div class="item-prev">Almoço de família</div></div></div>
+        </div>
+        <div id="c2-msg" class="tela" style="top:1110px; border-color:#3a1f12;">
+          <div class="item"><div class="avatar">RC</div><div class="item-txt"><div class="item-nome">Rafael Costa</div><div class="item-prev">Oi! Vi a casa no Peró. Ainda está…</div></div><span class="badge">1</span></div>
+        </div>
+        <div id="c2-cap" class="cap" style="top:1480px;">Todo mundo ocupado.<br /><span class="orange">Ninguém errado.</span></div>
+      </section>
+
+      <!-- 3 · A CONCORRÊNCIA · 10–15 -->
+      <section id="c3" class="clip" data-start="10" data-duration="5" data-track-index="1">
+        <div id="c3-k" class="kicker" style="position:absolute; left:72px; top:330px;">A mesma mensagem, para mais três</div>
+        <div id="c3-tela" class="tela" style="top:400px;">
+          <div class="item c3-item"><div class="avatar">1</div><div class="item-txt"><div class="item-nome">Outra imobiliária</div><div class="item-prev">Oi! Vi a casa no Peró…</div></div><span class="ticks">✓✓</span></div>
+          <div class="item c3-item" id="c3-ganha"><div class="avatar">2</div><div class="item-txt"><div class="item-nome">Outra imobiliária</div><div class="item-prev">Oi! Vi a casa no Peró…</div></div>
+            <div style="position:relative; width:290px; height:54px; flex:none;"><span id="c3-t2" class="ticks" style="position:absolute; right:0; top:8px;">✓✓</span><span id="c3-pill" class="pill lime" style="position:absolute; right:0; top:0;">respondeu em 2 min</span></div></div>
+          <div class="item c3-item"><div class="avatar">3</div><div class="item-txt"><div class="item-nome">Outra imobiliária</div><div class="item-prev">Oi! Vi a casa no Peró…</div></div><span class="ticks">✓✓</span></div>
+        </div>
+        <div id="c3-cap" class="display" style="top:1240px; font-size:150px;">Ele não<br />esperou.</div>
+      </section>
+
+      <!-- 4 · A SEGUNDA-FEIRA · 15–20 -->
+      <section id="c4" class="clip" data-start="15" data-duration="5" data-track-index="1">
+        <div id="c4a">
+          <div class="display" style="top:330px; font-size:150px;">Domingo,<br /><span class="orange">10h.</span></div>
+          <div id="c4-cartao" class="cartao" style="top:780px;">
+            <div class="kicker">Visita</div>
+            <div class="cartao-t">Casa no Peró · Rafael Costa</div>
+            <div class="cartao-s">Com outra imobiliária</div>
+          </div>
+        </div>
+        <div id="c4b">
+          <div class="display" style="top:330px; font-size:150px;">Segunda,<br /><span class="orange">9h.</span></div>
+          <div class="tela" style="top:780px;">
+            <div class="thread-head"><div class="avatar">RC</div><div><div class="lead-nome">Rafael Costa</div><div class="lead-sub">WhatsApp · veio do anúncio</div></div></div>
+            <div class="msgs" style="min-height:560px;">
+              <div class="msg in" style="opacity:.45;">Oi! Vi a casa no Peró. Ainda está disponível? Volto pro Rio amanhã.<div class="meta">sábado 15:47</div></div>
+              <div id="c4-out" class="msg humano">Bom dia! Ainda tem interesse?<div class="meta">segunda 09:02 · João</div></div>
+              <div id="c4-in" class="msg in">Já fechei, obrigado.<div class="meta">segunda 09:03</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 · A VIRADA · 20–23 -->
+      <section id="c5" class="clip" data-start="20" data-duration="3" data-track-index="1">
+        <div id="c5-t1" class="display" style="top:640px; font-size:118px;">Você não perdeu no preço.</div>
+        <div id="c5-t2" class="display orange" style="top:1000px; font-size:118px;">Perdeu na demora.</div>
+      </section>
+
+      <!-- 6 · E SE FOSSE ASSIM? · 23–32 -->
+      <section id="c6" class="clip" data-start="23" data-duration="9" data-track-index="1">
+        <div style="position:absolute; left:72px; right:72px; top:150px; height:300px;">
+          <div id="c6-r1" class="display orange" style="left:0; right:0; top:0; font-size:220px;">21h00</div>
+          <div id="c6-r2" class="display orange" style="left:0; right:0; top:0; font-size:220px;">18h00</div>
+          <div id="c6-r3" class="display orange" style="left:0; right:0; top:0; font-size:220px;">16h00</div>
+          <div id="c6-cap" style="position:absolute; left:0; right:0; top:0;">
+            <div class="display" style="left:0; right:0; top:0; font-size:118px;">Sábado, <span class="lime">15h47.</span></div>
+            <div class="display" style="left:0; right:0; top:130px; font-size:118px;">De novo.</div>
+          </div>
+        </div>
+        <div id="c6-tela" class="tela" style="top:500px;">
+          <div class="thread-head"><div class="avatar">RC</div><div><div class="lead-nome">Rafael Costa</div><div class="lead-sub">WhatsApp · veio do anúncio</div></div></div>
+          <div class="msgs" style="min-height:840px;">
+            <div id="c6-in1" class="msg in">Oi! Vi a casa no Peró. Ainda está disponível? Volto pro Rio amanhã.<div class="meta">sábado 15:47</div></div>
+            <div id="c6-out" class="msg out">Está sim! Fica a 400 m da praia. Quer ver hoje às 17h ou amanhã às 10h?<div class="meta">sábado 15:47 · Kalli</div></div>
+            <div id="c6-in2" class="msg in">Amanhã às 10h.<div class="meta">sábado 15:48</div></div>
+          </div>
+        </div>
+        <div id="c6-aviso" class="aviso" style="top:1480px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg>
+          <div><div class="aviso-t">Visita marcada</div><div class="aviso-s">Domingo, 10h · corretor avisado</div></div>
+        </div>
+      </section>
+
+      <!-- 7 · FECHO · 32–36 -->
+      <section id="c7" class="clip" data-start="32" data-duration="4" data-track-index="1">
+        <div id="c7-t" class="display" style="top:520px; font-size:116px;">O cliente do feriado não espera <span class="lime">segunda-feira.</span></div>
+        <div style="position:absolute; left:72px; top:1180px; width:220px; height:10px;"><span id="c7-line" style="display:block; width:100%; height:100%; background:#b8ff4f; transform-origin:left center;"></span></div>
+        <div id="c7-marca" class="display lime" style="top:1260px; font-size:200px; letter-spacing:-0.04em;">Kalli</div>
+      </section>
+
+      <!-- trilha e efeitos -->
+      <audio id="m-trilha" src="assets/audio/trilha.mp3" data-start="0" data-duration="36" data-track-index="2" data-volume="0.55"></audio>
+      <audio id="x-chega" src="assets/audio/notification.mp3" data-start="1.2" data-duration="1.2" data-track-index="3" data-volume="0.55"></audio>
+      <audio id="x-envio1" src="assets/audio/click-soft.mp3" data-start="10.4" data-duration="0.37" data-track-index="3" data-volume="0.3"></audio>
+      <audio id="x-envio2" src="assets/audio/click-soft.mp3" data-start="10.8" data-duration="0.37" data-track-index="4" data-volume="0.3"></audio>
+      <audio id="x-envio3" src="assets/audio/click-soft.mp3" data-start="11.2" data-duration="0.37" data-track-index="3" data-volume="0.3"></audio>
+      <audio id="x-outra" src="assets/audio/pop.mp3" data-start="11.9" data-duration="0.72" data-track-index="4" data-volume="0.4"></audio>
+      <audio id="x-segunda" src="assets/audio/click-soft.mp3" data-start="17.6" data-duration="0.37" data-track-index="3" data-volume="0.3"></audio>
+      <audio id="x-fechei" src="assets/audio/error.mp3" data-start="18.5" data-duration="0.55" data-track-index="4" data-volume="0.35"></audio>
+      <audio id="x-volta" src="assets/audio/riser.mp3" data-start="21.8" data-media-start="8.8" data-duration="1.2" data-track-index="3" data-volume="0.4"></audio>
+      <audio id="x-resposta" src="assets/audio/ping.mp3" data-start="25.6" data-duration="1.32" data-track-index="4" data-volume="0.7"></audio>
+      <audio id="x-cliente" src="assets/audio/click-soft.mp3" data-start="28.2" data-duration="0.37" data-track-index="3" data-volume="0.3"></audio>
+      <audio id="x-visita" src="assets/audio/pop.mp3" data-start="29.2" data-duration="0.72" data-track-index="4" data-volume="0.5"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const entra = (alvo, t, extra = {}) => tl.from(alvo, { y: 50, opacity: 0, duration: 0.5, ease: "power3.out", ...extra }, t);
+      const sai = (alvo, t) => tl.to(alvo, { opacity: 0, duration: 0.25, ease: "power1.in" }, t);
+
+      // 1 · o cliente
+      tl.from("#c1-praia .sol", { y: 120, duration: 1.4, ease: "power2.out" }, 0);
+      tl.from(".c1-onda", { scaleX: 0, transformOrigin: "left center", duration: 0.9, ease: "power3.out", stagger: 0.15 }, 0.1);
+      entra("#c1-k", 0.15);
+      entra("#c1-t1", 0.3, { ease: "expo.out" });
+      entra("#c1-t2", 0.6, { ease: "expo.out" });
+      entra("#c1-tela", 0.7, { y: 80 });
+      tl.from("#c1-in", { x: -60, opacity: 0, duration: 0.45, ease: "back.out(1.5)" }, 1.2);
+      sai("#c1", 4.75);
+
+      // 2 · ninguém vê (o relógio corre)
+      entra("#c2-h1", 5.1, { ease: "expo.out" });
+      tl.set("#c2-h2, #c2-h3", { opacity: 0 }, 0);
+      tl.to("#c2-h1", { y: -60, opacity: 0, duration: 0.25, ease: "power2.in" }, 6.6);
+      tl.fromTo("#c2-h2", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 6.85);
+      tl.to("#c2-h2", { y: -60, opacity: 0, duration: 0.25, ease: "power2.in" }, 8.1);
+      tl.fromTo("#c2-h3", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 8.35);
+      tl.from(".c2-item", { x: -50, opacity: 0, duration: 0.4, ease: "power3.out", stagger: 0.3 }, 5.3);
+      entra("#c2-msg", 6.2, { y: 40 });
+      entra("#c2-cap", 7.0);
+      sai("#c2", 9.75);
+
+      // 3 · a concorrência
+      entra("#c3-k", 10.1);
+      tl.from(".c3-item", { x: 70, opacity: 0, duration: 0.35, ease: "back.out(1.4)", stagger: 0.4 }, 10.35);
+      tl.set("#c3-pill", { opacity: 0 }, 0);
+      tl.to("#c3-t2", { opacity: 0, duration: 0.15 }, 11.9);
+      tl.fromTo("#c3-pill", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.2)" }, 11.9);
+      tl.to("#c3-ganha", { backgroundColor: "#141a0d", duration: 0.3 }, 11.9);
+      entra("#c3-cap", 12.6, { ease: "expo.out", y: 70 });
+      sai("#c3", 14.75);
+
+      // 4 · a segunda-feira
+      entra("#c4a .display", 15.1, { ease: "expo.out" });
+      entra("#c4-cartao", 15.5);
+      tl.to("#c4a", { opacity: 0, duration: 0.25, ease: "power1.in" }, 17.0);
+      tl.set("#c4b", { opacity: 0 }, 0);
+      tl.to("#c4b", { opacity: 1, duration: 0.3, ease: "power1.out" }, 17.25);
+      tl.from("#c4-out", { x: 60, opacity: 0, duration: 0.4, ease: "power3.out" }, 17.6);
+      tl.from("#c4-in", { x: -60, opacity: 0, duration: 0.4, ease: "power3.out" }, 18.5);
+      sai("#c4", 19.75);
+
+      // 5 · a virada (silêncio)
+      entra("#c5-t1", 20.2, { ease: "expo.out" });
+      entra("#c5-t2", 21.0, { ease: "expo.out" });
+      sai("#c5", 22.75);
+
+      // 6 · e se fosse assim? (o relógio volta)
+      tl.set("#c6-r1, #c6-r2, #c6-r3, #c6-cap", { opacity: 0 }, 0);
+      tl.to("#c6-r1", { opacity: 1, duration: 0.05 }, 23.0);
+      tl.to("#c6-r1", { opacity: 0, duration: 0.05 }, 23.3);
+      tl.to("#c6-r2", { opacity: 1, duration: 0.05 }, 23.3);
+      tl.to("#c6-r2", { opacity: 0, duration: 0.05 }, 23.6);
+      tl.to("#c6-r3", { opacity: 1, duration: 0.05 }, 23.6);
+      tl.to("#c6-r3", { opacity: 0, duration: 0.05 }, 23.9);
+      tl.fromTo("#c6-cap", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 23.9);
+      entra("#c6-tela", 24.1, { y: 80 });
+      tl.from("#c6-in1", { x: -60, opacity: 0, duration: 0.4, ease: "power3.out" }, 24.4);
+      tl.from("#c6-out", { x: 60, opacity: 0, duration: 0.45, ease: "back.out(1.4)" }, 25.6);
+      tl.from("#c6-in2", { x: -60, opacity: 0, duration: 0.4, ease: "power3.out" }, 28.2);
+      tl.from("#c6-aviso", { y: 120, opacity: 0, duration: 0.55, ease: "back.out(1.6)" }, 29.2);
+      sai("#c6", 31.75);
+
+      // 7 · fecho
+      entra("#c7-t", 32.15, { ease: "expo.out", y: 70 });
+      tl.from("#c7-line", { scaleX: 0, duration: 0.5, ease: "power3.inOut" }, 33.0);
+      entra("#c7-marca", 33.3, { ease: "expo.out", y: 60 });
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

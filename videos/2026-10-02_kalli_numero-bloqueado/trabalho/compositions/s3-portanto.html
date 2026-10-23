@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          background: #0f1718;
+          overflow: hidden;
+          font-family: Montserrat, sans-serif;
+          color: #0f1718;
+        }
+        #s3-light {
+          position: absolute;
+          inset: 0;
+          background: #ece8dc;
+        }
+        #s3-glow {
+          position: absolute;
+          left: 40px;
+          top: 820px;
+          width: 1000px;
+          height: 1000px;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(236, 232, 220, 0) 65%);
+        }
+        #s3-head {
+          position: absolute;
+          left: 96px;
+          right: 96px;
+          top: 170px;
+          height: 440px;
+        }
+        #s3-h1,
+        #s3-h2 {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        #s3-h1 {
+          font-size: 70px;
+          font-weight: 800;
+          line-height: 1.12;
+          letter-spacing: -0.02em;
+        }
+        #s3-h1 .w {
+          display: inline-block;
+          margin-right: 0.22em;
+          opacity: 0;
+        }
+        #s3-h2 .ln {
+          display: block;
+          font-size: 66px;
+          font-weight: 800;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          margin-bottom: 18px;
+          opacity: 0;
+        }
+        #s3-h2 .ln.sm {
+          font-size: 54px;
+          font-weight: 700;
+          color: #2f4140;
+          margin-top: 8px;
+        }
+        /* telefone claro */
+        #s3-phone {
+          position: absolute;
+          left: 160px;
+          top: 620px;
+          width: 760px;
+          height: 1400px;
+          border-radius: 96px;
+          background: #0f1718;
+          box-shadow: 0 40px 120px rgba(15, 23, 24, 0.28);
+        }
+        #s3-screen {
+          position: absolute;
+          left: 20px;
+          top: 20px;
+          right: 20px;
+          bottom: 20px;
+          border-radius: 78px;
+          background: #fbfaf6;
+          overflow: hidden;
+        }
+        #s3-chathead {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 210px;
+          padding: 92px 44px 0;
+          display: flex;
+          gap: 24px;
+          align-items: center;
+          border-bottom: 2px solid #e6e2d6;
+          background: #fbfaf6;
+          z-index: 2;
+        }
+        .s3-av {
+          flex: 0 0 84px;
+          height: 84px;
+          border-radius: 50%;
+          background: #9fc3bd;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 34px;
+          font-weight: 800;
+        }
+        .s3-who b {
+          display: block;
+          font-size: 34px;
+          font-weight: 800;
+        }
+        .s3-who span {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 25px;
+          font-weight: 700;
+          color: #3c5250;
+          margin-top: 6px;
+        }
+        .s3-who span i {
+          display: inline-block;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: #0f1718;
+          color: #c6f432;
+          font-style: normal;
+          font-size: 18px;
+          line-height: 28px;
+          text-align: center;
+        }
+        #s3-chat {
+          position: absolute;
+          left: 36px;
+          right: 36px;
+          top: 240px;
+        }
+        .s3-msg {
+          max-width: 560px;
+          padding: 24px 30px;
+          font-size: 32px;
+          font-weight: 600;
+          line-height: 1.3;
+          margin-bottom: 22px;
+          opacity: 0;
+        }
+        .s3-in {
+          background: #e6e2d6;
+          border-radius: 34px 34px 34px 8px;
+          transform-origin: 0% 100%;
+        }
+        .s3-out {
+          margin-left: auto;
+          background: #0f1718;
+          color: #f4f1e8;
+          border-radius: 34px 34px 8px 34px;
+          transform-origin: 100% 100%;
+        }
+        #s3-meta {
+          display: flex;
+          justify-content: flex-end;
+          margin: -8px 0 26px;
+          opacity: 0;
+        }
+        #s3-meta span {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 22px;
+          border-radius: 999px;
+          background: #c6f432;
+          font-size: 25px;
+          font-weight: 800;
+        }
+        #s3-meta span::before {
+          content: "";
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #0f1718;
+        }
+        .s3-typing {
+          width: 132px;
+          height: 66px;
+          border-radius: 33px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 22px;
+          opacity: 0;
+        }
+        .s3-typing.r {
+          margin-left: auto;
+          background: #0f1718;
+        }
+        .s3-typing i {
+          display: block;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background: #f4f1e8;
+        }
+        #s3-card {
+          border-radius: 36px;
+          background: #ffffff;
+          border: 3px solid #0f1718;
+          overflow: hidden;
+          opacity: 0;
+          transform-origin: 50% 100%;
+        }
+        #s3-card .top {
+          background: #c6f432;
+          padding: 26px 30px;
+          display: flex;
+          align-items: center;
+          gap: 22px;
+          font-size: 36px;
+          font-weight: 800;
+        }
+        #s3-card .top svg {
+          flex: 0 0 56px;
+          width: 56px;
+          height: 56px;
+        }
+        #s3-card .body {
+          padding: 22px 30px 26px;
+          font-size: 28px;
+          font-weight: 600;
+          color: #3c5250;
+        }
+        /* notificação */
+        #s3-notif {
+          position: absolute;
+          left: 26px;
+          right: 26px;
+          top: 26px;
+          z-index: 5;
+          border-radius: 40px;
+          background: #c6f432;
+          padding: 26px 30px;
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          box-shadow: 0 20px 60px rgba(15, 23, 24, 0.3);
+        }
+        #s3-notif .ic {
+          flex: 0 0 76px;
+          height: 76px;
+          border-radius: 22px;
+          background: #0f1718;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        #s3-notif .ic svg {
+          width: 44px;
+          height: 44px;
+        }
+        #s3-notif b {
+          display: block;
+          font-size: 34px;
+          font-weight: 800;
+        }
+        #s3-notif span {
+          display: block;
+          font-size: 27px;
+          font-weight: 600;
+          margin-top: 4px;
+        }
+      </style>
+
+      <div data-hf-id="hf-z251" id="root" data-composition-id="s3-portanto" data-width="1080" data-height="1920">
+        <div data-hf-id="hf-b8s4" id="s3-light"></div>
+        <div data-hf-id="hf-aa0z" id="s3-glow"></div>
+
+        <div data-hf-id="hf-ktpi" id="s3-head">
+          <div data-hf-id="hf-6a41" id="s3-h1">
+            <span data-hf-id="hf-su9z" class="w">E</span><span data-hf-id="hf-n8yk" class="w">se</span><span data-hf-id="hf-bzw5" class="w">o</span><span data-hf-id="hf-u9fv" class="w">seu</span><span data-hf-id="hf-h63m" class="w">atendimento</span><span data-hf-id="hf-kmus" class="w">não</span><span data-hf-id="hf-5xmm" class="w">dependesse</span><span data-hf-id="hf-99nn" class="w">de</span><span data-hf-id="hf-osa6" class="w">um</span><span data-hf-id="hf-10td" class="w">número</span><span data-hf-id="hf-4sct" class="w">que</span><span data-hf-id="hf-8u7m" class="w">pode</span><span data-hf-id="hf-less" class="w">cair?</span>
+          </div>
+          <div data-hf-id="hf-a882" id="s3-h2">
+            <span data-hf-id="hf-l9yz" class="ln">Número oficial.</span>
+            <span data-hf-id="hf-vtmg" class="ln">Resposta em segundos.</span>
+            <span data-hf-id="hf-onzs" class="ln sm">Mesmo quando você está em outra visita.</span>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-q989" id="s3-phone" data-layout-allow-overflow="">
+          <div data-hf-id="hf-wiz0" id="s3-screen">
+            <div data-hf-id="hf-zoay" id="s3-chathead" data-layout-allow-occlusion="" data-layout-allow-overlap="">
+              <div data-hf-id="hf-dmqm" class="s3-av">L</div>
+              <div data-hf-id="hf-c88f" class="s3-who" data-layout-allow-overlap="" data-layout-allow-occlusion="">
+                <b data-hf-id="hf-z86r">Lead · Apto Centro</b>
+                <span data-hf-id="hf-6hat"><i data-hf-id="hf-q7i5">✓</i>Número oficial</span>
+              </div>
+            </div>
+            <div data-hf-id="hf-ntt1" id="s3-chat" data-layout-allow-overflow="">
+              <div data-hf-id="hf-fnk3" class="s3-msg s3-in" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s3-m1">Oi! Vi o anúncio do apartamento no Centro.</div>
+              <div data-hf-id="hf-6a05" class="s3-typing r" id="s3-ty1"><i data-hf-id="hf-wt6k"></i><i data-hf-id="hf-zeb8"></i><i data-hf-id="hf-y7e5"></i></div>
+              <div data-hf-id="hf-bbs1" class="s3-msg s3-out" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s3-m2">Oi! Vi que você se interessou pelo apartamento no Centro. Posso te mandar fotos e marcar uma visita?</div>
+              <div data-hf-id="hf-xq1b" id="s3-meta"><span data-hf-id="hf-99qe">Respondido em 3 s</span></div>
+              <div data-hf-id="hf-1doi" class="s3-msg s3-in" data-layout-allow-overlap="" data-layout-allow-occlusion="" id="s3-m3">Pode ser sábado de manhã?</div>
+              <div data-hf-id="hf-xtu2" id="s3-card">
+                <div data-hf-id="hf-sijt" class="top">
+                  <svg data-hf-id="hf-f6na" viewBox="0 0 56 56" aria-hidden="true"><rect data-hf-id="hf-kz8e" x="5" y="10" width="46" height="40" rx="7" fill="none" stroke="#0f1718" stroke-width="5" /><line data-hf-id="hf-fr0r" x1="5" y1="22" x2="51" y2="22" stroke="#0f1718" stroke-width="5" /><line data-hf-id="hf-3bkl" x1="17" y1="4" x2="17" y2="14" stroke="#0f1718" stroke-width="5" stroke-linecap="round" /><line data-hf-id="hf-kd49" x1="39" y1="4" x2="39" y2="14" stroke="#0f1718" stroke-width="5" stroke-linecap="round" /><path data-hf-id="hf-pg8c" d="M18 36 L25 42 L38 30" fill="none" stroke="#0f1718" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  <span data-hf-id="hf-ja5q">Visita marcada · Sábado, 10h</span>
+                </div>
+                <div data-hf-id="hf-alga" class="body">Apartamento no Centro</div>
+              </div>
+            </div>
+            <div data-hf-id="hf-1r04" id="s3-notif" data-layout-allow-overlap="" data-layout-allow-occlusion="">
+              <div data-hf-id="hf-w92w" class="ic">
+                <svg data-hf-id="hf-s0fo" viewBox="0 0 44 44" aria-hidden="true"><path data-hf-id="hf-ge4m" d="M6 22 L22 8 L38 22 M11 18 L11 36 L33 36 L33 18" fill="none" stroke="#c6f432" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </div>
+              <div data-hf-id="hf-yeow">
+                <b data-hf-id="hf-m5zx">Novo lead</b>
+                <span data-hf-id="hf-vwig">Apartamento no Centro · agora</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const F = 1 / 30;
+
+          // virada clara — revelação radial a partir da notificação
+          tl.fromTo("#s3-light", { clipPath: "circle(0px at 540px 760px)" }, { clipPath: "circle(2300px at 540px 760px)", duration: 0.7, ease: "power3.in" }, 0);
+          tl.fromTo("#s3-phone", { y: 600 }, { y: 0, duration: 0.8, ease: "power3.out" }, 0.05);
+          tl.fromTo("#s3-glow", { scale: 0.9, opacity: 0.6 }, { scale: 1.08, opacity: 1, duration: 5.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+          // notificação no acento (ping em 0.3)
+          tl.fromTo("#s3-notif", { y: -200, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.3);
+          tl.fromTo("#s3-notif .ic", { scale: 0.6 }, { scale: 1, duration: 0.5, ease: "power3.out" }, 0.35);
+          tl.to("#s3-notif", { y: -220, opacity: 0, duration: 0.35, ease: "power2.in" }, 1.35);
+          // cabeçalho da conversa aparece quando a notificação sai
+          tl.fromTo("#s3-chathead > *", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out", stagger: 0.05 }, 1.55);
+
+          // pergunta — waterfall
+          let at = 0.75;
+          gsap.utils.toArray("#s3-h1 .w").forEach((el, i) => {
+            const heavy = i === 4 || i === 6 || i === 9 || i === 12;
+            const dur = heavy ? 0.17 : 0.12;
+            tl.set(el, { opacity: 1, y: heavy ? 64 : 42 }, at);
+            tl.to(el, { y: 0, duration: dur, ease: "power4.out" }, at);
+            at += dur - F;
+          });
+          tl.to("#s3-h1", { y: -40, opacity: 0, duration: 0.3, ease: "power2.in" }, 4.95);
+
+          // conversa
+          const pop = (sel, t) => tl.fromTo(sel, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" }, t);
+          pop("#s3-m1", 1.6);
+          pop("#s3-ty1", 2.2);
+          // pontos digitando (finito)
+          gsap.utils.toArray("#s3-ty1 i").forEach((d, i) => {
+            tl.fromTo(d, { y: 0 }, { y: -10, duration: 0.18, ease: "sine.inOut", yoyo: true, repeat: 3 }, 2.3 + i * 0.09);
+          });
+          // indicador some, resposta ocupa o lugar
+          tl.to("#s3-ty1", { opacity: 0, duration: 0.1 }, 2.95);
+          tl.set("#s3-ty1", { height: 0, marginBottom: 0 }, 3.0);
+          pop("#s3-m2", 3.0);
+          tl.fromTo("#s3-meta", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.35, ease: "power3.out" }, 3.35);
+          pop("#s3-m3", 4.4);
+
+          // conversa sobe para abrir espaço (nudge-curve)
+          const T = 5.2, D = -250;
+          tl.to("#s3-chat", { y: D * 0.1, duration: 0.12, ease: "power3.in" }, T);
+          tl.to("#s3-chat", { y: D * 0.75, duration: 0.1, ease: "none" }, T + 0.12);
+          tl.to("#s3-chat", { y: D, duration: 0.38, ease: "power4.out" }, T + 0.22);
+
+          // cartão de visita agendada (pop em 5.6)
+          tl.fromTo("#s3-card", { scale: 0.5, opacity: 0, y: 40 }, { scale: 1, opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 5.6);
+
+          // três afirmações — waterfall por linha
+          const lines = gsap.utils.toArray("#s3-h2 .ln");
+          [5.3, 6.05, 6.85].forEach((t, i) => {
+            tl.set(lines[i], { opacity: 1, y: 70 }, t);
+            tl.to(lines[i], { y: 0, duration: 0.2, ease: "power4.out" }, t);
+          });
+
+          window.__timelines["s3-portanto"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

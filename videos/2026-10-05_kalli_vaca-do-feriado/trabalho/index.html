@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --cream:#E8E8E0; --ink:#121212; --mute:#5B5B54; --or:#C2410C; --lima:#B8FF4F; --off:#ECECE4; --dim:#8E8E86; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; font-family:Inter, sans-serif; }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--cream); }
+#bg { position:absolute; inset:0; background:var(--cream); }
+#cam { position:absolute; inset:0; perspective:1800px; perspective-origin:540px 1000px; }
+#stage { position:absolute; inset:0; transform-origin:540px 1000px; transform-style:preserve-3d; }
+.ctr { position:absolute; }
+.ghost { position:absolute; left:0; right:0; text-align:center; font-family:Archivo; font-weight:900; letter-spacing:-0.05em; line-height:1; filter:blur(2px); opacity:0; }
+.ghost::before { content:attr(data-t); }
+#gh365 { top:760px; font-size:560px; color:rgba(18,18,18,0.05); }
+#gh2204 { top:560px; font-size:330px; color:rgba(236,236,228,0.045); }
+#glow { position:absolute; left:40px; top:500px; width:1000px; height:1000px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.13) 0%, rgba(184,255,79,0) 65%); opacity:0; }
+#cow { left:540px; top:1060px; width:930px; clip-path:inset(0 100% 0 0); }
+.card { left:0; top:1010px; width:290px; height:390px; background:#F6F6F0; border:3px solid var(--ink); border-radius:26px; overflow:hidden; opacity:0; box-shadow:0 30px 60px rgba(0,0,0,0.12); }
+.card .band { height:84px; background:var(--or); color:#fff; font:800 34px Archivo; letter-spacing:0.02em; display:flex; align-items:center; justify-content:center; }
+.card .nm { font-family:"Instrument Serif"; font-style:italic; font-size:62px; color:var(--ink); text-align:center; margin-top:46px; line-height:1; }
+.card .pills { position:absolute; left:0; right:0; bottom:34px; display:flex; flex-direction:column; align-items:center; gap:12px; }
+.pill { font:700 26px Inter; color:var(--ink); border:2px solid var(--ink); border-radius:40px; padding:8px 20px; opacity:0; }
+#counter { left:540px; top:1345px; text-align:center; opacity:0; }
+#counter .lbl { font:600 26px Inter; letter-spacing:0.14em; text-transform:uppercase; color:var(--mute); }
+#counter .num { margin-top:14px; font:900 150px Archivo; letter-spacing:-0.04em; color:var(--ink); line-height:1; font-variant-numeric:tabular-nums; }
+#clockWrap { left:540px; top:1000px; width:520px; height:520px; color:var(--ink); opacity:0; }
+#clock { width:520px; height:520px; overflow:visible; }
+#gauge { left:930px; top:1000px; width:70px; height:440px; border:4px solid var(--ink); border-radius:36px; overflow:hidden; opacity:0; }
+#gfill { position:absolute; left:0; right:0; bottom:0; height:100%; transform-origin:50% 100%; transform:scaleY(0); background:linear-gradient(to top, #3a3a36 0%, var(--or) 100%); }
+#glbl { left:930px; top:1258px; font:700 20px Inter; letter-spacing:0.12em; text-transform:uppercase; color:var(--mute); text-align:center; width:160px; opacity:0; }
+#chart { left:540px; top:1395px; width:880px; height:180px; overflow:visible; opacity:0; }
+#src { left:540px; top:1515px; font:500 22px Inter; color:var(--mute); white-space:nowrap; opacity:0; }
+#badge { left:540px; top:1000px; width:1600px; height:1600px; border-radius:50%; background:var(--lima); opacity:0; display:flex; align-items:center; justify-content:center; }
+#badge b { font:900 900px Archivo; line-height:1; color:#0A0A0A; opacity:0; }
+#bubble { left:540px; top:1010px; width:440px; height:440px; overflow:visible; opacity:0; }
+#mapWrap { left:540px; top:1050px; width:960px; height:600px; opacity:0; }
+#map { width:960px; height:600px; overflow:visible; }
+#mapClock { left:540px; top:1405px; font:700 30px Inter; letter-spacing:0.12em; color:var(--lima); opacity:0; white-space:nowrap; }
+.phone { left:540px; top:1090px; width:520px; height:880px; border-radius:64px; background:#121212; border:3px solid #2C2C2A; box-shadow:0 60px 120px rgba(0,0,0,0.6), inset 0 0 0 10px #0A0A0A; opacity:0; }
+.ph-top { position:absolute; left:34px; right:34px; top:56px; display:flex; align-items:center; gap:18px; padding-bottom:26px; border-bottom:2px solid #242422; }
+.av { width:64px; height:64px; border-radius:50%; background:#2B2B28; flex:none; }
+.ph-name { font:700 30px Inter; color:var(--off); }
+.ph-sub { font:500 22px Inter; color:var(--dim); margin-top:4px; }
+.ph-time { margin-left:auto; font:600 24px Inter; color:var(--dim); }
+.msgs { position:absolute; left:30px; right:30px; top:200px; display:flex; flex-direction:column; gap:20px; }
+.msg { max-width:390px; font:500 31px/1.3 Inter; padding:20px 24px 34px; border-radius:26px; position:relative; opacity:0; }
+.msg .t { position:absolute; right:18px; bottom:8px; font:500 18px Inter; opacity:0.6; }
+.msg.in { background:#262624; color:var(--off); align-self:flex-start; border-top-left-radius:8px; }
+.msg.out { background:var(--lima); color:#0A0A0A; align-self:flex-end; border-top-right-radius:8px; }
+.typing { align-self:flex-end; background:#262624; border-radius:26px; padding:22px 26px; display:flex; gap:10px; opacity:0; }
+.typing i { width:14px; height:14px; border-radius:50%; background:var(--dim); display:block; }
+.ph-status { position:absolute; left:0; right:0; bottom:60px; text-align:center; font:700 30px Inter; color:var(--dim); letter-spacing:0.04em; opacity:0; }
+.plbl { top:770px; font:700 24px Inter; letter-spacing:0.14em; text-transform:uppercase; color:var(--dim); opacity:0; white-space:nowrap; }
+#watch { left:540px; top:830px; font:800 44px Inter; color:#0A0A0A; background:var(--lima); border-radius:40px; padding:10px 26px; font-variant-numeric:tabular-nums; opacity:0; white-space:nowrap; }
+.visit { left:540px; font:800 38px Inter; color:#0A0A0A; background:var(--lima); border-radius:26px; padding:22px 34px; white-space:nowrap; opacity:0; box-shadow:0 20px 60px rgba(184,255,79,0.25); }
+#visit1 { top:1400px; }
+#visit2 { top:1430px; }
+#chipResp { left:540px; top:1320px; font:600 36px Inter; color:var(--off); border:2px solid #3A3A36; border-radius:40px; padding:14px 30px; white-space:nowrap; opacity:0; }
+#chipResp b { color:var(--lima); font-variant-numeric:tabular-nums; }
+#endSym { left:540px; top:1150px; text-align:center; }
+#endSym img { width:300px; display:block; margin:0 auto; opacity:0; }
+#endWord { font:900 120px Archivo; letter-spacing:-0.04em; color:var(--off); margin-top:40px; opacity:0; }
+#endTag { font:500 40px Inter; color:var(--dim); margin-top:6px; opacity:0; }
+#typeCam { position:absolute; inset:0; }
+#type { position:absolute; inset:0; color:var(--ink); --sm:#55554E; }
+.ln { position:absolute; left:60px; right:60px; top:250px; text-align:center; }
+.row { display:block; position:relative; }
+.sm { font:500 46px/1.25 Inter; color:var(--sm); margin-bottom:18px; }
+.big { font-family:Archivo; font-weight:900; font-size:122px; line-height:0.94; letter-spacing:-0.035em; text-transform:uppercase; }
+.huge { font-family:Archivo; font-weight:900; font-size:200px; line-height:0.98; letter-spacing:-0.045em; text-transform:uppercase; }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:112px; line-height:1.02; margin-bottom:14px; letter-spacing:-0.01em; }
+.serifxl { font-family:"Instrument Serif"; font-style:italic; font-size:170px; line-height:0.98; letter-spacing:-0.015em; }
+.w { display:inline-block; margin:0 0.11em; opacity:0; }
+.or { color:var(--or); } .lm { color:var(--lima); }
+.strike { position:absolute; left:4%; right:4%; top:50%; height:12px; background:var(--or); transform:scaleX(0); transform-origin:0 50%; }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.2; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.26) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="41.6" data-fps="60">
+  <div id="bg"></div>
+  <div id="cam"><div id="stage">
+    <div class="ghost" id="gh365" data-t="365"></div>
+    <div class="ghost" id="gh2204" data-t="22:04"></div>
+    <div id="glow"></div>
+
+    <img id="cow" class="ctr" src="assets/vaca-tinta.png" alt="" />
+
+    <div class="card ctr" id="c1"><div class="band">25 DEZ</div><div class="nm">Natal</div><div class="pills"><span class="pill">05h ✓</span><span class="pill">17h ✓</span></div></div>
+    <div class="card ctr" id="c2"><div class="band">01 JAN</div><div class="nm">Ano-Novo</div><div class="pills"><span class="pill">05h ✓</span><span class="pill">17h ✓</span></div></div>
+    <div class="card ctr" id="c3"><div class="band">FEV</div><div class="nm">Carnaval</div><div class="pills"><span class="pill">05h ✓</span><span class="pill">17h ✓</span></div></div>
+    <div id="counter" class="ctr"><div class="lbl">ordenhas por ano</div><div class="num" id="num">0</div></div>
+
+    <div id="gauge" class="ctr"><div id="gfill"></div></div>
+    <div id="glbl" class="ctr">leite acumulado</div>
+    <svg id="chart" class="ctr" viewBox="0 0 880 180">
+      <text x="0" y="-14" font-family="Inter" font-weight="700" font-size="22" letter-spacing="2.6" fill="#5B5B54">PRODUÇÃO DE LEITE</text>
+      <line x1="0" y1="178" x2="880" y2="178" stroke="#121212" stroke-opacity="0.25" stroke-width="2"/>
+      <line id="chMark" x1="470" y1="10" x2="470" y2="178" stroke="#C2410C" stroke-width="3" stroke-dasharray="8 8" opacity="0"/>
+      <path id="chLine" d="M0 46 L470 46" fill="none" stroke="#121212" stroke-width="7" stroke-linecap="round"/>
+      <path id="chDrop" d="M470 46 C560 46 610 150 880 158" fill="none" stroke="#C2410C" stroke-width="7" stroke-linecap="round"/>
+    </svg>
+    <div id="src" class="ctr">Fonte: Embrapa · A ordenha da vaca leiteira</div>
+
+    <div id="clockWrap" class="ctr">
+      <svg id="clock" viewBox="-260 -260 520 520">
+        <circle id="faceFill" r="228" fill="#B8FF4F" opacity="0"/>
+        <circle id="face" r="230" fill="none" stroke="currentColor" stroke-width="6"/>
+        <g id="ticks"></g>
+        <g id="nums" font-family="Inter" font-weight="700" font-size="24" fill="currentColor" text-anchor="middle" dominant-baseline="central">
+          <text x="0" y="-150">00</text><text x="150" y="0">06</text><text x="0" y="150">12</text><text x="-150" y="0">18</text>
+        </g>
+        <g id="m05" transform="translate(169 -45.3)"><circle r="15" fill="currentColor"/></g>
+        <g id="m17" transform="translate(-169 45.3)"><circle id="m17dot" r="15" fill="currentColor"/></g>
+        <g id="hand"><line x1="0" y1="26" x2="0" y2="-188" stroke="currentColor" stroke-width="9" stroke-linecap="round"/><circle r="14" fill="currentColor"/></g>
+        <g id="xmark" transform="translate(-169 45.3)" stroke="#C2410C" stroke-width="12" stroke-linecap="round"><line x1="-30" y1="-30" x2="30" y2="30"/><line x1="30" y1="-30" x2="-30" y2="30"/></g>
+        <g id="ck05" transform="translate(169 -45.3)"><path d="M-14 1 L-4 11 L15 -10" fill="none" stroke="#0A0A0A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <g id="ck17" transform="translate(-169 45.3)"><path d="M-14 1 L-4 11 L15 -10" fill="none" stroke="#0A0A0A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g>
+      </svg>
+    </div>
+
+    <svg id="bubble" class="ctr" viewBox="-220 -220 440 440">
+      <path id="bubPath" d="M-150 -170 H150 Q190 -170 190 -130 V70 Q190 110 150 110 H-40 L-130 180 L-110 110 H-150 Q-190 110 -190 70 V-130 Q-190 -170 -150 -170 Z" fill="none" stroke="#ECECE4" stroke-width="12" stroke-linejoin="round"/>
+      <g id="bubDots" fill="#ECECE4"><circle cx="-80" cy="-30" r="16"/><circle cx="0" cy="-30" r="16"/><circle cx="80" cy="-30" r="16"/></g>
+    </svg>
+    <div id="badge" class="ctr"><b>1</b></div>
+
+    <div id="mapClock" class="ctr">SÁBADO · 22:04 · FERIADO</div>
+    <div id="mapWrap" class="ctr" data-layout-allow-overlap>
+      <svg id="map" viewBox="0 0 960 600">
+        <path id="land" d="" fill="#171716" opacity="0"/>
+        <ellipse id="lagoa" cx="330" cy="190" rx="170" ry="36" fill="#0A0A0A" stroke="#ECECE4" stroke-opacity="0.35" stroke-width="2" opacity="0"/>
+        <path id="coast" d="" fill="none" stroke="#ECECE4" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+        <g id="dots"></g>
+        <g id="places" data-layout-allow-overlap font-family="Inter" font-weight="700" font-size="24" letter-spacing="2" fill="#8E8E86" text-anchor="middle">
+          <text x="600" y="530">ARRAIAL</text><text x="790" y="310">CABO FRIO</text><text x="905" y="190">BÚZIOS</text><text x="330" y="196" font-size="18" fill="#9A9A92">LAGOA DE ARARUAMA</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="plbl ctr" id="pl1" style="left:200px">Corretor 1</div>
+    <div class="plbl ctr" id="pl2" style="left:540px">Corretor 2</div>
+    <div class="plbl ctr" id="pl3" style="left:880px">Corretor 3</div>
+    <div class="phone ctr" id="p1"><div class="ph-top"><span class="av"></span><div><div class="ph-name">Cliente · portal</div></div><span class="ph-time">22:04</span></div>
+      <div class="msgs"><div class="msg in" id="p1m">Oi! A casa no Peró ainda está disponível?<span class="t">22:04</span></div></div>
+      <div class="ph-status" id="p1s">sem resposta</div></div>
+    <div class="phone ctr" id="p3"><div class="ph-top"><span class="av"></span><div><div class="ph-name">Cliente · portal</div></div><span class="ph-time">22:04</span></div>
+      <div class="msgs"><div class="msg in" id="p3m">Oi! A casa no Peró ainda está disponível?<span class="t">22:04</span></div></div>
+      <div class="ph-status" id="p3s">sem resposta</div></div>
+    <div class="phone ctr" id="p2"><div class="ph-top"><span class="av"></span><div><div class="ph-name">Cliente · portal</div><div class="ph-sub">online</div></div><span class="ph-time">22:04</span></div>
+      <div class="msgs">
+        <div class="msg in" id="p2m" data-layout-allow-overlap>Oi! A casa no Peró ainda está disponível?<span class="t">22:04</span></div>
+        <div class="typing" id="p2typ"><i></i><i></i><i></i></div>
+        <div class="msg out" id="p2r">Está sim! Quer visitar amanhã às 10h?<span class="t">22:04</span></div>
+      </div></div>
+    <div id="watch" class="ctr">00:00</div>
+    <div class="visit ctr" id="visit1">✓ Visita marcada · dom 10h</div>
+
+    <div id="chipResp" class="ctr">respondido em <b id="resp">00:00</b></div>
+    <div class="visit ctr" id="visit2">✓ Visita marcada · dom 10h</div>
+
+    <div id="endSym" class="ctr"><img src="assets/simbolo-lima.png" alt="" /><div id="endWord">Kalli</div><div id="endTag">Responde no feriado.</div></div>
+  </div></div>
+
+  <div id="typeCam"><div id="type"></div></div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="39.84" data-volume="1"></audio>
+  <audio id="a-sino1" src="assets/sfx-sino.mp3" data-start="0" data-duration="1.6" data-volume="0.45"></audio>
+  <audio id="a-folhas" src="assets/sfx-folhas.mp3" data-start="3.86" data-duration="0.9" data-volume="0.5"></audio>
+  <audio id="a-tk1" src="assets/sfx-tick.mp3" data-start="4.88" data-duration="0.25" data-volume="0.35"></audio>
+  <audio id="a-tk2" src="assets/sfx-tick.mp3" data-start="5.92" data-duration="0.25" data-volume="0.35"></audio>
+  <audio id="a-tk3" src="assets/sfx-tick.mp3" data-start="9.44" data-duration="0.25" data-volume="0.6"></audio>
+  <audio id="a-whoosh" src="assets/sfx-whoosh.mp3" data-start="18.18" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="19.88" data-duration="0.5" data-volume="0.9"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="24.88" data-duration="0.5" data-volume="0.9"></audio>
+  <audio id="a-tk4" src="assets/sfx-tick.mp3" data-start="28.4" data-duration="0.25" data-volume="0.35"></audio>
+  <audio id="a-tk5" src="assets/sfx-tick.mp3" data-start="28.92" data-duration="0.25" data-volume="0.35"></audio>
+  <audio id="a-n3" src="assets/sfx-notif.mp3" data-start="30.84" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-n4" src="assets/sfx-notif.mp3" data-start="31.2" data-duration="0.5" data-volume="0.9"></audio>
+  <audio id="a-tk6" src="assets/sfx-tick.mp3" data-start="35.4" data-duration="0.25" data-volume="0.35"></audio>
+  <audio id="a-n5" src="assets/sfx-notif.mp3" data-start="37.36" data-duration="0.5" data-volume="0.9"></audio>
+  <audio id="a-sino2" src="assets/sfx-sino.mp3" data-start="39.9" data-duration="1.7" data-volume="0.45"></audio>
+</div>
+<script>
+(function () {
+  // ---------- utilidades ----------
+  let seed = 20261005;
+  const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  const $ = (s) => document.querySelector(s);
+  const NS = "http://www.w3.org/2000/svg";
+  const tl = gsap.timeline({ paused: true });
+  const T = (target, vars, at) => tl.to(target, vars, at);
+  const show = (target, at, vars) => tl.to(target, Object.assign({ opacity: 1, duration: 0.5, ease: "power2.out" }, vars || {}), at);
+  const hide = (target, at, vars) => tl.to(target, Object.assign({ opacity: 0, duration: 0.35, ease: "power2.in" }, vars || {}), at);
+
+  gsap.set(".ctr", { xPercent: -50, yPercent: -50 });
+
+  // ---------- relógio de 24 h ----------
+  const ticks = $("#ticks");
+  for (let h = 0; h < 24; h++) {
+    const a = (h / 24) * Math.PI * 2, major = h % 6 === 0;
+    const r1 = major ? 192 : 204, r2 = 222;
+    const l = document.createElementNS(NS, "line");
+    l.setAttribute("x1", (Math.sin(a) * r1).toFixed(1)); l.setAttribute("y1", (-Math.cos(a) * r1).toFixed(1));
+    l.setAttribute("x2", (Math.sin(a) * r2).toFixed(1)); l.setAttribute("y2", (-Math.cos(a) * r2).toFixed(1));
+    l.setAttribute("stroke", "currentColor"); l.setAttribute("stroke-width", major ? 7 : 4); l.setAttribute("stroke-linecap", "round");
+    ticks.appendChild(l);
+  }
+  const face = $("#face"); const faceLen = 2 * Math.PI * 230;
+  gsap.set(face, { attr: { "stroke-dasharray": faceLen, "stroke-dashoffset": faceLen } });
+  gsap.set("#hand", { rotation: -60, svgOrigin: "0 0" });
+  gsap.set(["#m05", "#m17"], { opacity: 0.25 });
+  gsap.set(["#xmark", "#ck05", "#ck17"], { opacity: 0 });
+  gsap.set("#xmark", { scale: 2, svgOrigin: "-169 45.3" });
+  gsap.set("#ticks line, #nums", { opacity: 0 });
+
+  // ---------- mapa estilizado da Região dos Lagos ----------
+  const coast = [[0,250],[150,262],[300,272],[450,282],[560,302],[610,342],[630,420],[645,470],[662,432],[672,352],[690,292],[720,262],[770,250],[820,214],[850,150],[880,120],[905,136],[930,96],[960,80]];
+  const cd = "M" + coast.map(p => p.join(" ")).join(" L");
+  $("#coast").setAttribute("d", cd);
+  $("#land").setAttribute("d", cd + " L960 0 L0 0 Z");
+  const coastLen = $("#coast").getTotalLength();
+  gsap.set("#coast", { attr: { "stroke-dasharray": coastLen, "stroke-dashoffset": coastLen } });
+  const coastY = (x) => { for (let i = 0; i < coast.length - 1; i++) { const [x1,y1] = coast[i], [x2,y2] = coast[i+1]; if (x >= x1 && x <= x2) return y1 + (y2 - y1) * (x - x1) / (x2 - x1); } return 250; };
+  const dotsG = $("#dots"); const dots = [];
+  for (let i = 0; i < 58; i++) {
+    const x = 30 + rnd() * 920; const y = coastY(x) - 14 - rnd() * (x > 600 ? 70 : 120);
+    if (x > 150 && x < 510 && y > 145 && y < 235) { i--; continue; }
+    const c = document.createElementNS(NS, "circle");
+    c.setAttribute("cx", x.toFixed(1)); c.setAttribute("cy", y.toFixed(1)); c.setAttribute("r", (5 + rnd() * 4).toFixed(1));
+    c.setAttribute("fill", "#B8FF4F"); c.setAttribute("opacity", "0");
+    dotsG.appendChild(c); dots.push(c);
+  }
+
+  // ---------- gráfico ----------
+  ["#chLine", "#chDrop"].forEach(s => { const p = $(s), L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } }); });
+  const bub = $("#bubPath"), bubLen = bub.getTotalLength();
+  gsap.set(bub, { attr: { "stroke-dasharray": bubLen, "stroke-dashoffset": bubLen } });
+  gsap.set("#bubDots circle", { scale: 0, transformOrigin: "50% 50%" });
+
+  // ---------- letra cinética (tempos de cada palavra, ElevenLabs Scribe) ----------
+  const LINES = [
+    { a: 0.0, b: 3.72, rows: [["sm", [["Uma",.069],["vaca",.28],["leiteira",.56],["é",1.2],["ordenhada",1.44]]], ["big", [["duas",2.0],["vezes",2.4],["por",2.72],["dia.",2.88]]]] },
+    { a: 3.9, b: 7.05, rows: [["sm", [["nem",3.96],["no",4.3]]], ["big", [["feriado.",4.88,"or"]]]] },
+    { a: 7.15, b: 8.62, top: 210, rows: [["huge", [["todo",7.2],["dia.",7.52]]]] },
+    { a: 8.75, b: 11.5, rows: [["sm", [["Se",8.784],["uma",8.88],["ordenha",9.08],["falha,",9.44]]], ["big", [["o",10.04],["leite",10.16],["não",10.56],["espera.",10.72]]]] },
+    { a: 11.55, b: 14.2, rows: [["serif", [["Ele",11.6],["acumula…",11.76]]], ["big", [["a",12.76],["produção",12.92],["cai.",13.44,"or"]]]] },
+    { a: 14.28, b: 16.84, strike: 16.45, rows: [["sm", [["No",14.32],["campo,",14.6],["ninguém",15.08],["pergunta",15.44]]], ["big", [["se",15.88],["é",15.96],["feriado.",16.08]]]] },
+    { a: 16.86, b: 18.62, rows: [["sm", [["Pergunta",16.88]]], ["big", [["que",17.28],["horas",17.44],["são.",17.8]]]] },
+    { a: 19.3, b: 21.42, rows: [["sm", [["O",19.36],["seu",19.43],["WhatsApp",19.5]]], ["big", [["funciona",19.88]]], ["serif", [["igual.",20.24]]]] },
+    { a: 21.55, b: 24.35, rows: [["sm", [["No",21.584],["feriado,",21.68]]], ["big", [["a",22.36],["Região",22.48],["dos",22.88],["Lagos",23.04],["enche.",23.52,"lm"]]]] },
+    { a: 24.4, b: 26.72, rows: [["sm", [["O",24.44],["lead",24.56],["chega",24.88],["às",25.2]]], ["big", [["22h",25.44],["de",26.0],["sábado.",26.16]]]] },
+    { a: 26.76, b: 30.1, rows: [["sm", [["olha",26.8],["três",27.2],["anúncios",27.48]]], ["big", [["e",28.08],["manda",28.24],["para",28.92],["os",29.04],["três.",29.2]]]] },
+    { a: 30.15, b: 32.7, rows: [["sm", [["Quem",30.229],["responde",30.32],["primeiro",30.84]]], ["big", [["marca",31.2],["a",31.48],["visita.",31.6,"lm"]]]] },
+    { a: 33.2, b: 35.33, rows: [["sm", [["A",33.28],["Kalli",33.52,"lm"]]], ["big", [["não",33.92],["tira",34.24],["feriado.",34.48,"lm"]]]] },
+    { a: 35.37, b: 38.82, rows: [["sm", [["Responde",35.4],["em",35.76],["segundos",35.92],["e",36.64],["te",36.76],["entrega",36.88]]], ["big", [["a",37.24],["visita",37.36],["marcada.",37.68]]]] },
+    { a: 38.88, b: 99, top: 520, rows: [["serifxl", [["Você",38.92],["tira",39.12],["o",39.32],["seu.",39.44]]]] },
+  ];
+  const typeEl = $("#type");
+  LINES.forEach((L) => {
+    const ln = document.createElement("div"); ln.className = "ln"; if (L.top) ln.style.top = L.top + "px";
+    L.rows.forEach(([cls, words]) => {
+      const row = document.createElement("div"); row.className = "row " + cls;
+      words.forEach(([w, t, extra]) => {
+        const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w;
+        row.appendChild(s);
+        const isBig = cls !== "sm";
+        tl.fromTo(s, { opacity: 0, yPercent: isBig ? 55 : 40, scale: isBig ? 0.92 : 1, filter: "blur(10px)" },
+          { opacity: 1, yPercent: 0, scale: 1, filter: "blur(0px)", duration: isBig ? 0.55 : 0.4, ease: isBig ? "back.out(1.5)" : "expo.out", immediateRender: false }, Math.max(0, t - 0.04));
+      });
+      if (L.strike && cls === "big") { row.style.display = "inline-block"; const k = document.createElement("div"); k.className = "strike"; row.appendChild(k); tl.to(k, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, L.strike); }
+      ln.appendChild(row);
+    });
+    typeEl.appendChild(ln);
+    if (L.b < 90) tl.to(ln, { opacity: 0, y: -40, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, L.b - 0.3);
+  });
+
+  // ---------- câmera (nunca para) e camadas ----------
+  tl.fromTo("#stage", { scale: 1, rotationX: 4, rotationY: -2 }, { scale: 1.045, rotationX: 0, rotationY: 1, duration: 8.7, ease: "none" }, 0);
+  T("#stage", { scale: 1.085, rotationX: -2, rotationY: -1, duration: 9.0, ease: "none" }, 8.7);
+  T("#stage", { scale: 3.6, rotationX: 0, rotationY: 0, duration: 1.58, ease: "power3.in" }, 17.7);
+  tl.set("#stage", { scale: 1.14 }, 19.28);
+  T("#stage", { scale: 1, duration: 1.6, ease: "expo.out" }, 19.28);
+  T("#stage", { scale: 1.05, rotationY: 2, rotationX: 2, duration: 11.0, ease: "none" }, 21.5);
+  tl.set("#stage", { scale: 1, rotationX: 0, rotationY: 0 }, 32.9);
+  T("#stage", { scale: 1.06, rotationX: -2, duration: 8.7, ease: "none" }, 32.9);
+  tl.fromTo("#typeCam", { y: 14 }, { y: -14, duration: 41.6, ease: "none", immediateRender: false }, 0);
+
+  // ---------- ATO 1: a ordenha (0–8.7) ----------
+  show("#gh365", 3.9, { duration: 1.2 });
+  T("#cow", { clipPath: "inset(0 0% 0 0)", duration: 2.5, ease: "power2.inOut" }, 0.1);
+  gsap.set("#clockWrap", { x: 330, y: -280 });
+  tl.fromTo("#clockWrap", { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 0.42, duration: 0.8, ease: "back.out(1.6)", immediateRender: false }, 0.25);
+  T(face, { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut" }, 0.3);
+  T("#ticks line", { opacity: 1, duration: 0.2, stagger: 0.035 }, 0.45);
+  show("#nums", 1.0, { duration: 0.3 });
+  T("#hand", { rotation: 75, duration: 1.6, ease: "power2.inOut" }, 0.4);
+  T("#m05", { opacity: 1, duration: 0.2 }, 2.0);
+  tl.fromTo("#m05 circle", { attr: { r: 15 } }, { attr: { r: 24 }, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, 2.0);
+  T("#hand", { rotation: 255, duration: 0.45, ease: "power3.inOut" }, 2.0);
+  T("#m17", { opacity: 1, duration: 0.2 }, 2.42);
+  tl.fromTo("#m17dot", { attr: { r: 15 } }, { attr: { r: 24 }, duration: 0.2, yoyo: true, repeat: 1, immediateRender: false }, 2.42);
+  T("#hand", { rotation: 435, duration: 1.4, ease: "power1.inOut" }, 2.9);
+  // vaca vai para o fundo, calendário entra na frente
+  T("#cow", { opacity: 0.13, scale: 0.9, y: 40, filter: "blur(5px)", duration: 0.6, ease: "power2.out" }, 3.85);
+  [["#c1", 205, 3.96], ["#c2", 540, 4.88], ["#c3", 875, 5.92]].forEach(([s, x, t]) => {
+    gsap.set(s, { left: x });
+    tl.fromTo(s, { opacity: 0, y: 140, rotationX: -55, scale: 0.9 }, { opacity: 1, y: 0, rotationX: 0, scale: 1, duration: 0.7, ease: "back.out(1.3)", immediateRender: false }, t - 0.06);
+    T(s + " .pill", { opacity: 1, duration: 0.25, stagger: 0.12 }, t + 0.3);
+  });
+  show("#counter", 6.5);
+  const cnt = { v: 0 };
+  tl.to(cnt, { v: 730, duration: 1.6, ease: "power2.out", onUpdate: () => { $("#num").textContent = Math.round(cnt.v); } }, 6.55);
+  T("#hand", { rotation: 795, duration: 2.6, ease: "none" }, 4.3);
+
+  // ---------- ATO 2: a falha (8.7–19.28) ----------
+  T(["#c1", "#c2", "#c3"], { opacity: 0, y: -80, duration: 0.35, stagger: 0.05, ease: "power2.in" }, 8.55);
+  hide("#counter", 8.55); hide("#cow", 8.6); hide("#gh365", 8.6);
+  T("#clockWrap", { x: -90, y: 0, scale: 1, duration: 0.8, ease: "expo.inOut" }, 8.7);
+  T("#hand", { rotation: 975, duration: 0.7, ease: "power3.inOut" }, 8.75);
+  T("#xmark", { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2.4)" }, 9.42);
+  T("#m17dot", { fill: "#C2410C", duration: 0.2 }, 9.42);
+  show("#src", 9.6);
+  tl.fromTo("#gauge", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out", immediateRender: false }, 10.1);
+  show("#glbl", 10.3);
+  T("#gfill", { scaleY: 1, duration: 2.4, ease: "power1.in" }, 10.2);
+  show("#chart", 12.55, { duration: 0.3 });
+  T("#chLine", { attr: { "stroke-dashoffset": 0 }, duration: 0.35, ease: "power1.inOut" }, 12.6);
+  T("#chMark", { opacity: 1, duration: 0.2 }, 12.95);
+  T("#chDrop", { attr: { "stroke-dashoffset": 0 }, duration: 0.55, ease: "power2.in" }, 12.95);
+  hide(["#gauge", "#glbl", "#chart"], 14.2, { duration: 0.45 });
+  T("#clockWrap", { x: 0, duration: 0.8, ease: "expo.inOut" }, 14.2);
+  hide("#xmark", 16.86, { duration: 0.25 });
+  T("#m17dot", { fill: "currentColor", duration: 0.2 }, 16.86);
+  T("#hand", { rotation: 975 + 1080, duration: 2.4, ease: "power2.in" }, 16.88);
+  hide("#src", 17.6);
+  // a ponte: o mostrador enche de lima
+  T(["#ticks", "#nums", "#m05", "#m17", "#hand"], { opacity: 0, duration: 0.25 }, 18.95);
+  T("#faceFill", { opacity: 1, duration: 0.3, ease: "power2.in" }, 18.98);
+
+  // ---------- ATO 3: corte casado (19.28) ----------
+  tl.set("#bg", { backgroundColor: "#0A0A0A" }, 19.28);
+  tl.set("#root", { backgroundColor: "#0A0A0A" }, 19.28);
+  tl.set("#clockWrap", { opacity: 0 }, 19.28);
+  tl.set("#type", { color: "#ECECE4", "--sm": "#8E8E86" }, 19.28);
+  tl.set("#badge", { opacity: 1, scale: 1 }, 19.28);
+  T("#badge", { scale: 0.08, x: 168, y: -140, duration: 0.7, ease: "expo.inOut" }, 19.28);
+  T("#badge b", { opacity: 1, duration: 0.2 }, 19.86);
+  show("#bubble", 19.5, { duration: 0.2 });
+  T(bub, { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "power2.inOut" }, 19.5);
+  T("#bubDots circle", { scale: 1, duration: 0.3, stagger: 0.1, ease: "back.out(2)" }, 20.1);
+  show("#glow", 19.4, { duration: 1 });
+  hide(["#bubble", "#badge"], 21.35, { duration: 0.35, scale: 0.85 });
+
+  // ---------- ATO 4: o mundo do corretor (21.5–32.9) ----------
+  show("#gh2204", 21.6, { duration: 1 });
+  show("#mapWrap", 21.55, { duration: 0.2 });
+  T("#coast", { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut" }, 21.6);
+  T("#land", { opacity: 1, duration: 0.8 }, 22.2);
+  T("#lagoa", { opacity: 1, duration: 0.6 }, 22.3);
+  tl.fromTo("#places text", { opacity: 0 }, { opacity: 1, duration: 0.4, stagger: 0.12, immediateRender: false }, 22.4);
+  tl.fromTo("#mapClock", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out", immediateRender: false }, 21.7);
+  dots.forEach((d, i) => {
+    const t = i < 18 ? 22.5 + i * 0.055 : 23.5 + (i - 18) * 0.016;
+    tl.fromTo(d, { attr: { opacity: 0, r: 0 } }, { attr: { opacity: 1, r: d.getAttribute("r") }, duration: 0.3, ease: "back.out(3)", immediateRender: false }, t);
+  });
+  T("#mapWrap", { opacity: 0.22, scale: 0.86, filter: "blur(6px)", duration: 0.7, ease: "power2.out" }, 24.4);
+  hide("#mapClock", 24.4);
+  tl.fromTo("#p2", { opacity: 0, rotationY: -38, z: -500, y: 60 }, { opacity: 1, rotationY: -10, z: 0, y: 0, duration: 0.9, ease: "expo.out", immediateRender: false }, 24.45);
+  tl.fromTo("#p2m", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.7)", immediateRender: false }, 24.86);
+  T("#p2", { rotationY: 0, scale: 0.54, y: -10, duration: 0.8, ease: "expo.inOut" }, 26.75);
+  gsap.set("#p1", { left: 200, scale: 0.54, top: 1080 }); gsap.set("#p3", { left: 880, scale: 0.54, top: 1080 });
+  tl.fromTo("#p1", { opacity: 0, x: -320 }, { opacity: 1, x: 0, duration: 0.7, ease: "expo.out", immediateRender: false }, 27.05);
+  tl.fromTo("#p3", { opacity: 0, x: 320 }, { opacity: 1, x: 0, duration: 0.7, ease: "expo.out", immediateRender: false }, 27.15);
+  T(["#pl1", "#pl2", "#pl3"], { opacity: 1, duration: 0.4, stagger: 0.08 }, 27.4);
+  tl.fromTo("#p1m", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.7)", immediateRender: false }, 28.38);
+  tl.fromTo("#p3m", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.7)", immediateRender: false }, 28.9);
+  T(["#p1s", "#p3s"], { opacity: 1, duration: 0.3 }, 30.25);
+  T(["#p1", "#p3"], { opacity: 0.38, duration: 0.5 }, 30.3);
+  T(["#pl1", "#pl3"], { opacity: 0.35, duration: 0.5 }, 30.3);
+  T("#pl2", { color: "#B8FF4F", duration: 0.3 }, 30.3);
+  show("#p2typ", 30.25, { duration: 0.15 });
+  T("#p2typ i", { y: -8, duration: 0.18, stagger: 0.09, yoyo: true, repeat: 3, ease: "sine.inOut" }, 30.27);
+  tl.set("#p2typ", { display: "none" }, 30.82);
+  tl.fromTo("#p2r", { opacity: 0, y: 30, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.7)", immediateRender: false }, 30.84);
+  show("#watch", 30.23, { duration: 0.2 });
+  const wt = { v: 0 };
+  tl.to(wt, { v: 42, duration: 0.6, ease: "none", onUpdate: () => { $("#watch").textContent = "00:" + String(Math.round(wt.v)).padStart(2, "0"); } }, 30.24);
+  tl.fromTo("#visit1", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(2)", immediateRender: false }, 31.2);
+  hide(["#p1", "#p2", "#p3", "#pl1", "#pl2", "#pl3", "#watch", "#visit1", "#mapWrap", "#gh2204"], 32.6, { duration: 0.4 });
+
+  // ---------- ATO 5: o pouso (33.2–41.6) ----------
+  tl.set("#clockWrap", { x: 0, y: 0, color: "#B8FF4F" }, 33.0);
+  tl.set("#faceFill", { opacity: 0 }, 33.0);
+  tl.set(["#ticks", "#nums", "#hand"], { opacity: 1 }, 33.0);
+  tl.set("#hand", { rotation: 0 }, 33.0);
+  tl.set(["#m05", "#m17"], { opacity: 1 }, 33.0);
+  tl.set("#m17dot", { fill: "currentColor" }, 33.0);
+  tl.fromTo("#clockWrap", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.7, ease: "expo.out", immediateRender: false }, 33.2);
+  T(["#ck05", "#ck17"], { opacity: 1, duration: 0.3, stagger: 0.15 }, 34.4);
+  T("#hand", { rotation: 720, duration: 5.7, ease: "none" }, 33.2);
+  tl.fromTo("#chipResp", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out", immediateRender: false }, 35.38);
+  const rt = { v: 0 };
+  tl.to(rt, { v: 4, duration: 0.6, ease: "none", onUpdate: () => { $("#resp").textContent = "00:0" + Math.round(rt.v); } }, 35.45);
+  tl.fromTo("#visit2", { opacity: 0, scale: 0.7, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.5, ease: "back.out(2)", immediateRender: false }, 37.34);
+  T(["#clockWrap", "#chipResp", "#visit2"], { opacity: 0, scale: 0.9, filter: "blur(8px)", duration: 0.45, ease: "power2.in" }, 38.7);
+  tl.fromTo("#endSym img", { opacity: 0, scale: 0.6, rotation: -45 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.9, ease: "back.out(1.4)", immediateRender: false }, 39.9);
+  tl.fromTo("#endWord", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out", immediateRender: false }, 40.25);
+  tl.fromTo("#endTag", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out", immediateRender: false }, 40.5);
+
+  // ---------- grão de filme (muda 12 vezes por segundo) ----------
+  for (let i = 0; i < 41.6 * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+
+  tl.set({}, {}, 41.6);
+  window.__timelines["main"] = tl;
+})();
+
+</script>
+</body></html>

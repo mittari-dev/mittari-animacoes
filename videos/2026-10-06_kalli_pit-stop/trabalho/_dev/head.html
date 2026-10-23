@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --cream:#E8E8E0; --ink:#121212; --mute:#5B5B54; --red:#D7261E; --lima:#B8FF4F; --off:#ECECE4; --dim:#8E8E86; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; font-family:Inter, sans-serif; }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; background:var(--cream); }
+#bg { position:absolute; inset:0; background:var(--cream); }
+#cam { position:absolute; inset:0; perspective:1800px; perspective-origin:540px 1000px; }
+#stage { position:absolute; inset:0; transform-origin:540px 1000px; transform-style:preserve-3d; }
+.ctr { position:absolute; }
+.ghost { position:absolute; left:0; right:0; text-align:center; font-family:Archivo; font-weight:900; letter-spacing:-0.05em; line-height:1; filter:blur(2px); opacity:0; }
+.ghost::before { content:attr(data-t); }
+#ghBox { top:820px; font-size:520px; color:rgba(18,18,18,0.05); }
+#ghHbr { top:640px; font-size:420px; color:rgba(236,236,228,0.045); }
+#glow { position:absolute; left:40px; top:500px; width:1000px; height:1000px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.13) 0%, rgba(184,255,79,0) 65%); opacity:0; }
+#box { left:540px; top:1090px; width:640px; height:1000px; border:4px dashed rgba(18,18,18,0.22); border-radius:18px; opacity:0; }
+#carWrap { left:540px; top:1090px; width:417px; height:860px; }
+#carWrap img { position:absolute; inset:0; width:100%; height:100%; }
+#carLima { opacity:0; }
+.ring { position:absolute; width:110px; height:160px; margin:-80px 0 0 -55px; border:6px solid var(--red); border-radius:50%; opacity:0; }
+.crew { position:absolute; width:30px; height:30px; margin:-15px 0 0 -15px; border-radius:50%; border:5px solid var(--red); background:var(--cream); opacity:0; }
+#chip { left:540px; top:600px; font:800 46px Inter; color:var(--ink); border:3px solid var(--ink); border-radius:50px; padding:10px 30px; white-space:nowrap; font-variant-numeric:tabular-nums; opacity:0; }
+#timer { left:540px; top:420px; font:900 300px Archivo; letter-spacing:-0.05em; color:var(--ink); line-height:1; font-variant-numeric:tabular-nums; opacity:0; white-space:nowrap; }
+#timer small { font-size:120px; letter-spacing:-0.02em; margin-left:10px; }
+#rec { left:540px; top:620px; font:600 30px Inter; color:var(--mute); letter-spacing:0.06em; white-space:nowrap; opacity:0; }
+#tower { left:540px; top:1080px; width:820px; }
+.plab { position:absolute; left:0; width:100px; height:120px; display:flex; align-items:center; font:900 60px Archivo; color:var(--red); opacity:0; }
+.gap { position:relative; }
+.gb { position:absolute; right:0; top:0; opacity:0; white-space:nowrap; }
+.trow { position:absolute; left:120px; right:0; height:120px; border-radius:20px; display:flex; align-items:center; gap:28px; padding:0 34px; font:800 46px Inter; opacity:0; }
+.trow .gap { margin-left:auto; font:700 38px Inter; font-variant-numeric:tabular-nums; }
+#tr1 { top:-130px; background:#121212; color:#ECECE4; }
+#tr2 { top:10px; background:#F6F6F0; border:3px solid #121212; color:#121212; }
+#chat { left:540px; top:1080px; width:860px; }
+.crow { position:absolute; left:0; right:0; height:150px; border-radius:26px; background:#161616; border:2px solid #2A2A28; display:flex; align-items:center; gap:24px; padding:0 30px; opacity:0; }
+.crow .av { width:80px; height:80px; border-radius:50%; background:#2B2B28; flex:none; }
+.crow .nm { font:700 36px Inter; color:var(--off); }
+.crow .ms { font:500 28px Inter; color:var(--dim); margin-top:6px; white-space:nowrap; }
+.crow .tm { margin-left:auto; font:800 34px Inter; color:var(--dim); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.crow.win { border-color:var(--lima); }
+.crow.win .tm { color:var(--lima); }
+#cr1 { top:-240px; } #cr2 { top:-75px; } #cr3 { top:90px; }
+#hbr { left:540px; top:1060px; width:860px; height:620px; opacity:0; }
+.bar { position:absolute; bottom:90px; width:250px; border-radius:18px 18px 6px 6px; transform-origin:50% 100%; transform:scaleY(0); }
+#b1 { left:110px; height:470px; background:var(--lima); }
+#b2 { left:500px; height:67px; background:#4A4A46; }
+.blbl { position:absolute; bottom:20px; width:250px; text-align:center; font:700 30px Inter; color:var(--dim); }
+.bval { position:absolute; width:250px; text-align:center; font:900 80px Archivo; color:var(--off); opacity:0; }
+#bv1 { left:110px; bottom:575px; color:var(--lima); } #bv2 { left:500px; bottom:170px; }
+#src { left:540px; top:1590px; font:500 24px Inter; color:var(--dim); white-space:nowrap; opacity:0; }
+#checks { left:540px; top:1180px; width:760px; }
+.ck { position:absolute; left:0; right:0; height:130px; border-radius:26px; border:2px solid #34342F; background:#141414; display:flex; align-items:center; gap:26px; padding:0 34px; font:700 44px Inter; color:var(--off); opacity:0; }
+.ck i { width:62px; height:62px; border-radius:50%; background:var(--lima); color:#0A0A0A; font:900 38px Inter; font-style:normal; display:flex; align-items:center; justify-content:center; flex:none; }
+.ck b { margin-left:auto; color:var(--lima); font-variant-numeric:tabular-nums; }
+#k1 { top:-150px; } #k2 { top:0px; } #k3 { top:150px; }
+#endSym { left:540px; top:1150px; text-align:center; }
+#endSym img { width:300px; display:block; margin:0 auto; opacity:0; }
+#endWord { font:900 120px Archivo; letter-spacing:-0.04em; color:var(--off); margin-top:40px; opacity:0; }
+#endTag { font:500 40px Inter; color:var(--dim); margin-top:6px; opacity:0; }
+#typeCam { position:absolute; inset:0; }
+#type { position:absolute; inset:0; color:var(--ink); --sm:#55554E; }
+.ln { position:absolute; left:60px; right:60px; top:250px; text-align:center; }
+.row { display:block; position:relative; }
+.sm { font:500 46px/1.25 Inter; color:var(--sm); margin-bottom:18px; }
+.big { font-family:Archivo; font-weight:900; font-size:122px; line-height:0.94; letter-spacing:-0.035em; text-transform:uppercase; }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:112px; line-height:1.02; letter-spacing:-0.01em; margin-bottom:14px; }
+.serifxl { font-family:"Instrument Serif"; font-style:italic; font-size:150px; line-height:1.12; letter-spacing:-0.015em; }
+.w { display:inline-block; margin:0 0.11em; opacity:0; }
+.rd { color:var(--red); } .lm { color:var(--lima); }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.2; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 52%, rgba(0,0,0,0.26) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="47" data-fps="60">
+  <div id="bg"></div>
+  <div id="cam"><div id="stage">
+    <div class="ghost" id="ghBox" data-t="1,80"></div>
+    <div class="ghost" id="ghHbr" data-t="7×"></div>
+    <div id="glow"></div>
+    <div id="box" class="ctr"></div>
+    <div id="carWrap" class="ctr" data-layout-allow-overlap>
+      <img id="carTinta" src="assets/carro-tinta.png" alt="" />
+      <img id="carLima" src="assets/carro-lima.png" alt="" />
+      <div class="ring" style="left:58px;top:208px"></div><div class="ring" style="left:359px;top:208px"></div>
+      <div class="ring" style="left:53px;top:704px"></div><div class="ring" style="left:363px;top:704px"></div>
+      <div id="crewG"></div>
+    </div>
+    <div id="chip" class="ctr">⏱ <span id="chipv">1,80</span> s</div>
+    <div id="tower" class="ctr" data-layout-allow-overflow data-layout-allow-overlap>
+      <div class="plab" id="pl1" style="top:-130px">P1</div><div class="plab" id="pl2" style="top:10px">P2</div>
+      <div class="trow" id="tr1"><span>SEU CARRO</span><span class="gap"><span id="g1a">líder</span><span id="g1b" class="gb">+0,6</span></span></div>
+      <div class="trow" id="tr2"><span>RIVAL</span><span class="gap"><span id="g2a">+0,4</span><span id="g2b" class="gb">líder</span></span></div>
+    </div>
+    <div id="chat" class="ctr" data-layout-allow-overflow>
+      <div class="crow" id="cr1"><span class="av"></span><div><div class="nm">Corretor A</div><div class="ms">"Tenho sim! Quer visitar amanhã?"</div></div><span class="tm">2 min</span></div>
+      <div class="crow" id="cr2"><span class="av"></span><div><div class="nm">Corretor B</div><div class="ms">"Oi, vi agora sua mensagem…"</div></div><span class="tm">3 h</span></div>
+      <div class="crow" id="cr3"><span class="av"></span><div><div class="nm">Você</div><div class="ms">sem resposta</div></div><span class="tm">amanhã</span></div>
+    </div>
+    <div id="hbr" class="ctr">
+      <div class="bar" id="b1"></div><div class="bar" id="b2"></div>
+      <div class="bval" id="bv1">7×</div><div class="bval" id="bv2">1×</div>
+      <div class="blbl" style="left:110px">na 1ª hora</div><div class="blbl" style="left:500px">1 hora depois</div>
+    </div>
+    <div id="src" class="ctr">Fonte: Harvard Business Review (2011) · 1,25 milhão de leads</div>
+    <div id="checks" class="ctr" data-layout-allow-overflow>
+      <div class="ck" id="k1"><i>✓</i>Respondeu<b id="kv">00:00</b></div>
+      <div class="ck" id="k2"><i>✓</i>Qualificou<b>perfil ✓</b></div>
+      <div class="ck" id="k3"><i>✓</i>Visita marcada<b>sáb 10h</b></div>
+    </div>
+    <div id="endSym" class="ctr"><img src="assets/simbolo-lima.png" alt="" /><div id="endWord">Kalli</div><div id="endTag">Responde em segundos.</div></div>
+  </div></div>
+  <div id="timer" class="ctr"><span id="tv">0,00</span><small>s</small></div>
+  <div id="rec" class="ctr">McLaren · GP do Catar, 2023 · recorde mundial</div>
+  <div id="typeCam"><div id="type"></div></div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="44.48" data-volume="1"></audio>
+  <audio id="a-motor1" src="assets/sfx-motor.mp3" data-start="0" data-duration="1.9" data-volume="0.55"></audio>
+  <audio id="a-pist1" src="assets/sfx-pistola.mp3" data-start="4.95" data-duration="0.7" data-volume="0.7"></audio>
+  <audio id="a-pist2" src="assets/sfx-pistola.mp3" data-start="5.75" data-duration="0.7" data-volume="0.6"></audio>
+  <audio id="a-crono1" src="assets/sfx-cronometro.mp3" data-start="6.7" data-duration="0.4" data-volume="0.8"></audio>
+  <audio id="a-tk1" src="assets/sfx-tick.mp3" data-start="9.5" data-duration="0.25" data-volume="0.35"></audio>
+  <audio id="a-crono2" src="assets/sfx-cronometro.mp3" data-start="13.4" data-duration="0.4" data-volume="0.7"></audio>
+  <audio id="a-tk2" src="assets/sfx-tick.mp3" data-start="15.0" data-duration="0.25" data-volume="0.5"></audio>
+  <audio id="a-whoosh" src="assets/sfx-whoosh.mp3" data-start="16.82" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="18.1" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-tk3" src="assets/sfx-tick.mp3" data-start="27.2" data-duration="0.25" data-volume="0.45"></audio>
+  <audio id="a-tk4" src="assets/sfx-tick.mp3" data-start="34.48" data-duration="0.25" data-volume="0.45"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="38.8" data-duration="0.5" data-volume="0.9"></audio>
+  <audio id="a-n3" src="assets/sfx-notif.mp3" data-start="40.16" data-duration="0.5" data-volume="0.8"></audio>
+  <audio id="a-n4" src="assets/sfx-notif.mp3" data-start="41.12" data-duration="0.5" data-volume="0.9"></audio>
+  <audio id="a-motor2" src="assets/sfx-motor.mp3" data-start="43.0" data-duration="1.9" data-volume="0.6"></audio>
+</div>
+<script>
+/*SCENE*/
+</script>
+</body></html>

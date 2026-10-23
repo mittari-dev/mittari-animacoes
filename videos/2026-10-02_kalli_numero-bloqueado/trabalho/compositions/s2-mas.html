@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          background: #0f1718;
+          overflow: hidden;
+          font-family: Montserrat, sans-serif;
+          color: #f4f1e8;
+        }
+        #s2-sources {
+          position: absolute;
+          left: 72px;
+          right: 40px;
+          top: 300px;
+        }
+        .s2-line {
+          display: flex;
+          align-items: center;
+          gap: 28px;
+          height: 150px;
+        }
+        .s2-icon {
+          flex: 0 0 88px;
+          height: 88px;
+          border-radius: 28px;
+          border: 4px solid #4d6563;
+          background: #0f1718;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+        }
+        .s2-icon svg {
+          width: 60px;
+          height: 60px;
+        }
+        .s2-word {
+          font-size: 66px;
+          font-weight: 800;
+          letter-spacing: -0.025em;
+          line-height: 1;
+          white-space: nowrap;
+          opacity: 0;
+        }
+        #s2-wires {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 1080px;
+          height: 1920px;
+        }
+        #s2-chip {
+          position: absolute;
+          left: 96px;
+          top: 940px;
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          padding: 26px 40px;
+          border-radius: 999px;
+          background: #1a2426;
+          border: 3px solid #3a4a4b;
+          font-size: 44px;
+          font-weight: 700;
+          letter-spacing: 0.02em;
+          color: #8f9a97;
+          opacity: 0;
+        }
+        #s2-chip .dot {
+          width: 26px;
+          height: 26px;
+          border-radius: 50%;
+          background: #e5484d;
+        }
+        #s2-chip .status {
+          font-size: 28px;
+          font-weight: 700;
+          color: #f0a3a6;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+        #s2-final {
+          position: absolute;
+          left: 96px;
+          right: 96px;
+          top: 1150px;
+          font-size: 70px;
+          font-weight: 800;
+          line-height: 1.12;
+          letter-spacing: -0.02em;
+        }
+        #s2-final .w {
+          display: inline-block;
+          margin-right: 0.22em;
+          opacity: 0;
+        }
+        #s2-final .dim {
+          color: #f4f1e8;
+        }
+        #s2-rule {
+          position: absolute;
+          left: 96px;
+          top: 1100px;
+          width: 220px;
+          height: 6px;
+          background: #e5484d;
+          transform-origin: 0 50%;
+        }
+      </style>
+
+      <div data-hf-id="hf-jido" id="root" data-composition-id="s2-mas" data-width="1080" data-height="1920">
+        <svg data-hf-id="hf-necl" id="s2-wires" viewBox="0 0 1080 1920" aria-hidden="true">
+          <path data-hf-id="hf-q7kd" id="s2-w1" d="M116 420 C 40 600, 40 820, 140 1000" fill="none" stroke="#4d6563" stroke-width="4" stroke-dasharray="14 14" />
+          <path data-hf-id="hf-ha8j" id="s2-w2" d="M116 570 C 70 700, 70 860, 140 1000" fill="none" stroke="#4d6563" stroke-width="4" stroke-dasharray="14 14" />
+          <path data-hf-id="hf-0xx3" id="s2-w3" d="M116 720 C 95 820, 95 920, 140 1000" fill="none" stroke="#4d6563" stroke-width="4" stroke-dasharray="14 14" />
+        </svg>
+
+        <div data-hf-id="hf-ua2r" id="s2-sources">
+          <div data-hf-id="hf-q8gi" class="s2-line">
+            <div data-hf-id="hf-8s3t" class="s2-icon" id="s2-i1">
+              <svg data-hf-id="hf-piht" viewBox="0 0 60 60"><path data-hf-id="hf-wfbn" d="M8 24 L38 12 L38 48 L8 36 Z M38 20 L50 16 M38 30 L52 30 M38 40 L50 44" fill="none" stroke="#f4f1e8" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" /></svg>
+            </div>
+            <div data-hf-id="hf-tf8o" class="s2-word" id="s2-l1">O número do anúncio.</div>
+          </div>
+          <div data-hf-id="hf-qw0m" class="s2-line">
+            <div data-hf-id="hf-cq7u" class="s2-icon" id="s2-i2">
+              <svg data-hf-id="hf-ofsl" viewBox="0 0 60 60"><rect data-hf-id="hf-uaz0" x="6" y="10" width="48" height="40" rx="6" fill="none" stroke="#f4f1e8" stroke-width="4" /><line data-hf-id="hf-fp0x" x1="6" y1="22" x2="54" y2="22" stroke="#f4f1e8" stroke-width="4" /><circle data-hf-id="hf-ijzq" cx="13" cy="16" r="2" fill="#f4f1e8" /><circle data-hf-id="hf-gjw0" cx="20" cy="16" r="2" fill="#f4f1e8" /></svg>
+            </div>
+            <div data-hf-id="hf-znb5" class="s2-word" id="s2-l2">Do portal.</div>
+          </div>
+          <div data-hf-id="hf-rabn" class="s2-line">
+            <div data-hf-id="hf-gobv" class="s2-icon" id="s2-i3">
+              <svg data-hf-id="hf-pmpo" viewBox="0 0 60 60"><rect data-hf-id="hf-ic0f" x="8" y="8" width="44" height="28" rx="4" fill="none" stroke="#f4f1e8" stroke-width="4" /><line data-hf-id="hf-p0sw" x1="30" y1="36" x2="30" y2="54" stroke="#f4f1e8" stroke-width="4" stroke-linecap="round" /><line data-hf-id="hf-u6fh" x1="16" y1="22" x2="44" y2="22" stroke="#f4f1e8" stroke-width="4" stroke-linecap="round" /></svg>
+            </div>
+            <div data-hf-id="hf-uylp" class="s2-word" id="s2-l3">Da placa.</div>
+          </div>
+        </div>
+
+        <div data-hf-id="hf-r91h" id="s2-chip"><span data-hf-id="hf-9gry" class="dot"></span><span data-hf-id="hf-vipc">(11) 9 ••••-••••</span><span data-hf-id="hf-weh9" class="status">sem resposta</span></div>
+
+        <div data-hf-id="hf-dx9d" id="s2-rule"></div>
+        <div data-hf-id="hf-0hwt" id="s2-final">
+          <span data-hf-id="hf-ihni" class="w">Tudo</span><span data-hf-id="hf-4y62" class="w">apontando</span><span data-hf-id="hf-0rpa" class="w">para</span><span data-hf-id="hf-osa6" class="w">um</span><span data-hf-id="hf-10td" class="w">número</span><span data-hf-id="hf-4sct" class="w">que</span><span data-hf-id="hf-kmus" class="w">não</span><span data-hf-id="hf-zazs" class="w">responde</span><span data-hf-id="hf-owhc" class="w">mais.</span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          const F = 1 / 30;
+          // 0–1.0: tela escura, silêncio (nada acontece de propósito)
+
+          // três fontes — waterfall, ícone + frase
+          [["#s2-i1", "#s2-l1", 1.0], ["#s2-i2", "#s2-l2", 1.55], ["#s2-i3", "#s2-l3", 2.1]].forEach(([ic, w, t]) => {
+            tl.fromTo(ic, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "power3.out" }, t);
+            tl.set(w, { opacity: 1, y: 70 }, t + 2 * F);
+            tl.to(w, { y: 0, duration: 0.2, ease: "power4.out" }, t + 2 * F);
+          });
+
+          // fios convergindo para o número (svg-path-draw)
+          ["#s2-w1", "#s2-w2", "#s2-w3"].forEach((id, i) => {
+            const len = document.querySelector(id).getTotalLength();
+            tl.fromTo(id, { strokeDasharray: `${len} ${len}`, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 2.55 + i * 0.06);
+          });
+
+          // chip do número mudo
+          tl.fromTo("#s2-chip", { scale: 0.7, opacity: 0, transformOrigin: "0% 50%" }, { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" }, 2.75);
+          tl.fromTo("#s2-chip .dot", { scale: 1 }, { scale: 1.35, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 3 }, 3.15);
+
+          // frase final
+          tl.fromTo("#s2-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.out" }, 2.6);
+          let at = 2.7;
+          gsap.utils.toArray("#s2-final .w").forEach((el, i) => {
+            const heavy = i === 4 || i === 7 || i === 8;
+            const dur = heavy ? 0.17 : 0.13;
+            tl.set(el, { opacity: 1, y: heavy ? 64 : 44 }, at);
+            tl.to(el, { y: 0, duration: dur, ease: "power4.out" }, at);
+            at += dur - F;
+          });
+
+          window.__timelines["s2-mas"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<script type="importmap">
+{ "imports": { "three": "./assets/vendor/three.module.js" } }
+</script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --off:#ECECE4; --dim:#8E8E86; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:1080px; height:1920px; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 30%, #121614 0%, #0a0a0a 55%, #060606 100%); }
+#glow { position:absolute; left:90px; top:120px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.08) 0%, rgba(184,255,79,0) 62%); }
+#gl { position:absolute; inset:0; width:1080px; height:1920px; display:block; }
+#typeCam { position:absolute; inset:0; }
+#type { position:absolute; inset:0; color:var(--off); }
+.ln { position:absolute; left:70px; width:940px; top:1180px; text-align:left; }
+.row { display:block; position:relative; }
+.sm { font:500 38px/1.3 Inter; color:#A4A49C; margin-bottom:12px; }
+.big { font-family:Archivo; font-weight:900; font-size:84px; line-height:0.96; letter-spacing:-0.035em; text-transform:uppercase; }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:74px; line-height:1.06; letter-spacing:-0.01em; margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:#FF5A5E; }
+.cr { display:flex; align-items:baseline; gap:22px; margin-bottom:10px; opacity:0; }
+.cr i { width:34px; height:34px; border-radius:50%; flex:none; transform:translateY(2px); }
+.cr b { font:900 66px Archivo; letter-spacing:-0.03em; text-transform:uppercase; }
+.cr span { font:500 38px Inter; color:#B4B4AC; }
+#src { position:absolute; left:70px; top:1650px; font:600 26px Inter; color:#8E8E86; opacity:0; }
+#cta { position:absolute; left:70px; top:1420px; opacity:0; }
+.btn { display:inline-flex; align-items:center; gap:18px; background:var(--lima); color:#0A0A0A; font:800 42px Inter; border-radius:60px; padding:24px 44px; }
+.ctasub { margin-top:20px; font:500 30px Inter; color:#8E8E86; }
+#word { position:absolute; left:0; width:1080px; top:880px; text-align:center; font:900 92px Archivo; letter-spacing:-0.04em; color:var(--off); opacity:0; }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.045; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.45) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="49.6" data-fps="60">
+  <div id="bg"></div>
+  <div id="glow"></div>
+  <canvas id="gl" width="1080" height="1920" data-layout-allow-overflow></canvas>
+  <div id="typeCam" data-layout-allow-overlap><div id="type"></div></div>
+  <div id="src">Fonte: Grupo Brasileiro de Classificação de Risco</div>
+  <div id="cta"><div class="btn">Teste grátis: link na bio</div><div class="ctasub">7 dias · no seu número</div></div>
+  <div id="word">Kalli</div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="47.6" data-volume="1"></audio>
+  <audio id="a-m0" src="assets/sfx-monitor.mp3" data-start="0.05" data-duration="0.7" data-volume="0.45"></audio>
+  <audio id="a-m1" src="assets/sfx-monitor.mp3" data-start="1.25" data-duration="0.7" data-volume="0.35"></audio>
+  <audio id="a-m2" src="assets/sfx-monitor.mp3" data-start="2.45" data-duration="0.7" data-volume="0.35"></audio>
+  <audio id="a-wh0" src="assets/sfx-whoosh.mp3" data-start="6.0" data-duration="1.5" data-volume="0.4"></audio>
+  <audio id="a-s0" src="assets/sfx-snap.mp3" data-start="8.5" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a-s1" src="assets/sfx-snap.mp3" data-start="8.78" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-s2" src="assets/sfx-snap.mp3" data-start="9.06" data-duration="0.5" data-volume="0.45"></audio>
+  <audio id="a-c1" src="assets/sfx-pop.mp3" data-start="9.68" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-c2" src="assets/sfx-pop.mp3" data-start="12.08" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-c3" src="assets/sfx-pop.mp3" data-start="14.70" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-c4" src="assets/sfx-pop.mp3" data-start="17.20" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-wh1" src="assets/sfx-whoosh.mp3" data-start="24.1" data-duration="2" data-volume="0.6"></audio>
+  <audio id="a-t1" src="assets/sfx-tick.mp3" data-start="32.14" data-duration="1.1" data-volume="0.45"></audio>
+  <audio id="a-s3" src="assets/sfx-snap.mp3" data-start="34.0" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-wh2" src="assets/sfx-whoosh.mp3" data-start="37.55" data-duration="1.5" data-volume="0.45"></audio>
+  <audio id="a-vib" src="assets/sfx-vibra.mp3" data-start="40.08" data-duration="1" data-volume="0.7"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="40.1" data-duration="0.6" data-volume="0.8"></audio>
+  <audio id="a-wh3" src="assets/sfx-whoosh.mp3" data-start="44.2" data-duration="2" data-volume="0.55"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="46.0" data-duration="0.6" data-volume="0.7"></audio>
+</div>
+<script>
+/*CLASSIC*/
+</script>
+<script type="module">
+/*MODULE*/
+</script>
+</body></html>
