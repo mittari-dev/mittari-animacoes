@@ -39,6 +39,7 @@ criado: 2026-10-05
 | `02 Animações/` | Uma ficha por vídeo pronto | `A10 — Título.md` |
 | `03 Peças Estáticas/` | Perfil, capas, destaques, carrosséis | `Projeto — Peça.md` |
 | `04 Publicações/` | O registro de onde cada peça foi parar e o que rendeu | Uma nota só |
+| `05 Ideias/` | Levas de roteiros prontos para produzir no PC remoto (desde 23/10). Quando vira vídeo, a nota passa para `01 Roteiros/` | `Leva 01 — ….md` (índice) + uma nota por roteiro |
 
 **Os bancos de ideias ficam nos playbooks**, não aqui: histórias (H) no de Animações, pautas (E) no Explicativo e universos (U) no de Ponte. Quando uma ideia vira roteiro, ela ganha nota em `01 Roteiros/`, e o banco aponta para ela.
 
