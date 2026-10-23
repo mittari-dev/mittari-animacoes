@@ -1,0 +1,1 @@
+Cliente que chama às 23h e só recebe resposta de manhã já falou com outros corretores. O ImobiFlow responde no WhatsApp do corretor no mesmo minuto, faz as perguntas de filtro e marca a visita. Para corretores da Região dos Lagos: mittari.com.br

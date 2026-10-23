@@ -1,0 +1,10 @@
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Dependências e ferramentas locais
+node_modules/
+.claude/
+.obsidian/

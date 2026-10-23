@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=block" rel="stylesheet">
+<style>
+  :root{--ow:#E8E8E0;--ink:#101010;--or:#C2410C;--ord:#9A340A;--orl:#E9A585;--grey:#6B6B63;--ink2:#1C1C1A}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--ow)}
+  body{font-family:Archivo,system-ui,sans-serif;color:var(--ink);position:relative}
+  .abs{position:absolute}
+  .mono{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.16em;font-weight:500}
+  /* left copy column */
+  .kicker{left:140px;top:250px;font-size:22px;color:var(--or)}
+  .head{left:140px;width:1060px;font-weight:800;font-size:88px;line-height:1.02;letter-spacing:-.03em}
+  .sub{left:140px;width:820px;font-size:38px;line-height:1.25;color:var(--grey);font-weight:500;letter-spacing:-.01em}
+  /* clock */
+  .clock{left:140px;top:660px;font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:150px;letter-spacing:-.02em;color:var(--ink)}
+  .clock .c{color:var(--or)}
+  /* phone */
+  .phone{width:470px;height:920px;left:1250px;top:80px;border-radius:64px;background:var(--ink);padding:16px;box-shadow:0 40px 80px rgba(16,16,16,.18)}
+  .screen{width:100%;height:100%;border-radius:50px;background:#F3F2EC;overflow:hidden;position:relative}
+  .bar{height:118px;background:var(--ink2);color:var(--ow);display:flex;align-items:flex-end;padding:0 26px 20px;gap:16px}
+  .av{width:54px;height:54px;border-radius:50%;background:var(--orl);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px}
+  .nm{font-weight:700;font-size:26px;line-height:1.1}
+  .st{font-size:16px;opacity:.7;font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}
+  .chat{position:absolute;left:0;right:0;top:118px;bottom:0;padding:26px 22px}
+  .msg{position:absolute;max-width:330px;padding:16px 20px 30px;border-radius:22px;font-size:24px;line-height:1.3;font-weight:500;transform-origin:left bottom}
+  .in{left:22px;background:#fff;border-bottom-left-radius:6px}
+  .out{right:22px;background:#F6D9C9;border-bottom-right-radius:6px;transform-origin:right bottom}
+  .tm{position:absolute;right:16px;bottom:8px;font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--grey)}
+  .tag{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;color:var(--or);font-weight:600;display:block;margin-bottom:6px}
+  .typing{position:absolute;right:22px;background:#F6D9C9;border-radius:22px;border-bottom-right-radius:6px;padding:18px 22px;display:flex;gap:8px}
+  .typing i{width:11px;height:11px;border-radius:50%;background:var(--ord);display:block}
+  .chip{left:50%;transform:translateX(-50%);background:var(--or);color:var(--ow);padding:14px 26px;border-radius:40px;font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:20px;letter-spacing:.1em;white-space:nowrap}
+  /* reveal */
+  .orange{left:0;top:0;width:1920px;height:1080px;background:var(--or)}
+  .rev{left:0;top:0;width:1920px;height:1080px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ow)}
+  .rev h1{font-weight:900;font-size:220px;letter-spacing:-.045em;line-height:1}
+  .rev p{font-size:46px;font-weight:600;margin-top:34px;letter-spacing:-.01em}
+  /* card */
+  .card{left:1130px;top:250px;width:640px;background:#fff;border-radius:28px;padding:44px 48px;box-shadow:0 40px 80px rgba(16,16,16,.14)}
+  .card .row{display:flex;justify-content:space-between;align-items:baseline;padding:22px 0;border-top:2px solid #E8E8E0;font-size:30px}
+  .card .row b{font-weight:700}
+  .card .lb{font-family:"IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;font-size:18px;color:var(--grey)}
+  .btn{margin-top:30px;background:var(--ink);color:var(--ow);border-radius:16px;padding:22px;text-align:center;font-weight:700;font-size:28px}
+  /* outro */
+  .wm{font-weight:800;font-size:64px;letter-spacing:.32em;margin-left:.32em}
+</style>
+</head>
+<body>
+<!-- Scene 1-2 copy -->
+<div class="abs mono kicker" id="k1">IMOBIFLOW · PARA CORRETORES</div>
+<div class="abs head" id="h1" style="top:300px">Um cliente chamou<br>às 23:04.</div>
+<div class="abs head" id="h2" style="top:300px">O corretor respondeu<br>às 08:12.</div>
+<div class="abs sub" id="s2" style="top:510px">Ela já tinha falado com outros três.</div>
+<div class="abs clock" id="clock"><span id="hh">23</span><span class="c" id="colon">:</span><span id="mm">03</span></div>
+
+<!-- Phone A: without ImobiFlow -->
+<div class="abs phone" id="phoneA"><div class="screen">
+  <div class="bar"><div class="av">A</div><div><div class="nm">Ana R.</div><div class="st">ONLINE</div></div></div>
+  <div class="chat">
+    <div class="msg in" id="a1" style="top:30px">Oi! O apartamento de 2 quartos no Braga ainda está disponível?<span class="tm">23:04</span></div>
+    <div class="msg out" id="a2" style="top:250px">Bom dia! Está sim. Quer agendar uma visita?<span class="tm">08:12</span></div>
+  </div>
+</div></div>
+
+<!-- Reveal -->
+<div class="abs orange" id="orange"></div>
+<div class="abs rev" id="rev">
+  <svg id="sym" width="150" height="150" viewBox="0 0 200 200" fill="none"><path id="p1" d="M86 104 V76 A34 34 0 0 1 154 76 V150" stroke="#E8E8E0" stroke-width="26"/><path id="p2" d="M30 182 V146 A34 34 0 0 1 98 146 V182" stroke="#E8E8E0" stroke-width="26"/></svg>
+  <h1 id="rt" style="margin-top:30px">ImobiFlow</h1>
+  <p id="rp">Responde o cliente do corretor no WhatsApp, na hora.</p>
+</div>
+
+<!-- Scene 4 copy -->
+<div class="abs mono kicker" id="k4">COM O IMOBIFLOW</div>
+<div class="abs head" id="h4" style="top:300px;font-size:76px">Responde no mesmo minuto.</div>
+<div class="abs sub" id="s4" style="top:420px">E faz as perguntas que separam quem está comprando de quem está passeando.</div>
+
+<!-- Phone B: with ImobiFlow -->
+<div class="abs phone" id="phoneB"><div class="screen">
+  <div class="bar"><div class="av">A</div><div><div class="nm">Ana R.</div><div class="st">ONLINE</div></div></div>
+  <div class="chat" id="chatB">
+    <div class="msg in" id="b1" style="top:20px">Oi! O apartamento de 2 quartos no Braga ainda está disponível?<span class="tm">23:04</span></div>
+    <div class="typing abs" id="ty1" style="top:200px"><i></i><i></i><i></i></div>
+    <div class="msg out" id="b2" style="top:200px"><span class="tag">RESPOSTA AUTOMÁTICA</span>Está sim! É para comprar ou alugar?<span class="tm">23:04</span></div>
+    <div class="msg in" id="b3" style="top:362px">Comprar.<span class="tm">23:05</span></div>
+    <div class="typing abs" id="ty2" style="top:452px"><i></i><i></i><i></i></div>
+    <div class="msg out" id="b4" style="top:452px">Quer visitar? Tenho sábado às 10h ou às 15h.<span class="tm">23:05</span></div>
+    <div class="msg in" id="b5" style="top:588px">Sábado 10h.<span class="tm">23:05</span></div>
+    <div class="abs chip" id="chip" style="top:680px">✓ VISITA MARCADA · SÁB 10H</div>
+  </div>
+</div></div>
+
+<!-- Scene 5 -->
+<div class="abs mono kicker" id="k5">PARA O CORRETOR</div>
+<div class="abs head" id="h5" style="top:300px;font-size:80px;width:900px">Você recebe a conversa pronta, com a visita marcada.</div>
+<div class="abs card" id="card">
+  <div class="lb" style="color:var(--or)">CONVERSA FILTRADA</div>
+  <div style="font-weight:800;font-size:46px;margin:14px 0 18px;letter-spacing:-.02em">Ana R.</div>
+  <div class="row" id="r1"><span class="lb">Interesse</span><b>Compra</b></div>
+  <div class="row" id="r2"><span class="lb">Imóvel</span><b>Apto 2 quartos · Braga</b></div>
+  <div class="row" id="r3"><span class="lb">Visita</span><b style="color:var(--or)">Sábado, 10h</b></div>
+  <div class="btn" id="bt">Abrir conversa</div>
+</div>
+
+<!-- Outro -->
+<div class="abs rev" id="outro" style="color:var(--ink)">
+  <svg width="130" height="130" viewBox="0 0 200 200" fill="none"><path id="o1" d="M86 104 V76 A34 34 0 0 1 154 76 V150" stroke="#C2410C" stroke-width="26"/><path id="o2" d="M30 182 V146 A34 34 0 0 1 98 146 V182" stroke="#C2410C" stroke-width="26"/></svg>
+  <div class="wm" id="ow" style="margin-top:34px">MITTARI</div>
+  <p id="op" style="font-size:40px;font-weight:600;margin-top:26px;color:var(--ink)">ImobiFlow, para corretores de imóveis</p>
+  <div class="mono" id="ou" style="margin-top:40px;font-size:24px;color:var(--or)">mittari.com.br</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const eo=x=>1-Math.pow(1-x,3);            // ease out cubic
+const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const back=x=>{const c1=1.4,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function show(el,o,y=0,s=1,x=0){el.style.opacity=o;el.style.transform=`translate(${x}px,${y}px) scale(${s})`;el.style.visibility=o<=0.001?'hidden':'visible'}
+// text in at a, out at b
+function txt(id,t,a,b,dy=34){const i=eo(seg(t,a,a+.5)),o=1-eio(seg(t,b,b+.3));show($(id),Math.min(i,o),(1-i)*dy-(1-o)*14)}
+function bubble(id,t,a,b=99){const p=seg(t,a,a+.32),o=1-seg(t,b,b+.25);show($(id),Math.min(eo(p),o),(1-eo(p))*16,0.92+0.08*back(p))}
+function typing(id,t,a,b){const vis=t>=a&&t<b;const el=$(id);el.style.visibility=vis?'visible':'hidden';el.style.opacity=vis?eo(seg(t,a,a+.15)):0;
+  [...el.children].forEach((d,k)=>{d.style.transform=`translateY(${-6*Math.max(0,Math.sin((t-a)*9-k*0.9))}px)`;});}
+function drawPath(id,t,a,d=.6){const p=$(id),L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L*(1-eio(seg(t,a,a+d)))}
+
+window.render=function(t){
+  // ---------- Scene 1-2 (0 - 6.3)
+  const s12out=1-eio(seg(t,6.0,6.3));
+  txt('k1',t,0.15,5.9);
+  txt('h1',t,0.35,3.55);
+  txt('h2',t,3.75,5.9);
+  txt('s2',t,4.35,5.9,24);
+  // clock
+  const ci=eo(seg(t,0.1,0.6)); show($('clock'),Math.min(ci,s12out),(1-ci)*30);
+  let hh='23',mm='03';
+  if(t>=0.85) mm='04';
+  if(t>=3.7){ // fast spin to 08:12
+    const p=eio(seg(t,3.7,4.25)); const tot=(23*60+4)+p*((24*60+8*60+12)-(23*60+4)); const m=Math.round(tot)%(24*60);
+    hh=String(Math.floor(m/60)).padStart(2,'0'); mm=String(m%60).padStart(2,'0');
+  }
+  $('hh').textContent=hh; $('mm').textContent=mm;
+  const mmPop=t>=0.85&&t<1.15?1+0.08*Math.sin(seg(t,.85,1.15)*Math.PI):1; $('mm').style.display='inline-block';$('mm').style.transform=`scale(${mmPop})`;
+  $('colon').style.opacity=(Math.floor(t*2)%2===0)?1:0.25;
+  // phone A
+  const pa=eo(seg(t,0.2,0.85)); show($('phoneA'),Math.min(pa,s12out),(1-pa)*120);
+  bubble('a1',t,1.07);
+  bubble('a2',t,4.55);
+  // dim the unanswered message overnight
+  $('a1').style.filter=t>3.7&&t<4.6?`grayscale(${seg(t,3.7,4.0)})`:'none';
+
+  // ---------- Scene 3 reveal (6.0 - 9.6)
+  const oin=eio(seg(t,5.95,6.34)), oout=eio(seg(t,9.25,9.6));
+  $('orange').style.transform=`translateY(${(1-oin)*1080 - oout*1080}px)`; $('orange').style.visibility=(oin>0&&oout<1)?'visible':'hidden';
+  const rv=t>=6.2&&t<9.45; $('rev').style.visibility=rv?'visible':'hidden';
+  drawPath('p1',t,6.34,.5); drawPath('p2',t,6.5,.5);
+  const rti=eo(seg(t,6.5,7.0)); const rexit=1-eio(seg(t,9.05,9.3));
+  show($('sym'),rexit,(1-eo(seg(t,6.34,6.8)))*10);
+  show($('rt'),Math.min(rti,rexit),(1-rti)*40, .96+.04*rti);
+  const rpi=eo(seg(t,6.95,7.45)); show($('rp'),Math.min(rpi,rexit),(1-rpi)*26);
+
+  // ---------- Scene 4 (9.5 - 15.3)
+  const s4out=1-eio(seg(t,15.1,15.45));
+  txt('k4',t,9.6,15.1);
+  txt('h4',t,9.75,15.1);
+  txt('s4',t,10.25,15.1,24);
+  const pb=eo(seg(t,9.45,10.05)); const pbOut=eio(seg(t,15.15,15.6));
+  show($('phoneB'),Math.min(pb,1-pbOut*0.999),(1-pb)*140,1,pbOut*700);
+  bubble('b1',t,9.9);
+  typing('ty1',t,10.25,10.54); bubble('b2',t,10.54);
+  bubble('b3',t,11.6);
+  typing('ty2',t,12.0,12.65); bubble('b4',t,12.65);
+  bubble('b5',t,13.7);
+  const ch=seg(t,14.22,14.55); show($('chip'),eo(ch),(1-eo(ch))*14,.85+.15*back(ch),0);
+  $('chip').style.transform=`translateX(-50%) translateY(${(1-eo(ch))*14}px) scale(${.85+.15*back(ch)})`;
+
+  // ---------- Scene 5 (15.3 - 18.4)
+  txt('k5',t,15.45,18.1);
+  txt('h5',t,15.6,18.1);
+  const cd=eo(seg(t,15.55,16.15)); const cdo=1-eio(seg(t,18.1,18.4));
+  show($('card'),Math.min(cd,cdo),0,1,(1-cd)*160);
+  ['r1','r2','r3'].forEach((r,k)=>{const p=eo(seg(t,16.0+k*.22,16.4+k*.22));show($(r),p,(1-p)*12)});
+  const bt=eo(seg(t,16.8,17.2)); const press=t>17.5&&t<17.75?0.96:1; show($('bt'),bt,(1-bt)*10,press);
+
+  // ---------- Scene 6 outro (18.4 - 21.6)
+  const ov=t>=18.35; $('outro').style.visibility=ov?'visible':'hidden';
+  drawPath('o1',t,18.44,.55); drawPath('o2',t,18.6,.55);
+  const ow=eo(seg(t,18.75,19.25)); show($('ow'),ow,(1-ow)*24);
+  const op=eo(seg(t,19.1,19.6)); show($('op'),op,(1-op)*20);
+  const ou=eo(seg(t,19.45,19.95)); show($('ou'),ou,(1-ou)*16);
+  // final fade to off-white
+  document.body.style.opacity=1;
+};
+window.render(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Este é o único HTML servido — o site é uma SPA. Robôs que executam
+      JavaScript (Google, Bing) enxergam o título por página escrito em
+      src/lib/seo.ts; prévias de link (WhatsApp, Instagram) NÃO executam e
+      leem só o que está aqui embaixo.
+
+      Consequência conhecida e aceita: link de página interna compartilhado
+      no WhatsApp mostra a prévia da home. Resolver exige render no
+      servidor, e não se paga no tamanho atual do site.
+    -->
+
+    <title>Mittari — Produtora de tecnologia em Cabo Frio</title>
+    <meta
+      name="description"
+      content="Sistemas sob medida, sites e produtos digitais para negócios da Região dos Lagos. Começamos perguntando onde o seu negócio está sendo desperdiçado."
+    />
+    <meta name="author" content="Mittari" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://mittari.com.br/" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#C2410C" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mittari" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://mittari.com.br/" />
+    <meta property="og:title" content="Mittari — Produtora de tecnologia" />
+    <meta
+      property="og:description"
+      content="Onde o seu negócio está sendo desperdiçado? A conversa começa medindo, não vendendo."
+    />
+    <!--
+      [PENDENTE] og:image. Precisa ser PNG ou JPG de 1200x630 em
+      /public/og.png — SVG não é aceito por WhatsApp nem por Instagram.
+      Sem a tag, o link aparece sem imagem; com a tag apontando para um
+      arquivo que não existe, aparece quebrado. Por isso ela só entra
+      quando o arquivo entrar.
+    -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Mittari — Produtora de tecnologia" />
+    <meta
+      name="twitter:description"
+      content="Onde o seu negócio está sendo desperdiçado?"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--
+      Dados estruturados. É o que faz o Google mostrar a casa como
+      organização local — com telefone e área de atendimento — em vez de
+      como um site qualquer. A identificação legal aqui é a mesma do
+      rodapé: se uma mudar, a outra muda junto.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Mittari",
+        "legalName": "MIGUEL AVILA GUIMARAES BRITO",
+        "taxID": "68.659.178/0001-82",
+        "url": "https://mittari.com.br/",
+        "description": "Produtora de tecnologia. Sistemas sob medida, sites e produtos digitais para negócios de Cabo Frio e da Região dos Lagos.",
+        "slogan": "Presença construída, não sacrificada.",
+        "telephone": "+5522992527762",
+        "email": "contato.arkoof@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Cabo Frio",
+          "addressRegion": "RJ",
+          "addressCountry": "BR"
+        },
+        "areaServed": [
+          { "@type": "City", "name": "Cabo Frio" },
+          { "@type": "City", "name": "Arraial do Cabo" },
+          { "@type": "City", "name": "Armação dos Búzios" },
+          { "@type": "City", "name": "São Pedro da Aldeia" }
+        ],
+        "sameAs": ["https://instagram.com/_mittari"],
+        "knowsAbout": [
+          "Desenvolvimento de sistemas sob medida",
+          "Automação de processos",
+          "Sites institucionais",
+          "Gestão para clínicas",
+          "CRM para corretores de imóveis"
+        ]
+      }
+    </script>
+    <script type="module" crossorigin src="/assets/index-tJ0CtXbL.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BRxSOm6z.css">
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
