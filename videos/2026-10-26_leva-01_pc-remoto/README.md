@@ -4,6 +4,16 @@ Vídeos da Leva 01 (roteiros em `conteudo/05 Ideias`) produzidos pelo Claude no 
 
 Todos estão **em aprovação**. Nenhum foi postado.
 
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="2026-10-26_kalli_nunca-responda-so-sim/"><img src="../../.github/galeria/t02.jpg" width="150" alt="Nunca responda só sim"></a><br><sub><b>T02</b></sub></td>
+    <td align="center" width="20%"><a href="2026-10-26_kalli_voce-nao-precisa-de-mais-clientes/"><img src="../../.github/galeria/o01.jpg" width="150" alt="Você não precisa de mais clientes"></a><br><sub><b>O01</b></sub></td>
+    <td align="center" width="20%"><a href="2026-10-26_kalli_4-perguntas/"><img src="../../.github/galeria/t01.jpg" width="150" alt="As 4 perguntas"></a><br><sub><b>T01</b></sub></td>
+    <td align="center" width="20%"><a href="2026-10-26_kalli_primeira-hora/"><img src="../../.github/galeria/e02.jpg" width="150" alt="A conta da primeira hora"></a><br><sub><b>E02</b></sub></td>
+    <td align="center" width="20%"><a href="2026-10-26_kalli_torre-de-controle/"><img src="../../.github/galeria/u09.jpg" width="150" alt="A torre de controle"></a><br><sub><b>U09</b></sub></td>
+  </tr>
+</table>
+
 | Roteiro | Vídeo | Duração | Situação |
 |---|---|---|---|
 | T02 | [Nunca responda só "sim"](2026-10-26_kalli_nunca-responda-so-sim/) | 33 s | Pronto |

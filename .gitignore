@@ -8,3 +8,9 @@ desktop.ini
 node_modules/
 .claude/
 .obsidian/
+
+# Arquivos temporários do HyperFrames e renders intermediários
+.hyperframes/artifacts/
+.hyperframes/render-outputs-lock/
+.hyperframes/video-state-lock/
+render-bruto.mp4
