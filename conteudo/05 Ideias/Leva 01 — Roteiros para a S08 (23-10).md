@@ -35,6 +35,8 @@ O fechamento da S05 deu o diagnóstico: **o Instagram não distribuiu porque nin
 
 **A ordem é a da tabela: do mais barato para o mais caro.** Se o dia de estúdio acabar no meio, as que sobraram são as caras, e as que saíram já cobrem os tipos da semana (prático, provocação, dor, produto).
 
+> 🎬 **Seg 26/10:** o fundador montou **T02, O01, T01, E02 e U09** no PC remoto. Parou nos créditos do ElevenLabs. **Faltam R03, R04 e H5.** Antes de postar a E02 e a U09, conferir os números marcados com ⚠️.
+
 **Encaixe na Máquina Semanal** (5 Reels + 2 carrosséis): situação real = H5 ou U09 · dor = E02 · provocação = O01 · prático = T01 e T02. R03 e R04 vão para o **destaque**, não contam como Reels. Os 2 carrosséis da semana: o **C02 corrigido** e o **T01 em lâminas** (o roteiro já está dividido em 4 perguntas).
 
 ## 🔤 Siglas novas (✅ aprovadas em 26/10)
