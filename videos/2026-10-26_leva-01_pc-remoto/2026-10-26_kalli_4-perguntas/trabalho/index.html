@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --ink:#101010; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#ECECE4; }
+#paper { position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 45%, #F4F4EE 0%, #ECECE4 55%, #DCDCD2 100%); }
+#night { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 45%, #131611 0%, #0a0a0a 55%, #050505 100%); opacity:0; }
+#glow { position:absolute; left:90px; top:560px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.12) 0%, rgba(184,255,79,0) 62%); opacity:0; }
+#world { position:absolute; inset:0; }
+
+/* ---------- peneira ---------- */
+#sieve { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#sieve svg { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+.bw { position:absolute; left:0; top:0; width:400px; height:64px; display:flex; justify-content:center; }
+.bw b { display:block; height:62px; padding:0 22px; border-radius:22px; border-top-left-radius:6px; background:#151515; color:var(--off); font:600 28px/62px Inter; white-space:nowrap; }
+
+/* ---------- letra ---------- */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:500 46px/1.25 Inter; color:#4A4A45; }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.04em; text-transform:uppercase; color:var(--ink); }
+.huge { font-family:Archivo; font-weight:900; font-size:128px; line-height:0.95; letter-spacing:-0.04em; text-transform:uppercase; color:var(--ink); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:92px; line-height:1.05; letter-spacing:-0.01em; color:var(--ink); }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.gr { color:#6E6E68; }
+.lr { color:#E2601A; }
+.lm { color:var(--lima); }
+.dk .big, .dk .serif, .dk .huge { color:var(--off); }
+#h1 { top:230px; }
+#h1 .w { opacity:1; }
+
+/* ---------- as perguntas ---------- */
+.q { position:absolute; left:0; top:0; width:1080px; height:700px; opacity:0; }
+.q .n { position:absolute; left:70px; top:232px; width:110px; height:110px; border-radius:50%; background:var(--ink); color:var(--off); font:900 66px/110px Archivo; text-align:center; }
+.q .t { position:absolute; left:206px; top:236px; width:590px; font:900 96px/0.95 Archivo; letter-spacing:-0.04em; text-transform:uppercase; color:var(--ink); }
+.q svg { position:absolute; left:820px; top:236px; width:190px; height:190px; }
+.q .s { position:absolute; left:70px; top:470px; width:720px; font:500 46px/1.25 Inter; color:#4A4A45; }
+.chip { position:absolute; top:470px; height:72px; border-radius:36px; padding:0 30px; background:var(--ink); color:var(--off); font:800 34px/72px Inter; opacity:0; }
+
+/* ---------- fim ---------- */
+#sym { position:absolute; left:430px; top:560px; width:220px; height:215px; opacity:0; }
+#kl { position:absolute; left:150px; top:830px; width:780px; text-align:center; font:500 48px/1.3 Inter; color:#C8C8C0; opacity:0; }
+#cta { position:absolute; left:0; top:1060px; width:1080px; display:flex; justify-content:center; opacity:0; }
+.btn { display:flex; align-items:center; background:var(--lima); color:#0A0A0A; font:800 44px Inter; border-radius:60px; padding:26px 50px; }
+
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.06; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.22) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="39" data-fps="60">
+  <div id="paper"></div>
+  <div id="night"></div>
+  <div id="glow"></div>
+  <div id="world" data-layout-allow-overlap>
+    <div id="sieve" data-layout-allow-overflow>
+      <svg viewBox="0 0 1080 1920" id="back">
+        <defs>
+          <clipPath id="bowl"><path d="M160 1150 Q160 1410 540 1410 Q920 1410 920 1150 A380 110 0 0 0 160 1150 Z"/></clipPath>
+          <pattern id="m0" width="90" height="90" patternUnits="userSpaceOnUse"><path d="M0 0 H90 M0 0 V90" stroke="#101010" stroke-opacity="0.45" stroke-width="3" fill="none"/></pattern>
+          <pattern id="m1" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M0 0 H64 M0 0 V64" stroke="#101010" stroke-opacity="0.45" stroke-width="2.6" fill="none"/></pattern>
+          <pattern id="m2" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M0 0 H44 M0 0 V44" stroke="#101010" stroke-opacity="0.45" stroke-width="2.2" fill="none"/></pattern>
+          <pattern id="m3" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M0 0 H30 M0 0 V30" stroke="#101010" stroke-opacity="0.45" stroke-width="1.8" fill="none"/></pattern>
+          <pattern id="m4" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M0 0 H20 M0 0 V20" stroke="#101010" stroke-opacity="0.45" stroke-width="1.4" fill="none"/></pattern>
+        </defs>
+        <g clip-path="url(#bowl)">
+          <rect x="140" y="1020" width="800" height="420" fill="#DEDED4"/>
+          <rect class="mesh" id="mesh0" x="140" y="1020" width="800" height="420" fill="url(#m0)" transform="skewX(-8)" transform-origin="540 1200"/>
+          <rect class="mesh" id="mesh1" x="140" y="1020" width="800" height="420" fill="url(#m1)" opacity="0" transform="skewX(-8)" transform-origin="540 1200"/>
+          <rect class="mesh" id="mesh2" x="140" y="1020" width="800" height="420" fill="url(#m2)" opacity="0" transform="skewX(-8)" transform-origin="540 1200"/>
+          <rect class="mesh" id="mesh3" x="140" y="1020" width="800" height="420" fill="url(#m3)" opacity="0" transform="skewX(-8)" transform-origin="540 1200"/>
+          <rect class="mesh" id="mesh4" x="140" y="1020" width="800" height="420" fill="url(#m4)" opacity="0" transform="skewX(-8)" transform-origin="540 1200"/>
+        </g>
+        <path d="M160 1150 Q160 1410 540 1410 Q920 1410 920 1150" fill="none" stroke="#101010" stroke-width="5"/>
+        <path d="M160 1150 A380 110 0 0 1 920 1150" fill="none" stroke="#101010" stroke-width="7"/>
+      </svg>
+      <div id="bubs"></div>
+      <svg viewBox="0 0 1080 1920" id="front">
+        <path d="M160 1150 A380 110 0 0 0 920 1150" fill="none" stroke="#101010" stroke-width="9"/>
+        <path d="M918 1140 L1070 1092" fill="none" stroke="#101010" stroke-width="22" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div id="type">
+    <div class="ln" id="h1">
+      <div class="row huge"><span class="w">4</span><span class="w">perguntas</span></div>
+      <div class="row serif"><span class="w">quem</span><span class="w">vai</span><span class="w">comprar</span></div>
+      <div class="row serif gr"><span class="w gr">×</span><span class="w gr">quem</span><span class="w gr">está</span><span class="w gr">só</span><span class="w gr">olhando</span></div>
+    </div>
+    <div class="q" id="q1"><div class="n">1</div><div class="t">Onde?</div>
+      <svg viewBox="0 0 190 190"><rect x="12" y="20" width="166" height="160" rx="22" fill="none" stroke="#101010" stroke-width="6"/><path d="M12 80 H178 M12 130 H178 M70 20 V180 M126 20 V180" stroke="#101010" stroke-opacity="0.35" stroke-width="5"/><g id="pin"><path d="M98 112 C70 80 72 46 98 44 C124 46 126 80 98 112 Z" fill="#FF8A3D" stroke="#101010" stroke-width="6"/><circle cx="98" cy="66" r="9" fill="#101010"/></g></svg>
+      <div class="s" id="s1"></div></div>
+    <div class="q" id="q2"><div class="n">2</div><div class="t">Até quanto?</div>
+      <svg viewBox="0 0 190 190"><path d="M14 120 H176" stroke="#101010" stroke-width="10" stroke-linecap="round"/><path d="M30 100 V140 M62 108 V132 M95 100 V140 M128 108 V132 M160 100 V140" stroke="#101010" stroke-width="5" stroke-linecap="round"/><g id="knob"><circle cx="30" cy="120" r="20" fill="#FF8A3D" stroke="#101010" stroke-width="6"/></g><path d="M78 40 H112 M95 26 V60" stroke="#101010" stroke-width="0"/></svg>
+      <div class="s" id="s2"></div></div>
+    <div class="q" id="q3"><div class="n">3</div><div class="t">Para quando?</div>
+      <svg viewBox="0 0 190 190"><rect x="14" y="30" width="162" height="146" rx="18" fill="none" stroke="#101010" stroke-width="6"/><path d="M14 66 H176" stroke="#101010" stroke-width="6"/><path d="M50 16 V44 M140 16 V44" stroke="#101010" stroke-width="7" stroke-linecap="round"/><g fill="#101010" fill-opacity="0.4"><circle cx="44" cy="94" r="7"/><circle cx="80" cy="94" r="7"/><circle cx="116" cy="94" r="7"/><circle cx="152" cy="94" r="7"/><circle cx="44" cy="124" r="7"/><circle cx="80" cy="124" r="7"/><circle cx="152" cy="124" r="7"/><circle cx="44" cy="154" r="7"/><circle cx="80" cy="154" r="7"/><circle cx="116" cy="154" r="7"/></g><circle cx="116" cy="124" r="9" fill="#101010"/><circle id="ring" cx="116" cy="124" r="24" fill="none" stroke="#FF8A3D" stroke-width="7" stroke-dasharray="151" stroke-dashoffset="151"/></svg>
+      <div class="s" id="s3"></div></div>
+    <div class="q" id="q4"><div class="n">4</div><div class="t">Como vai pagar?</div>
+      <svg viewBox="0 0 190 190"><path d="M14 54 V166 H176 V70 H96 L80 54 Z" fill="none" stroke="#101010" stroke-width="6" stroke-linejoin="round"/><g id="docs"><rect x="44" y="24" width="70" height="90" rx="8" fill="#ECECE4" stroke="#101010" stroke-width="5"/><path d="M58 50 H100 M58 68 H100 M58 86 H86" stroke="#101010" stroke-width="5" stroke-linecap="round"/><rect x="90" y="36" width="70" height="90" rx="8" fill="#FF8A3D" stroke="#101010" stroke-width="5"/></g><path d="M14 92 H176 V166 H14 Z" fill="#ECECE4" stroke="#101010" stroke-width="6" stroke-linejoin="round"/></svg>
+      <div class="chip" id="k1" style="left:70px">Financiamento</div>
+      <div class="chip" id="k2" style="left:384px">FGTS</div>
+      <div class="chip" id="k3" style="left:552px">À vista</div>
+      <div class="s" id="s4" style="top:570px"></div></div>
+  </div>
+  <img id="sym" src="assets/simbolo-lima.png" alt="" />
+  <div id="kl">A Kalli faz essas 4 perguntas sozinha, no seu WhatsApp.</div>
+  <div id="cta"><div class="btn">Teste 7 dias · link na bio</div></div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="37.12" data-volume="1"></audio>
+  <audio id="a-trilha" src="assets/trilha.mp3" data-start="0" data-duration="39" data-volume="0.55"></audio>
+  <audio id="a-sh0" src="assets/sfx-peneira.mp3" data-start="0.02" data-duration="2" data-volume="0.5"></audio>
+  <audio id="a-q1" src="assets/sfx-snap.mp3" data-start="4.58" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-sh1" src="assets/sfx-peneira.mp3" data-start="7.55" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-q2" src="assets/sfx-snap.mp3" data-start="10.72" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-sh2" src="assets/sfx-peneira.mp3" data-start="13.95" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-q3" src="assets/sfx-snap.mp3" data-start="16.86" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-tk" src="assets/sfx-tick.mp3" data-start="20.05" data-duration="0.6" data-volume="0.5"></audio>
+  <audio id="a-sh3" src="assets/sfx-peneira.mp3" data-start="20.5" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-q4" src="assets/sfx-snap.mp3" data-start="21.78" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-k1" src="assets/sfx-pop.mp3" data-start="23.74" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-k2" src="assets/sfx-pop.mp3" data-start="24.96" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-k3" src="assets/sfx-pop.mp3" data-start="26.12" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-sh4" src="assets/sfx-peneira.mp3" data-start="28.15" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-w1" src="assets/sfx-whoosh.mp3" data-start="32.2" data-duration="1.5" data-volume="0.5"></audio>
+  <audio id="a-i1" src="assets/sfx-impacto.mp3" data-start="32.42" data-duration="2" data-volume="0.55"></audio>
+  <audio id="a-p1" src="assets/sfx-pop.mp3" data-start="32.8" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-p2" src="assets/sfx-pop.mp3" data-start="35.0" data-duration="0.4" data-volume="0.55"></audio>
+  <audio id="a-s9" src="assets/sfx-snap.mp3" data-start="35.72" data-duration="0.5" data-volume="0.45"></audio>
+</div>
+<script>
+const DUR = 39;
+let seed = 20261028;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.3, ease: "power2.in" }, at);
+
+// tempos de cada palavra: ElevenLabs Scribe sobre a narração (voz Sandro Dutra)
+function words(parent, list, cls) {
+  list.forEach(([w, t, extra]) => {
+    const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; parent.appendChild(s);
+    F(s, { opacity: 0, yPercent: 35, filter: "blur(8px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, Math.max(0, t - 0.04));
+  });
+}
+function lines(id, top, rows, dark) {
+  const ln = document.createElement("div"); ln.className = "ln" + (dark ? " dk" : ""); ln.id = id; ln.style.top = top + "px";
+  rows.forEach(([cls, ws]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    ws.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = cls !== "sm";
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.5 : 0.4, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $("#type").appendChild(ln);
+  return ln;
+}
+
+// ---------------- câmera ----------------
+F("#world", { transformPerspective: 2400, rotationX: 4, rotationY: -2, scale: 1 }, { rotationX: -1, rotationY: 2, scale: 1.04, duration: DUR, ease: "none" }, 0);
+F("#type", { x: 0 }, { x: -12, duration: DUR, ease: "none" }, 0);
+
+// ---------------- a peneira ----------------
+F("#sieve", { x: -5, rotation: -0.6 }, { x: 5, rotation: 0.6, duration: 0.22, repeat: 145, yoyo: true, ease: "sine.inOut", transformOrigin: "540px 1200px" }, 0);
+const SHAKES = [7.6, 14.0, 20.55, 28.2];
+SHAKES.forEach((t) => F("#sieve", { y: 0 }, { y: -26, duration: 0.09, repeat: 7, yoyo: true, ease: "sine.inOut" }, t));
+const MESH_T = [7.62, 14.02, 20.57, 28.22];
+MESH_T.forEach((t, i) => { F("#mesh" + i, { opacity: 1 }, { opacity: 0, duration: 0.4 }, t); F("#mesh" + (i + 1), { opacity: 0 }, { opacity: 1, duration: 0.4 }, t); });
+
+// balões na peneira: [x, y, texto, quando cai (0 = fica)]
+const BUBS = [
+  [280, 1045, "Oi!", 7.72], [420, 1045, "Valor?", 14.1], [620, 1045, "Visita sábado?", 0], [820, 1045, "Fotos?", 14.1],
+  [250, 1120, "Só olhando", 7.72], [455, 1120, "Ainda tem?", 20.66], [640, 1120, "Me liga", 7.72], [820, 1120, "Tem vaga?", 14.1],
+  [360, 1195, "Tenho carta", 0], [545, 1195, "Bairro?", 20.66], [730, 1195, "Quanto é?", 7.72],
+  [540, 1265, "Depois vejo", 28.3],
+];
+const keep = [];
+BUBS.forEach(([x, y, txt, drop], i) => {
+  const w = document.createElement("div"); w.className = "bw"; w.setAttribute("data-layout-ignore", "");
+  const b = document.createElement("b"); b.textContent = txt; w.appendChild(b); $("#bubs").appendChild(w);
+  w.style.left = (x - 200) + "px"; w.style.top = (y - 32) + "px";
+  F(b, { y: 0, rotation: 0 }, { y: -10, rotation: (rnd() - 0.5) * 6, duration: 0.5 + rnd() * 0.3, repeat: 55, yoyo: true, ease: "sine.inOut" }, rnd() * 0.4);
+  if (drop) {
+    const d = drop + i * 0.04;
+    F(w, { y: 0, opacity: 1, scale: 1, rotation: 0 }, { y: 950 + rnd() * 200, opacity: 0, scale: 0.8, rotation: (rnd() - 0.5) * 70, duration: 1.0, ease: "power2.in" }, d);
+  } else keep.push([w, b]);
+});
+// os que ficam: viram compradores e vão para o centro
+keep.forEach(([w, b], i) => {
+  F(w, { x: 0, y: 0, scale: 1 }, { x: 540 - (i ? 360 : 620), y: (i ? 1090 : 940) - (i ? 1195 : 1045), scale: 1.7, duration: 0.8, ease: "power3.inOut" }, 32.3 + i * 0.08);
+  F(b, { backgroundColor: "#151515", color: "#ECECE4" }, { backgroundColor: "#B8FF4F", color: "#0A0A0A", duration: 0.3 }, 32.8 + i * 0.1);
+  F(w, { opacity: 1 }, { opacity: 0, duration: 0.35 }, 34.75);
+});
+F(["#back", "#front"], { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.in" }, 32.25);
+
+// ---------------- 1. gancho (escrito desde o quadro 1) ----------------
+OUT("#h1", 4.3);
+
+// ---------------- 2-5. as quatro perguntas ----------------
+const Q = [
+  ["#q1", 4.6, 10.45, "#s1", [["Quem", 6.9], ["já", 7.08], ["escolheu", 7.22], ["o", 7.6], ["bairro", 7.72], ["começou", 8.18], ["a", 8.64], ["procurar.", 8.72]]],
+  ["#q2", 10.74, 16.6, "#s2", [["Sem", 13.62], ["esse", 13.84], ["número,", 14.1], ["não", 14.74], ["existe", 15.02], ["imóvel", 15.52], ["certo.", 15.96]]],
+  ["#q3", 16.88, 21.55, "#s3", [["Quem", 19.68], ["tem", 19.9], ["data", 20.1], ["tem", 20.66], ["pressa.", 20.9]]],
+  ["#q4", 21.8, 29.35, "#s4", [["Curioso", 27.24], ["não", 27.98], ["junta", 28.28], ["papel.", 28.62]]],
+];
+Q.forEach(([id, a, b, sid, ws]) => {
+  F(id, { opacity: 0 }, { opacity: 1, duration: 0.01 }, a - 0.05);
+  F(id + " .n", { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.5, ease: "back.out(2)" }, a - 0.05);
+  F(id + " .t", { opacity: 0, x: -40, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.5)" }, a + 0.05);
+  F(id + " svg", { opacity: 0, scale: 0.6, rotation: 12 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.8)" }, a + 0.15);
+  words($(sid), ws);
+  F(id, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.3, ease: "power2.in" }, b);
+});
+F("#pin", { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "bounce.out" }, 5.3);
+F("#knob", { x: 0 }, { x: 96, duration: 0.8, ease: "back.out(1.4)" }, 11.94);
+F("#ring", { strokeDashoffset: 151 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }, 20.1);
+F("#docs", { y: 40 }, { y: 0, duration: 0.6, ease: "back.out(2)" }, 22.6);
+[["#k1", 23.76], ["#k2", 24.98], ["#k3", 26.14]].forEach(([k, t]) => { F(k, { opacity: 0, y: 20, scale: 0.7 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: "back.out(2)" }, t - 0.04); F(k, { opacity: 1 }, { opacity: 0, duration: 0.25 }, 27.0); });
+
+// ---------------- 6. fecho e virada para o preto ----------------
+const h6 = lines("h6", 260, [["big", [["Faz", 29.58], ["as", 29.82], ["quatro", 30.02]]], ["serif", [["logo", 30.6], ["no", 30.92], ["primeiro", 31.08], ["contato.", 31.56]]]]);
+OUT(h6, 32.15);
+F("#night", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 32.25);
+F("#glow", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 32.5);
+F("#grain", { opacity: 0.06 }, { opacity: 0.045, duration: 0.5 }, 32.25);
+const h7 = lines("h7", 300, [["big", [["Quem", 32.44], ["vai", 32.64], ["comprar", 32.82, "lm"]]], ["serif", [["responde", 33.34], ["todas.", 34.1]]]], true);
+OUT(h7, 34.75);
+
+// ---------------- 7. assinatura ----------------
+F("#sym", { opacity: 0, scale: 0.3, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.7)" }, 35.0);
+F("#sym", { rotation: 0 }, { rotation: 10, duration: 3, ease: "sine.inOut" }, 35.7);
+F("#kl", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 35.25);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 35.7);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 36.6);
+
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl.set({}, {}, DUR);
+window.__timelines["main"] = tl;
+</script>
+</body></html>

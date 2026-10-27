@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --dim:#8E8E86; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 38%, #131611 0%, #0a0a0a 55%, #060606 100%); }
+#glow { position:absolute; left:90px; top:420px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.09) 0%, rgba(184,255,79,0) 62%); }
+#world { position:absolute; inset:0; }
+
+/* ---------- celular ---------- */
+#phone { position:absolute; left:140px; top:560px; width:800px; height:1000px; border-radius:72px; background:#0b0b0b; padding:18px;
+  box-shadow:0 70px 140px rgba(0,0,0,0.65), 0 0 0 3px #2a2a27, inset 0 0 0 2px #1d1d1b; }
+#screen { position:relative; width:764px; height:964px; border-radius:56px; overflow:hidden; background:#0D0E0C;
+  background-image:radial-gradient(rgba(255,255,255,0.025) 2px, transparent 2px); background-size:34px 34px; }
+.notch { position:absolute; left:302px; top:14px; width:160px; height:40px; border-radius:20px; background:#000; }
+.hdr { position:absolute; left:0; top:0; width:764px; height:178px; background:#141513; border-bottom:1px solid #22231F; }
+.back { position:absolute; left:26px; top:96px; width:26px; height:44px; }
+.ava { position:absolute; left:70px; top:84px; width:76px; height:76px; border-radius:50%; background:#26301C; color:var(--lima); font:800 36px Inter; text-align:center; line-height:76px; }
+.nm { position:absolute; left:168px; top:88px; font:700 36px Inter; color:var(--off); }
+.st { position:absolute; left:168px; top:134px; font:500 28px Inter; color:var(--dim); opacity:0; }
+#st1 { opacity:1; }
+.st.lm { color:var(--lima); }
+.chat { position:absolute; left:0; top:178px; width:764px; height:640px; padding:34px 30px; display:flex; flex-direction:column; gap:20px; }
+.b { position:relative; max-width:600px; padding:22px 28px 20px; font:500 38px/1.32 Inter; color:var(--off); border-radius:30px; }
+.b.in { align-self:flex-start; background:#1E1F1C; border-top-left-radius:8px; }
+.b.out { align-self:flex-end; background:#1F2C14; border:1.5px solid rgba(184,255,79,0.22); border-top-right-radius:8px; }
+.tm { display:block; margin-top:6px; text-align:right; font:500 24px Inter; color:#A4A49C; }
+.tm svg { width:34px; height:20px; margin-left:8px; vertical-align:-3px; }
+#bB { width:600px; }
+.seg { background-image:linear-gradient(var(--c), var(--c)); background-repeat:no-repeat; background-position:0 94%; background-size:0% 7px; }
+.ww { opacity:0; }
+.typing { align-self:flex-start; background:#1E1F1C; border-radius:30px; border-top-left-radius:8px; padding:26px 30px; display:flex; gap:12px; opacity:0; }
+.dot { width:16px; height:16px; border-radius:50%; background:#9A9A92; }
+.bar { position:absolute; left:22px; bottom:26px; width:720px; height:92px; }
+.fld { position:absolute; left:0; top:0; width:610px; height:92px; border-radius:46px; background:#1A1B18; font:500 32px/92px Inter; color:#7A7A73; padding-left:36px; }
+.mic { position:absolute; right:0; top:0; width:92px; height:92px; border-radius:50%; background:var(--lima); }
+.mic i { position:absolute; left:36px; top:22px; width:20px; height:34px; border-radius:10px; background:#0A0A0A; }
+#aOut, #aIn2, #chatB, #bB, #bTm { opacity:0; }
+#some { position:absolute; left:0; top:178px; width:764px; height:640px; display:flex; align-items:center; justify-content:center;
+  font-family:"Instrument Serif"; font-style:italic; font-size:120px; color:var(--off); background:rgba(13,14,12,0.72); opacity:0; }
+
+/* ---------- letra ---------- */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:500 50px/1.25 Inter; color:#A4A49C; margin-bottom:8px; }
+.big { font-family:Archivo; font-weight:900; font-size:106px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.huge { font-family:Archivo; font-weight:900; font-size:170px; line-height:0.9; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:96px; line-height:1.05; letter-spacing:-0.01em; color:var(--off); margin-top:4px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:var(--red); }
+#h1 { top:250px; }
+#h1 .w { opacity:1; }
+#h1 .serif { font-size:128px; }
+
+/* ---------- as três coisas ---------- */
+#blocks { position:absolute; left:70px; top:760px; width:940px; height:620px; }
+.blk { position:absolute; left:0; width:940px; height:180px; border-radius:30px; background:#121311; border:1.5px solid #23241F; opacity:0; }
+.blk .n { position:absolute; left:30px; top:35px; width:110px; height:110px; border-radius:50%; font:900 64px/110px Archivo; text-align:center; color:#0A0A0A; }
+.blk b { position:absolute; left:172px; top:34px; font:900 70px Archivo; letter-spacing:-0.03em; text-transform:uppercase; color:var(--off); }
+.blk span { position:absolute; left:174px; top:114px; font:500 34px Inter; color:#A4A49C; }
+#chips { position:absolute; left:70px; top:250px; width:940px; height:76px; display:flex; gap:16px; }
+.chip { height:76px; border-radius:38px; padding:0 30px; display:flex; align-items:center; gap:14px; font:800 32px Inter; color:#B4B4AC; background:#141513; border:2px solid #2A2B27; opacity:0; }
+.chip i { width:20px; height:20px; border-radius:50%; flex:none; }
+
+/* ---------- fim ---------- */
+#end { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#sym { position:absolute; left:430px; top:470px; width:220px; height:215px; opacity:0; }
+#kw { position:absolute; left:0; top:720px; width:1080px; text-align:center; font:900 120px Archivo; letter-spacing:-0.04em; color:var(--off); opacity:0; }
+#kl { position:absolute; left:200px; top:880px; width:680px; text-align:center; font:500 46px/1.3 Inter; color:#B8B8B0; opacity:0; }
+#cta { position:absolute; left:0; top:1080px; width:1080px; display:flex; justify-content:center; opacity:0; }
+.btn { display:flex; align-items:center; background:var(--lima); color:#0A0A0A; font:800 44px Inter; border-radius:60px; padding:26px 50px; }
+
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.05; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="33" data-fps="60">
+  <div id="bg"></div>
+  <div id="glow"></div>
+  <div id="world" data-layout-allow-overlap>
+    <div id="phone" data-layout-allow-overflow>
+      <div id="screen">
+        <div class="hdr">
+          <svg class="back" viewBox="0 0 26 44"><path d="M22 4 L5 22 L22 40" fill="none" stroke="#B8FF4F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="ava">R</div>
+          <div class="nm">Rafael</div>
+          <div class="st" id="st1">online</div>
+          <div class="st" id="st2" data-layout-ignore>visto por último às 14:33</div>
+          <div class="st" id="st3">online</div>
+          <div class="st lm" id="st4">digitando…</div>
+        </div>
+        <div class="notch"></div>
+        <div class="chat" id="chatA">
+          <div class="b in" id="aIn">Ainda está disponível?<span class="tm" data-layout-ignore>14:32</span></div>
+          <div class="b out" id="aOut">Sim<span class="tm" data-layout-ignore>14:32<svg viewBox="0 0 34 20"><path d="M2 11 L8 17 L20 4 M14 15 L16 17 L30 3" fill="none" stroke="#B8FF4F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="b in" id="aIn2">Ok, obrigado!<span class="tm" data-layout-ignore>14:33</span></div>
+        </div>
+        <div class="chat" id="chatB">
+          <div class="b in" id="bIn">Ainda está disponível?<span class="tm" data-layout-ignore>14:32</span></div>
+          <div class="b out" id="bB"><span class="seg" id="sg1" style="--c:#B8FF4F"></span> <span class="seg" id="sg2" style="--c:#FF8A3D"></span> <span class="seg" id="sg3" style="--c:#ECECE4"></span><span class="tm" data-layout-ignore id="bTm">14:32<svg viewBox="0 0 34 20"><path d="M2 11 L8 17 L20 4 M14 15 L16 17 L30 3" fill="none" stroke="#B8FF4F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="typing" id="typ"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+        </div>
+        <div id="some">…e some.</div>
+        <div class="bar"><div class="fld">Mensagem</div><div class="mic"><i></i></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="type">
+    <div class="ln" id="h1">
+      <div class="row big"><span class="w">Nunca</span><span class="w">responda</span></div>
+      <div class="row serif"><span class="w">só</span><span class="w rd">“sim”.</span></div>
+    </div>
+  </div>
+  <div id="blocks">
+    <div class="blk" id="k1" style="top:0px"><div class="n" style="background:#B8FF4F">1</div><b>Confirma</b><span>“Está sim!”</span></div>
+    <div class="blk" id="k2" style="top:210px"><div class="n" style="background:#FF8A3D">2</div><b>Um detalhe</b><span>que ele não perguntou</span></div>
+    <div class="blk" id="k3" style="top:420px"><div class="n" style="background:#ECECE4">3</div><b>Uma pergunta</b><span>que pede resposta</span></div>
+  </div>
+  <div id="chips">
+    <div class="chip" id="c1"><i style="background:#B8FF4F"></i>Confirma</div>
+    <div class="chip" id="c2"><i style="background:#FF8A3D"></i>Detalhe</div>
+    <div class="chip" id="c3"><i style="background:#ECECE4"></i>Pergunta</div>
+  </div>
+  <div id="end">
+    <img id="sym" src="assets/simbolo-lima.png" alt="" />
+    <div id="kw">Kalli</div>
+    <div id="kl">A Kalli responde assim, sozinha, em segundos.</div>
+    <div id="cta"><div class="btn">Teste 7 dias · link na bio</div></div>
+  </div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="29.92" data-volume="1"></audio>
+  <audio id="a-trilha" src="assets/trilha.mp3" data-start="0" data-duration="33" data-volume="0.55"></audio>
+  <audio id="a-n0" src="assets/sfx-notif.mp3" data-start="0.05" data-duration="0.9" data-volume="0.8"></audio>
+  <audio id="a-v0" src="assets/sfx-vibra.mp3" data-start="0.05" data-duration="0.8" data-volume="0.45"></audio>
+  <audio id="a-p0" src="assets/sfx-pop.mp3" data-start="4.38" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-e1" src="assets/sfx-enviada.mp3" data-start="5.28" data-duration="1" data-volume="0.7"></audio>
+  <audio id="a-s1" src="assets/sfx-snap.mp3" data-start="5.94" data-duration="0.5" data-volume="0.55"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="7.2" data-duration="0.9" data-volume="0.5"></audio>
+  <audio id="a-i1" src="assets/sfx-impacto.mp3" data-start="8.42" data-duration="2" data-volume="0.85"></audio>
+  <audio id="a-w1" src="assets/sfx-whoosh.mp3" data-start="9.05" data-duration="1.5" data-volume="0.5"></audio>
+  <audio id="a-s2" src="assets/sfx-snap.mp3" data-start="10.14" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-p1" src="assets/sfx-pop.mp3" data-start="11.5" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-p2" src="assets/sfx-pop.mp3" data-start="12.88" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-p3" src="assets/sfx-pop.mp3" data-start="15.12" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-w2" src="assets/sfx-whoosh.mp3" data-start="16.1" data-duration="1.5" data-volume="0.45"></audio>
+  <audio id="a-d1" src="assets/sfx-digitando.mp3" data-start="16.45" data-duration="6" data-volume="0.3"></audio>
+  <audio id="a-e2" src="assets/sfx-enviada.mp3" data-start="22.84" data-duration="1" data-volume="0.7"></audio>
+  <audio id="a-p4" src="assets/sfx-pop.mp3" data-start="23.46" data-duration="0.4" data-volume="0.35"></audio>
+  <audio id="a-w3" src="assets/sfx-whoosh.mp3" data-start="26.1" data-duration="1.5" data-volume="0.55"></audio>
+  <audio id="a-p5" src="assets/sfx-pop.mp3" data-start="29.98" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-s3" src="assets/sfx-snap.mp3" data-start="30.62" data-duration="0.5" data-volume="0.45"></audio>
+</div>
+<script>
+const DUR = 33;
+let seed = 20261026;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const IN = (el, at, d = 0.4) => F(el, { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: d, ease: "back.out(1.5)" }, at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.3, ease: "power2.in" }, at);
+const SHOW = (el, at, d = 0.15) => F(el, { opacity: 0 }, { opacity: 1, duration: d }, at);
+const HIDE = (el, at, d = 0.15) => F(el, { opacity: 1 }, { opacity: 0, duration: d }, at);
+
+// tempos de cada palavra: ElevenLabs Scribe sobre a narração (voz Sandro Dutra, versão 1)
+function lines(id, top, rows) {
+  const ln = document.createElement("div"); ln.className = "ln"; ln.id = id; ln.style.top = top + "px";
+  rows.forEach(([cls, words]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    words.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = cls !== "sm";
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.5 : 0.4, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $("#type").appendChild(ln);
+  return ln;
+}
+
+// ---------------- câmera (deriva lenta + socos nos tempos fortes) ----------------
+F("#world", { transformPerspective: 2400, rotationY: -3, rotationX: 2 }, { rotationY: 3, rotationX: -1.5, duration: DUR, ease: "none" }, 0);
+F("#world", { scale: 1 }, { scale: 1.04, duration: 0.35, ease: "back.out(2)" }, 4.38);
+F("#world", { scale: 1.04 }, { scale: 1, duration: 0.5, ease: "power2.inOut" }, 5.0);
+F("#world", { x: 0 }, { x: 14, duration: 0.05, repeat: 5, yoyo: true, ease: "sine.inOut" }, 8.44);
+F("#type", { x: 0 }, { x: -16, duration: DUR, ease: "none" }, 0);
+
+// ---------------- celular ----------------
+const PH = "#phone";
+F(PH, { transformPerspective: 2200, rotationY: -8, rotationX: 4, y: 0, z: 0, opacity: 1 }, { rotationY: -5, duration: 9, ease: "sine.inOut" }, 0);
+F(PH, { x: 0 }, { x: 10, duration: 0.04, repeat: 7, yoyo: true, ease: "sine.inOut" }, 0.05);            // vibra com a notificação
+F(PH, { y: 0, z: 0, rotationX: 4, opacity: 1 }, { y: 560, z: -700, rotationX: 28, opacity: 0, duration: 0.55, ease: "power3.in" }, 9.05);
+F(PH, { y: 900, z: -200, rotationX: -18, rotationY: -5, opacity: 0 }, { y: -140, z: 0, rotationX: 4, rotationY: 6, opacity: 1, duration: 0.7, ease: "back.out(1.2)" }, 16.12);
+F(PH, { y: -140, rotationY: 6 }, { y: 20, rotationY: 2, duration: 0.6, ease: "power3.inOut" }, 23.2);
+F(PH, { y: 20, z: 0, rotationX: 4, opacity: 1 }, { y: 1500, z: -100, rotationX: -25, opacity: 1, duration: 0.6, ease: "power3.in" }, 26.1);
+
+// conversa A: o "sim" que mata a conversa
+F("#aIn", { scale: 1, boxShadow: "0 0 0 0 rgba(184,255,79,0)" }, { scale: 1.05, boxShadow: "0 0 0 6px rgba(184,255,79,0.35)", duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out" }, 1.44);
+F("#aOut", { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(2)", transformOrigin: "100% 100%" }, 5.3);
+F("#aIn2", { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "back.out(2)", transformOrigin: "0% 100%" }, 7.22);
+F("#chatA", { filter: "grayscale(0) brightness(1)", y: 0 }, { filter: "grayscale(1) brightness(0.35)", y: 50, duration: 0.6, ease: "power2.out" }, 8.42);
+HIDE("#st1", 8.42); SHOW("#st2", 8.5);
+F("#some", { opacity: 0, scale: 1.25, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 8.46);
+HIDE("#chatA", 9.7, 0.01); HIDE("#some", 9.7, 0.01); HIDE("#st2", 9.7, 0.01); SHOW("#st3", 9.7, 0.01);
+F("#chatB", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 9.7);
+
+// conversa B: a resposta que continua a conversa
+const SEGS = [
+  ["#sg1", [["Está", 16.52], ["sim!", 16.9]], 17.15],
+  ["#sg2", [["É", 17.52], ["o", 17.58], ["de", 17.68], ["2", 17.82], ["quartos", 18.12], ["no", 18.56], ["Braga,", 18.7], ["com", 19.18], ["vaga", 19.36], ["na", 19.6], ["garagem.", 19.72]], 20.25],
+  ["#sg3", [["Você", 20.56], ["procura", 20.8], ["pra", 21.26], ["morar", 21.44], ["ou", 21.94], ["pra", 22.08], ["investir?", 22.22]], 22.85],
+];
+SEGS.forEach(([sel, words, done]) => {
+  const seg = $(sel);
+  words.forEach(([w, t], i) => {
+    const s = document.createElement("span"); s.className = "ww"; s.textContent = w; seg.appendChild(s);
+    if (i < words.length - 1) seg.appendChild(document.createTextNode(" "));
+    F(s, { opacity: 0 }, { opacity: 1, duration: 0.12 }, t - 0.03);
+  });
+  F(seg, { backgroundSize: "0% 7px" }, { backgroundSize: "100% 7px", duration: 0.45, ease: "power2.out" }, done);
+});
+F("#bB", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.8)", transformOrigin: "100% 0%" }, 16.4);
+F("#bTm", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 22.86);
+HIDE("#st3", 23.44); SHOW("#st4", 23.46);
+F("#typ", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(2)", transformOrigin: "0% 100%" }, 23.46);
+document.querySelectorAll("#typ .dot").forEach((d, i) => F(d, { y: 0 }, { y: -12, duration: 0.3, repeat: 7, yoyo: true, ease: "sine.inOut" }, 23.7 + i * 0.12));
+
+// ---------------- letra ----------------
+// 1. gancho: escrito no quadro 1, antes da voz
+F("#h1 .rd", { scale: 1 }, { scale: 1.12, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "0% 70%" }, 4.38);
+OUT("#h1", 5.05);
+// 2. o erro
+const h2 = lines("h2", 230, [["huge", [["“Sim”", 5.34]]], ["huge", [["=", 5.96], ["fim.", 5.96, "rd"]]]]);
+OUT(h2, 9.0);
+// 3. a fórmula
+const h3 = lines("h3", 330, [["sm", [["Responda", 9.28], ["com", 9.86]]], ["huge", [["3", 10.16, "lm"], ["coisas", 10.52]]]]);
+[["#k1", 11.52], ["#k2", 12.9], ["#k3", 15.14]].forEach(([k, t]) => F(k, { opacity: 0, x: -60, filter: "blur(10px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.6)" }, t));
+OUT(h3, 16.0);
+F("#blocks", { opacity: 1, y: 0, scale: 1 }, { opacity: 0, y: -80, scale: 0.92, duration: 0.35, ease: "power2.in" }, 16.0);
+// 4. o exemplo: as três partes viram etiquetas que acendem com a voz
+["#c1", "#c2", "#c3"].forEach((c, i) => F(c, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35, ease: "back.out(1.6)" }, 16.3 + i * 0.08));
+[["#c1", "#B8FF4F", 17.15], ["#c2", "#FF8A3D", 20.25], ["#c3", "#ECECE4", 22.85]].forEach(([c, col, t]) =>
+  F(c, { backgroundColor: "#141513", color: "#B4B4AC", borderColor: "#2A2B27" }, { backgroundColor: col, color: "#0A0A0A", borderColor: col, duration: 0.25, ease: "power2.out" }, t));
+OUT("#chips", 23.1);
+// 5. o resultado
+const h5 = lines("h5", 190, [["sm", [["Agora", 23.46], ["ele", 23.96], ["tem", 24.16], ["um", 24.32]]], ["huge", [["motivo", 24.44, "lm"]]], ["serif", [["pra", 25.06], ["te", 25.24], ["responder.", 25.36]]]]);
+F("#glow", { opacity: 1, scale: 1 }, { opacity: 2.2, scale: 1.15, duration: 0.6, yoyo: true, repeat: 1, ease: "sine.inOut" }, 24.44);
+OUT(h5, 26.0);
+// 6. assinatura
+const h6 = lines("h6", 640, [["sm", [["Manda", 26.42], ["esse", 26.6], ["vídeo", 26.86], ["pro", 27.1]]], ["huge", [["corretor", 27.26]]], ["serif", [["que", 27.8], ["responde", 27.92], ["“sim”", 28.62, "rd"]]], ["serif", [["o", 28.88], ["dia", 29.1], ["inteiro.", 29.3]]]]);
+OUT(h6, 29.75);
+F("#sym", { opacity: 0, scale: 0.3, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.7)" }, 29.98);
+F("#sym", { rotation: 0 }, { rotation: 8, duration: 2, ease: "sine.inOut" }, 30.7);
+F("#kw", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 30.15);
+F("#kl", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 30.35);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 30.6);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 31.25);
+
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl.set({}, {}, DUR);
+window.__timelines["main"] = tl;
+</script>
+</body></html>

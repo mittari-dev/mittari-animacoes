@@ -1,0 +1,11 @@
+{
+  "name": "o01-voce-nao-precisa-de-mais-clientes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.206 preview",
+    "check": "npx --yes hyperframes@0.8.206 check",
+    "render": "npx --yes hyperframes@0.8.206 render",
+    "publish": "npx --yes hyperframes@0.8.206 publish"
+  }
+}

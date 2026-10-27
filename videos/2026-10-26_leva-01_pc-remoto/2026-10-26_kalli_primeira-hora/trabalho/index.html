@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --dim:#8E8E86; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#070707; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 45%, #121410 0%, #0a0a0a 55%, #050505 100%); }
+#glow { position:absolute; left:90px; top:530px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.09) 0%, rgba(184,255,79,0) 62%); }
+#world { position:absolute; inset:0; }
+
+/* ---------- letra ---------- */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:500 50px/1.25 Inter; color:#A4A49C; margin-bottom:6px; }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.huge { font-family:Archivo; font-weight:900; font-size:170px; line-height:0.9; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:88px; line-height:1.05; letter-spacing:-0.01em; color:var(--off); margin-top:4px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:var(--red); }
+.lr { color:var(--lar); }
+#hook { position:absolute; left:0; top:200px; width:1080px; text-align:center; }
+#seven { font:900 400px/0.9 Archivo; letter-spacing:-0.05em; color:var(--lima); }
+#hooks { width:640px; margin:18px auto 0; font:500 50px/1.25 Inter; color:#C8C8C0; }
+
+/* ---------- pesquisa ---------- */
+#res { position:absolute; inset:0; opacity:0; }
+#card { position:absolute; left:70px; top:230px; width:940px; height:320px; border-radius:36px; background:#121311; border:2px solid #2A2B26; }
+#card span { position:absolute; left:44px; top:40px; font:500 40px Inter; color:#A4A49C; }
+#card b { opacity:0; position:absolute; left:44px; top:96px; width:860px; font:900 72px/0.95 Archivo; letter-spacing:-0.03em; text-transform:uppercase; color:var(--off); }
+#card i { position:absolute; left:44px; top:254px; font:600 32px Inter; font-style:normal; color:var(--lima); }
+#dots { position:absolute; left:60px; top:620px; width:960px; height:520px; }
+#dcap { position:absolute; left:0; top:1170px; width:1080px; text-align:center; font:600 38px Inter; color:#C8C8C0; opacity:0; }
+
+/* ---------- relógio ---------- */
+#clock { position:absolute; left:0; top:0; width:1080px; height:1920px; opacity:0.32; }
+#clab { position:absolute; left:0; top:900px; width:1080px; text-align:center; font:900 150px/1 Archivo; letter-spacing:-0.04em; color:var(--lima); opacity:0; }
+#clab span, #clab2 span { display:inline-block; padding:6px 30px 0; border-radius:40px; background:#121311; box-shadow:0 0 0 8px #121311; }
+#clab2 { position:absolute; left:0; top:900px; width:1080px; text-align:center; font:900 150px/1 Archivo; letter-spacing:-0.04em; color:#8E8E86; opacity:0; }
+#pills { position:absolute; left:70px; top:1335px; width:940px; height:70px; display:flex; gap:16px; justify-content:center; }
+.pill { height:70px; border-radius:35px; padding:0 26px; font:800 32px/70px Inter; opacity:0; white-space:nowrap; }
+#src { position:absolute; left:0; top:1440px; width:1080px; text-align:center; font:500 28px Inter; color:#9A9A92; opacity:0; }
+
+/* ---------- agenda ---------- */
+#ag { position:absolute; left:140px; top:560px; width:800px; height:860px; border-radius:40px; background:#10110F; border:2px solid #24251F; opacity:0; }
+#ag .hd { position:absolute; left:40px; top:26px; font:800 42px Inter; color:var(--off); }
+#ag .hd2 { position:absolute; right:40px; top:34px; font:600 30px Inter; color:#A4A49C; }
+.hr { position:absolute; left:0; width:800px; height:84px; border-top:1px solid #1E1F1B; }
+.hr span { position:absolute; left:36px; top:24px; font:600 30px Inter; color:#9A9A92; }
+.blk { position:absolute; left:150px; width:610px; border-radius:18px; padding:0 26px; font:800 34px Inter; opacity:0; }
+#vis { top:186px; height:76px; line-height:76px; background:rgba(184,255,79,0.12); border:3px solid var(--lima); color:var(--lima); }
+#pla { top:522px; height:328px; padding-top:22px; background:rgba(255,138,61,0.12); border:3px solid var(--lar); color:var(--lar); }
+#zoom { position:absolute; left:290px; top:746px; width:610px; height:76px; border-radius:18px; background:#12160C; border:3px solid var(--lima); opacity:0; overflow:hidden; }
+#zoom .zh { position:absolute; left:40px; top:30px; font:800 38px Inter; color:var(--lima); white-space:nowrap; opacity:0; }
+.mr { position:absolute; left:40px; width:820px; height:150px; opacity:0; }
+.mr b { position:absolute; left:0; top:0; height:66px; padding:0 26px; border-radius:24px; border-top-left-radius:6px; background:#1E1F1C; font:600 34px/66px Inter; color:var(--off); white-space:nowrap; }
+.mr span { position:absolute; left:4px; top:82px; font:700 32px Inter; color:var(--lima); white-space:nowrap; opacity:0; }
+
+/* ---------- fim ---------- */
+#sym { position:absolute; left:430px; top:560px; width:220px; height:215px; opacity:0; }
+#e1 { position:absolute; left:0; top:820px; width:1080px; text-align:center; font:900 120px Archivo; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+#e2 { position:absolute; left:0; top:950px; width:1080px; text-align:center; font-family:"Instrument Serif"; font-style:italic; font-size:96px; color:var(--off); }
+#cta { position:absolute; left:0; top:1120px; width:1080px; display:flex; justify-content:center; opacity:0; }
+.btn { display:flex; align-items:center; background:var(--lima); color:#0A0A0A; font:800 44px Inter; border-radius:60px; padding:26px 50px; }
+
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.05; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="42" data-fps="60">
+  <div id="bg"></div>
+  <div id="glow"></div>
+  <div id="world" data-layout-allow-overlap>
+    <svg id="clock" viewBox="0 0 1080 1920" data-layout-allow-overflow>
+      <circle cx="540" cy="980" r="300" fill="#121311" stroke="#2A2B26" stroke-width="4"/>
+      <g id="ticks"></g>
+      <path id="ringA" d="" fill="none" stroke="#B8FF4F" stroke-width="40" stroke-linecap="butt"/>
+      <path id="ringB" d="" fill="none" stroke="#3A3B35" stroke-width="40" stroke-linecap="butt"/>
+      <line id="hand" x1="540" y1="980" x2="540" y2="740" stroke="#ECECE4" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="540" cy="980" r="16" fill="#ECECE4"/>
+    </svg>
+    <div id="clab"><span>7×</span></div>
+    <div id="clab2"><span>1×</span></div>
+    <div id="pills">
+      <div class="pill" id="p1" style="background:#B8FF4F;color:#0A0A0A">1ª hora: 7×</div>
+      <div class="pill" id="p2" style="background:#2A2B27;color:#ECECE4">2ª hora: 1×</div>
+      <div class="pill" id="p3" style="background:#FF5A5E;color:#0A0A0A">1 dia: 60× menos</div>
+    </div>
+    <div id="src">Fonte: Oldroyd, McElheran e Elkington · HBR, mar. 2011 · EUA</div>
+    <div id="res">
+      <div id="card"><span>Pesquisa publicada na</span><b>Harvard Business Review</b><i>EUA · 2011</i></div>
+      <canvas id="dots" width="960" height="520"></canvas>
+      <div id="dcap">1,25 milhão de contatos · 42 empresas</div>
+    </div>
+    <div id="ag">
+      <div class="hd">Hoje</div><div class="hd2">sua agenda</div>
+      <div id="hours"></div>
+      <div class="blk" id="vis">Visita · 1 h</div>
+      <div class="blk" id="pla">Plantão · a tarde toda</div>
+    </div>
+    <div id="zoom">
+      <div class="zh">Durante a visita · 10:00–11:00</div>
+      <div class="mr" id="m1" style="top:110px"><b>Ainda está disponível?</b><span>✓ Kalli respondeu em 3 s</span></div>
+      <div class="mr" id="m2" style="top:290px"><b>Aceita financiamento?</b><span>✓ Kalli respondeu em 5 s</span></div>
+      <div class="mr" id="m3" style="top:470px"><b>Dá pra visitar sábado?</b><span>✓ Kalli respondeu em 4 s</span></div>
+    </div>
+  </div>
+  <div id="type">
+    <div id="hook"><div id="seven">7×</div><div id="hooks">a diferença de responder na primeira hora</div></div>
+  </div>
+  <img id="sym" src="assets/simbolo-lima.png" alt="" />
+  <div id="e1"></div>
+  <div id="e2"></div>
+  <div id="cta"><div class="btn">Link na bio</div></div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="39.84" data-volume="1"></audio>
+  <audio id="a-trilha" src="assets/trilha.mp3" data-start="0" data-duration="42" data-volume="0.55"></audio>
+  <audio id="a-i0" src="assets/sfx-impacto.mp3" data-start="0.02" data-duration="2" data-volume="0.6"></audio>
+  <audio id="a-t0" src="assets/sfx-tick.mp3" data-start="0.1" data-duration="2.2" data-volume="0.35"></audio>
+  <audio id="a-w0" src="assets/sfx-whoosh.mp3" data-start="2.15" data-duration="1.5" data-volume="0.45"></audio>
+  <audio id="a-p0" src="assets/sfx-pop.mp3" data-start="6.5" data-duration="0.4" data-volume="0.4"></audio>
+  <audio id="a-w1" src="assets/sfx-whoosh.mp3" data-start="9.4" data-duration="1.5" data-volume="0.45"></audio>
+  <audio id="a-t1" src="assets/sfx-tick.mp3" data-start="10.5" data-duration="1.3" data-volume="0.45"></audio>
+  <audio id="a-s1" src="assets/sfx-snap.mp3" data-start="12.64" data-duration="0.5" data-volume="0.55"></audio>
+  <audio id="a-t2" src="assets/sfx-tick.mp3" data-start="17.6" data-duration="1.5" data-volume="0.4"></audio>
+  <audio id="a-sp" src="assets/sfx-giro.mp3" data-start="19.85" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-i1" src="assets/sfx-impacto.mp3" data-start="22.98" data-duration="2" data-volume="0.7"></audio>
+  <audio id="a-w2" src="assets/sfx-whoosh.mp3" data-start="24.85" data-duration="1.5" data-volume="0.5"></audio>
+  <audio id="a-s2" src="assets/sfx-snap.mp3" data-start="27.36" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-s3" src="assets/sfx-snap.mp3" data-start="29.4" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-w3" src="assets/sfx-whoosh.mp3" data-start="31.65" data-duration="1.5" data-volume="0.5"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="32.4" data-duration="0.9" data-volume="0.45"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="33.4" data-duration="0.9" data-volume="0.45"></audio>
+  <audio id="a-n3" src="assets/sfx-notif.mp3" data-start="34.4" data-duration="0.9" data-volume="0.45"></audio>
+  <audio id="a-p9" src="assets/sfx-pop.mp3" data-start="36.85" data-duration="0.4" data-volume="0.55"></audio>
+  <audio id="a-s9" src="assets/sfx-snap.mp3" data-start="39.04" data-duration="0.5" data-volume="0.45"></audio>
+</div>
+<script>
+const DUR = 42;
+let seed = 20261029;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.3, ease: "power2.in" }, at);
+const IN = (el, at, d = 0.45) => F(el, { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: d, ease: "back.out(1.5)" }, at);
+
+// tempos de cada palavra: ElevenLabs Scribe sobre a narração (voz Sandro Dutra)
+function lines(id, top, rows, host = "#type") {
+  const ln = document.createElement("div"); ln.className = "ln"; ln.id = id; ln.style.top = top + "px";
+  rows.forEach(([cls, ws]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    ws.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = cls !== "sm";
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.5 : 0.4, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $(host).appendChild(ln);
+  return ln;
+}
+function centered(sel, ws) {
+  const el = $(sel);
+  ws.forEach(([w, t, extra]) => {
+    const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; el.appendChild(s);
+    F(s, { opacity: 0, yPercent: 45, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.5)" }, t - 0.04);
+  });
+}
+
+// ---------------- câmera ----------------
+F("#world", { transformPerspective: 2400, rotationX: 3, rotationY: -2, scale: 1 }, { rotationX: -2, rotationY: 2, scale: 1.03, duration: DUR, ease: "none" }, 0);
+F("#type", { x: 0 }, { x: -14, duration: DUR, ease: "none" }, 0);
+
+// ---------------- relógio: tudo calculado a partir do tempo ----------------
+const CX = 540, CY = 980;
+const ticks = $("#ticks");
+for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6; const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  l.setAttribute("x1", CX + Math.sin(a) * 250); l.setAttribute("y1", CY - Math.cos(a) * 250); l.setAttribute("x2", CX + Math.sin(a) * (i % 3 ? 232 : 214)); l.setAttribute("y2", CY - Math.cos(a) * (i % 3 ? 232 : 214));
+  l.setAttribute("stroke", "#5A5B55"); l.setAttribute("stroke-width", i % 3 ? 5 : 9); l.setAttribute("stroke-linecap", "round"); ticks.appendChild(l); }
+function arc(r, a0, a1) {
+  if (a1 - a0 < 0.1) return "";
+  if (a1 - a0 >= 359.9) a1 = a0 + 359.9;
+  const p = (a) => [CX + Math.sin(a * Math.PI / 180) * r, CY - Math.cos(a * Math.PI / 180) * r];
+  const [x0, y0] = p(a0), [x1, y1] = p(a1);
+  return "M" + x0 + " " + y0 + " A" + r + " " + r + " 0 " + (a1 - a0 > 180 ? 1 : 0) + " 1 " + x1 + " " + y1;
+}
+const ringA = $("#ringA"), ringB = $("#ringB"), hand = $("#hand");
+function clockAt(t) {
+  const A = 360 * ease(seg(t, 10.56, 11.66));        // a primeira hora, em lima
+  const B = 360 * ease(seg(t, 17.66, 19.0));         // a segunda hora, escura
+  const spin = 360 * 6 * ease(seg(t, 19.9, 21.6));   // o dia inteiro passando
+  const hand0 = t < 9.6 ? t * 25 : 240;
+  const ang = (hand0 + A + B + spin) % 360;
+  ringA.setAttribute("d", arc(270, 240, 240 + A));
+  ringB.setAttribute("d", arc(222, 240, 240 + B));
+  hand.setAttribute("transform", "rotate(" + ang.toFixed(2) + " " + CX + " " + CY + ")");
+}
+const ck = { t: 0 };
+F(ck, { t: 0 }, { t: DUR, duration: DUR, ease: "none", onUpdate: () => clockAt(ck.t) }, 0);
+clockAt(0);
+F("#clock", { opacity: 0.32 }, { opacity: 0, duration: 0.4 }, 2.2);
+F("#clock", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.6, ease: "expo.out", transformOrigin: "540px 980px" }, 9.5);
+F("#clock", { opacity: 1 }, { opacity: 0.35, duration: 0.5 }, 22.0);
+F("#clock", { opacity: 0.35, scale: 1 }, { opacity: 0, scale: 0.4, duration: 0.5, ease: "power3.in", transformOrigin: "540px 980px" }, 24.85);
+
+// ---------------- 1. gancho: escrito no quadro 1 ----------------
+F("#seven", { scale: 1 }, { scale: 1.06, duration: 2.0, ease: "none" }, 0);
+OUT("#hook", 2.15);
+
+// ---------------- 2. a pesquisa ----------------
+F("#res", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 2.3);
+F("#card", { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.5)" }, 2.35);
+F("#card b", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.8);
+const dc = $("#dots").getContext("2d");
+const DOTS = []; for (let r = 0; r < 20; r++) for (let c = 0; c < 40; c++) DOTS.push([12 + c * 24, 12 + r * 26, Math.hypot(c - 19.5, (r - 9.5) * 1.1) / 22 + rnd() * 0.12]);
+function dotsAt(t) {
+  dc.clearRect(0, 0, 960, 520);
+  DOTS.forEach(([x, y, d]) => { const a = clamp((t - 6.45 - d * 1.3) / 0.25); if (a <= 0) return; dc.globalAlpha = a * 0.9; dc.fillStyle = "#B8FF4F"; dc.beginPath(); dc.arc(x, y, 5 + (1 - a) * 4, 0, 7); dc.fill(); });
+  dc.globalAlpha = 1;
+}
+const dk = { t: 0 };
+F(dk, { t: 6.0 }, { t: 9.6, duration: 3.6, ease: "none", onUpdate: () => dotsAt(dk.t) }, 6.0);
+F("#dcap", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 6.7);
+F("#res", { opacity: 1, scale: 1, filter: "blur(0px)" }, { opacity: 0, scale: 0.94, filter: "blur(10px)", duration: 0.4, ease: "power2.in" }, 9.35);
+
+// ---------------- 3. a mecânica: a primeira hora ----------------
+const h3 = lines("h3", 230, [["sm", [["Quem", 9.82], ["respondeu", 9.98], ["dentro", 10.56], ["de", 10.94]]], ["big", [["uma", 11.12, "lm"], ["hora", 11.38, "lm"]]], ["serif", [["mais", 13.64], ["chance", 13.92], ["de", 14.3], ["conversa", 14.76], ["de", 15.26], ["verdade.", 15.4]]]]);
+OUT(h3, 16.85);
+F("#clab", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, 12.62);
+F("#clab", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.6, duration: 0.3, ease: "power2.in" }, 18.3);
+F("#clab2", { opacity: 0, scale: 1.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 18.4);
+F("#clab2", { opacity: 1 }, { opacity: 0, duration: 0.3 }, 19.85);
+F("#p1", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, 12.7);
+F("#p2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, 18.45);
+F("#p3", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: "back.out(2)" }, 23.02);
+F("#src", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 10.0);
+F(["#pills", "#src"], { opacity: 1 }, { opacity: 0, duration: 0.35 }, 24.85);
+const h3b = lines("h3b", 230, [["sm", [["do", 17.2], ["que", 17.34], ["quem", 17.48], ["respondeu", 17.66]]], ["big", [["1", 18.4], ["hora", 18.66], ["depois.", 18.88]]]]);
+OUT(h3b, 19.6);
+
+// ---------------- 4. o dia inteiro ----------------
+const h4 = lines("h4", 230, [["sm", [["Esperar", 19.9], ["um", 20.42], ["dia", 20.62], ["inteiro?", 20.8]]], ["sm", [["Mais", 22.04], ["de", 22.32]]], ["huge", [["60×", 23.0, "rd"]]], ["serif", [["menos.", 23.78]]]]);
+OUT(h4, 24.85);
+
+// ---------------- 5. a ponte: o seu dia ----------------
+const HRS = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+HRS.forEach((h, i) => { const r = document.createElement("div"); r.className = "hr"; r.style.top = (100 + i * 84) + "px"; r.innerHTML = "<span>" + h + "</span>"; $("#hours").appendChild(r); });
+const h5 = lines("h5", 230, [["sm", [["Agora,", 25.08], ["pensa", 25.78], ["no", 26.06]]], ["big", [["seu", 26.2], ["dia.", 26.4, "lm"]]]]);
+OUT(h5, 31.6);
+F("#ag", { opacity: 0, scale: 0.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.4)" }, 25.1);
+F("#vis", { opacity: 0, scaleX: 0.2, transformOrigin: "0% 50%" }, { opacity: 1, scaleX: 1, duration: 0.45, ease: "back.out(1.6)" }, 27.38);
+F("#pla", { opacity: 0, scaleY: 0.1, transformOrigin: "50% 0%" }, { opacity: 1, scaleY: 1, duration: 0.6, ease: "back.out(1.3)" }, 29.42);
+F("#ag", { opacity: 1 }, { opacity: 0.0, duration: 0.45 }, 31.75);
+
+// ---------------- 6. o pouso: dentro da hora da visita ----------------
+F("#zoom", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 31.7);
+F("#zoom", { left: 290, top: 746, width: 610, height: 76 }, { left: 90, top: 560, width: 900, height: 820, duration: 0.6, ease: "power3.inOut" }, 31.72);
+F("#zoom .zh", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 32.2);
+const h6 = lines("h6", 230, [["sm", [["A", 31.86], ["Kalli", 32.06], ["responde", 32.44]]], ["big", [["em", 32.92, "lm"], ["segundos.", 33.12, "lm"]]]]);
+[["#m1", 32.44, 33.1], ["#m2", 33.44, 34.1], ["#m3", 34.44, 35.1]].forEach(([m, a, b]) => {
+  F(m, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.4, ease: "back.out(1.6)" }, a);
+  F(m + " span", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }, b);
+});
+OUT(h6, 36.6);
+F("#zoom", { opacity: 1, scale: 1, filter: "blur(0px)" }, { opacity: 0, scale: 0.9, filter: "blur(12px)", duration: 0.4, ease: "power3.in" }, 36.6);
+
+// ---------------- 7. assinatura ----------------
+F("#sym", { opacity: 0, scale: 0.3, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.7)" }, 36.85);
+F("#sym", { rotation: 0 }, { rotation: 10, duration: 3, ease: "sine.inOut" }, 37.6);
+centered("#e1", [["Teste", 36.84], ["7", 37.3, "lm"], ["dias", 37.64]]);
+centered("#e2", [["de", 38.2], ["graça.", 38.32]]);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 39.04);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 40.0);
+
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl.set({}, {}, DUR);
+window.__timelines["main"] = tl;
+</script>
+</body></html>

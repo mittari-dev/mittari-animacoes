@@ -18,6 +18,14 @@ Todos os vídeos animados e as peças gráficas da Mittari: o arquivo pronto, o 
 | 07/10/2026 | [Curioso e comprador](videos/2026-10-07_kalli_curioso-e-comprador/) (primeira versão) | Kalli | 24 s | 16:9 | Sim |
 | 07/10/2026 | [Curioso e comprador, filme 3D](videos/2026-10-07_kalli_curioso-e-comprador-3d/) | Kalli | 50 a 65 s | 16:9 e 9:16 | Sim, sem a trilha final |
 | 08/10/2026 | [Triagem](videos/2026-10-08_kalli_triagem/) | Kalli | 49,6 s | 9:16 | Sim |
+| 26/10/2026 | [Nunca responda só "sim"](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_nunca-responda-so-sim/) (T02) | Kalli | 33 s | 9:16 | Sim, em aprovação |
+| 26/10/2026 | [Você não precisa de mais clientes](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_voce-nao-precisa-de-mais-clientes/) (O01) | Kalli | 28,4 s | 9:16 | Sim, em aprovação |
+| 26/10/2026 | [As 4 perguntas](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_4-perguntas/) (T01) | Kalli | 39 s | 9:16 | Sim, em aprovação |
+| 26/10/2026 | [A conta da primeira hora](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_primeira-hora/) (E02) | Kalli | 42 s | 9:16 | Sim, em aprovação |
+| 26/10/2026 | [A torre de controle](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_torre-de-controle/) (U09) | Kalli | 47 s | 9:16 | Sim, em aprovação |
+| 26/10/2026 | [Parece que você tem uma equipe](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_parece-uma-equipe/) (H5) | Kalli | — | 9:16 | Não, pela metade |
+
+Os vídeos de 26/10/2026 ficam juntos em [videos/2026-10-26_leva-01_pc-remoto/](videos/2026-10-26_leva-01_pc-remoto/): a Leva 01, feita no PC remoto.
 
 O ImobiFlow passou a se chamar **Kalli** em 02/10/2026. Os vídeos anteriores ainda mostram o nome antigo.
 

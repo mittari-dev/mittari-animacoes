@@ -1,0 +1,26 @@
+◆  Capturing 10 frames at [0s, 4.5s, 8.5s, 13.5s, 18.9s, 23.6s, 28s, 30.5s, 34.8s, 39.5s] from trabalho
+[hyperframes] browserGpuMode probe → hardware (WebGL renderer vendor="Google Inc. (Intel)" renderer="ANGLE (Intel, Intel(R) UHD Graphics 770 (0x00004680) Direct3D11 vs_5_0 ps_5_0, D3D11)")
+
+   Fonts: 3 loaded
+   Note: added an end-of-timeline frame at 40.74s. Short beats between your --at times may still be skipped — pass them explicitly.
+   Revision: none (inputs-changed)
+   State: C:\Users\Usuário\Downloads\mittari-animacoes\videos\2026-10-26_kalli_primeira-hora\trabalho\.hyperframes\video-state.json
+
+◇  11 snapshots saved to C:\Users\Usuário\Downloads\mittari-animacoes\videos\2026-10-26_kalli_primeira-hora\trabalho\.hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-00-at-0s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-01-at-4.5s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-02-at-8.5s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-03-at-13.5s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-04-at-18.9s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-05-at-23.6s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-06-at-28s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-07-at-30.5s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-08-at-34.8s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-09-at-39.5s.png
+   .hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\frame-10-at-40.74s.png
+   C:\Users\Usuário\Downloads\mittari-animacoes\videos\2026-10-26_kalli_primeira-hora\trabalho\.hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\contact-sheet-1.jpg (grid view for AI review)
+   C:\Users\Usuário\Downloads\mittari-animacoes\videos\2026-10-26_kalli_primeira-hora\trabalho\.hyperframes\artifacts\snapshots\83686f2f-66b4-4dd1-bfd0-0379965ae644\contact-sheet-2.jpg (grid view for AI review)
+
+  7 HyperFrames skills out of date or missing.
+  Run: npx hyperframes skills update
+

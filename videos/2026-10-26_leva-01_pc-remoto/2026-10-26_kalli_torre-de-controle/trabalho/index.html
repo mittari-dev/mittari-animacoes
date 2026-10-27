@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --ink:#101010; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#ECECE4; }
+#paper { position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 50%, #F4F4EE 0%, #ECECE4 55%, #DCDCD2 100%); }
+#night { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 45%, #131611 0%, #0a0a0a 55%, #050505 100%); opacity:0; }
+#glow { position:absolute; left:90px; top:520px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.1) 0%, rgba(184,255,79,0) 62%); opacity:0; }
+#world { position:absolute; inset:0; }
+#rad, #rad2 { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#rad2 { opacity:0; }
+
+/* ---------- letra ---------- */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:500 50px/1.25 Inter; color:#A4A49C; margin-bottom:6px; }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:88px; line-height:1.05; letter-spacing:-0.01em; color:var(--off); margin-top:4px; }
+.lt .sm { color:#4A4A45; }
+.lt .big, .lt .serif { color:var(--ink); }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:var(--red); }
+.or { color:#D9520F; }
+#h1 { top:230px; }
+#h1 .w { opacity:1; }
+#h1 .big { font-size:100px; }
+.tm { font:800 30px Inter; fill:#D9520F; }
+
+/* ---------- WhatsApp ---------- */
+#typ { position:absolute; left:400px; top:940px; width:280px; height:120px; border-radius:60px; background:#1E1F1C; display:flex; align-items:center; justify-content:center; gap:22px; opacity:0; }
+#typ i { width:30px; height:30px; border-radius:50%; background:#9A9A92; }
+#list { position:absolute; left:90px; top:640px; width:900px; height:820px; border-radius:40px; background:#10110F; border:2px solid #24251F; overflow:hidden; opacity:0; }
+.lh { position:absolute; left:40px; top:28px; font:800 42px Inter; color:var(--off); }
+.vis { position:absolute; right:34px; top:26px; height:54px; border-radius:27px; padding:0 22px; background:#2A1D12; font:700 28px/54px Inter; color:var(--lar); }
+.cr { position:absolute; left:0; width:900px; height:140px; border-top:1px solid #1E1F1B; }
+.cr .av { position:absolute; left:36px; top:34px; width:72px; height:72px; border-radius:50%; background:#22231F; font:800 32px/72px Inter; text-align:center; color:#B4B4AC; }
+.cr b { position:absolute; left:132px; top:30px; font:700 34px Inter; color:var(--off); }
+.cr span { position:absolute; left:132px; top:78px; font:500 30px Inter; color:#A4A49C; }
+.cr em { position:absolute; right:36px; top:32px; font:500 28px Inter; font-style:normal; color:#A4A49C; }
+.cr .no { position:absolute; right:36px; top:74px; height:42px; border-radius:21px; padding:0 16px; background:var(--red); font:800 28px/42px Inter; color:#0A0A0A; opacity:0; }
+.gone { position:absolute; left:132px; font-family:"Instrument Serif"; font-style:italic; font-size:52px; color:#6E6E68; opacity:0; }
+
+/* ---------- o controle ---------- */
+.obw { position:absolute; left:0; top:0; width:280px; height:64px; }
+#orbsvg { position:absolute; left:0; top:0; width:1080px; height:1920px; opacity:0; }
+.ob { position:absolute; left:0; top:0; width:280px; height:64px; border-radius:32px; background:#1A1B18; border:3px solid #34352F; opacity:0; }
+.ob i { position:absolute; left:8px; top:7px; width:44px; height:44px; border-radius:50%; background:#2A2B27; font:800 24px/44px Inter; font-style:normal; text-align:center; color:var(--off); }
+.ob span { position:absolute; left:62px; top:0; font:700 28px/58px Inter; color:#8E8E86; white-space:nowrap; }
+#card { position:absolute; left:70px; top:1240px; width:940px; height:250px; border-radius:36px; background:#1C1C1A; border:4px solid var(--lima); opacity:0; }
+#card .ck { position:absolute; left:34px; top:34px; width:64px; height:64px; border-radius:50%; background:var(--lima); }
+#card .ck svg { position:absolute; left:14px; top:16px; width:36px; height:32px; }
+#card b { position:absolute; left:120px; top:38px; font:800 46px Inter; color:var(--off); }
+#card .l1 { position:absolute; left:120px; top:110px; font:600 30px Inter; color:#C8C8C0; white-space:nowrap; }
+#card .l2 { position:absolute; left:120px; top:162px; font:500 28px Inter; color:#A4A49C; white-space:nowrap; }
+
+/* ---------- fim ---------- */
+#sym { position:absolute; left:485px; top:647px; width:110px; height:107px; opacity:0; }
+#e1 { position:absolute; left:0; top:1020px; width:1080px; text-align:center; font:900 120px Archivo; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+#e2 { position:absolute; left:0; top:1150px; width:1080px; text-align:center; font-family:"Instrument Serif"; font-style:italic; font-size:96px; color:var(--off); }
+#cta { position:absolute; left:0; top:1310px; width:1080px; display:flex; justify-content:center; opacity:0; }
+.btn { display:flex; align-items:center; background:var(--lima); color:#0A0A0A; font:800 44px Inter; border-radius:60px; padding:26px 50px; }
+
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.06; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.25) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="47" data-fps="60">
+  <div id="paper"></div>
+  <div id="night"></div>
+  <div id="glow"></div>
+  <div id="world" data-layout-allow-overlap>
+    <svg id="rad" viewBox="0 0 1080 1920" data-layout-allow-overflow>
+      <defs><linearGradient id="sw" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#101010" stop-opacity="0"/><stop offset="1" stop-color="#101010" stop-opacity="0.16"/></linearGradient></defs>
+      <g stroke="#101010" stroke-opacity="0.22" fill="none" stroke-width="2.5">
+        <circle cx="540" cy="1000" r="140"/><circle cx="540" cy="1000" r="280"/><circle cx="540" cy="1000" r="420"/>
+        <path d="M120 1000 H960 M540 580 V1420"/>
+      </g>
+      <path id="sweep" d="M540 1000 L960 1000 A420 420 0 0 0 837 703 Z" fill="url(#sw)"/>
+      <rect x="150" y="1452" width="780" height="56" rx="10" fill="#2A2B27"/>
+      <path d="M180 1480 H900" stroke="#ECECE4" stroke-width="4" stroke-dasharray="26 22"/>
+      <text x="160" y="1440" font-family="Inter" font-weight="700" font-size="30" fill="#4A4A45">PISTA</text>
+      <path id="oval" d="M360 870 H720 A130 130 0 0 1 720 1130 H360 A130 130 0 0 1 360 870 Z" fill="none" stroke="#101010" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="14 12"/>
+      <path id="ovalHi" d="M360 870 H720 A130 130 0 0 1 720 1130 H360 A130 130 0 0 1 360 870 Z" fill="none" stroke="#D9520F" stroke-width="7" stroke-dasharray="1537" stroke-dashoffset="1537"/>
+      <g id="fix" opacity="0"><path d="M360 846 L380 880 L340 880 Z" fill="#D9520F"/><circle cx="360" cy="870" r="30" fill="none" stroke="#D9520F" stroke-width="4"/></g>
+      <text id="t1" class="tm" x="540" y="852" text-anchor="middle" opacity="0">1:00</text>
+      <text id="t2" class="tm" x="540" y="1172" text-anchor="middle" opacity="0">1:00</text>
+      <g id="planes"></g>
+    </svg>
+    <div id="typ"><i></i><i></i><i></i></div>
+    <div id="list"><div class="lh">Conversas</div><div class="vis">você: em visita</div></div>
+    <div id="orbit"><svg id="orbsvg" viewBox="0 0 1080 1920"><path d="M360 880 H720 A130 130 0 0 1 720 1140 H360 A130 130 0 0 1 360 880 Z" fill="none" stroke="#B8FF4F" stroke-opacity="0.45" stroke-width="4" stroke-dasharray="14 12"/></svg></div>
+    <div id="card"><div class="ck"><svg viewBox="0 0 36 32"><path d="M3 17 L13 27 L33 4" fill="none" stroke="#0A0A0A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><b>Cliente pronto: Ana</b><div class="l1">Quer comprar · apartamento · Braga · até R$ 450.000</div><div class="l2">Prazo: em até 3 meses · Pagamento: financiamento, FGTS</div></div>
+    <svg id="rad2" viewBox="0 0 1080 1920">
+      <g stroke="#B8FF4F" stroke-opacity="0.5" fill="none" stroke-width="3">
+        <circle cx="540" cy="700" r="100"/><circle cx="540" cy="700" r="190"/><circle cx="540" cy="700" r="280"/>
+        <path d="M260 700 H820 M540 420 V980"/>
+      </g>
+      <path id="sweep2" d="M540 700 L820 700 A280 280 0 0 0 738 502 Z" fill="#B8FF4F" fill-opacity="0.16"/>
+    </svg>
+  </div>
+  <div id="type">
+    <div class="ln lt" id="h1">
+      <div class="row big"><span class="w">Por</span><span class="w">que</span><span class="w">eles</span></div>
+      <div class="row big"><span class="w">andam</span><span class="w">em</span></div>
+      <div class="row big"><span class="w or">círculo?</span></div>
+    </div>
+  </div>
+  <img id="sym" src="assets/simbolo-lima.png" alt="" />
+  <div id="e1"></div>
+  <div id="e2"></div>
+  <div id="cta"><div class="btn">Link na bio</div></div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0" data-duration="44.56" data-volume="1"></audio>
+  <audio id="a-trilha" src="assets/trilha.mp3" data-start="0" data-duration="47" data-volume="0.55"></audio>
+  <audio id="a-r0" src="assets/sfx-radar.mp3" data-start="0.05" data-duration="1" data-volume="0.45"></audio>
+  <audio id="a-r1" src="assets/sfx-radar.mp3" data-start="4.05" data-duration="1" data-volume="0.35"></audio>
+  <audio id="a-av1" src="assets/sfx-aviao.mp3" data-start="4.2" data-duration="2" data-volume="0.5"></audio>
+  <audio id="a-s1" src="assets/sfx-snap.mp3" data-start="8.34" data-duration="0.5" data-volume="0.45"></audio>
+  <audio id="a-r2" src="assets/sfx-radar.mp3" data-start="10.66" data-duration="1" data-volume="0.4"></audio>
+  <audio id="a-p1" src="assets/sfx-pop.mp3" data-start="12.36" data-duration="0.4" data-volume="0.45"></audio>
+  <audio id="a-r3" src="assets/sfx-radar.mp3" data-start="16.88" data-duration="1" data-volume="0.35"></audio>
+  <audio id="a-av2" src="assets/sfx-aviao.mp3" data-start="18.6" data-duration="2" data-volume="0.55"></audio>
+  <audio id="a-w1" src="assets/sfx-whoosh.mp3" data-start="21.3" data-duration="1.5" data-volume="0.55"></audio>
+  <audio id="a-n1" src="assets/sfx-notif.mp3" data-start="25.5" data-duration="0.9" data-volume="0.35"></audio>
+  <audio id="a-n2" src="assets/sfx-notif.mp3" data-start="25.9" data-duration="0.9" data-volume="0.3"></audio>
+  <audio id="a-g0" src="assets/sfx-saindo.mp3" data-start="29.2" data-duration="0.8" data-volume="0.5"></audio>
+  <audio id="a-g1" src="assets/sfx-saindo.mp3" data-start="29.42" data-duration="0.8" data-volume="0.45"></audio>
+  <audio id="a-g2" src="assets/sfx-saindo.mp3" data-start="29.64" data-duration="0.8" data-volume="0.45"></audio>
+  <audio id="a-g3" src="assets/sfx-saindo.mp3" data-start="29.86" data-duration="0.8" data-volume="0.45"></audio>
+  <audio id="a-g4" src="assets/sfx-saindo.mp3" data-start="30.08" data-duration="0.8" data-volume="0.45"></audio>
+  <audio id="a-i1" src="assets/sfx-impacto.mp3" data-start="32.8" data-duration="2" data-volume="0.55"></audio>
+  <audio id="a-p2" src="assets/sfx-pop.mp3" data-start="33.64" data-duration="0.4" data-volume="0.35"></audio>
+  <audio id="a-p3" src="assets/sfx-pop.mp3" data-start="33.94" data-duration="0.4" data-volume="0.35"></audio>
+  <audio id="a-p4" src="assets/sfx-pop.mp3" data-start="34.24" data-duration="0.4" data-volume="0.35"></audio>
+  <audio id="a-vb" src="assets/sfx-vibra.mp3" data-start="37.66" data-duration="1" data-volume="0.6"></audio>
+  <audio id="a-n3" src="assets/sfx-notif.mp3" data-start="37.7" data-duration="0.9" data-volume="0.75"></audio>
+  <audio id="a-w2" src="assets/sfx-whoosh.mp3" data-start="41.1" data-duration="1.5" data-volume="0.5"></audio>
+  <audio id="a-r4" src="assets/sfx-radar.mp3" data-start="41.4" data-duration="1" data-volume="0.45"></audio>
+  <audio id="a-s9" src="assets/sfx-snap.mp3" data-start="43.66" data-duration="0.5" data-volume="0.45"></audio>
+</div>
+<script>
+const DUR = 47;
+let seed = 20261030;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const eOut = (x) => 1 - Math.pow(1 - x, 3);
+const lerp = (a, b, x) => a + (b - a) * x;
+
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.3, ease: "power2.in" }, at);
+
+// tempos de cada palavra: ElevenLabs Scribe sobre a narração (voz Sandro Dutra)
+function lines(id, top, rows, light) {
+  const ln = document.createElement("div"); ln.className = "ln" + (light ? " lt" : ""); ln.id = id; ln.style.top = top + "px";
+  rows.forEach(([cls, ws]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    ws.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = cls !== "sm";
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.5 : 0.4, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $("#type").appendChild(ln);
+  return ln;
+}
+function centered(sel, ws) {
+  const el = $(sel);
+  ws.forEach(([w, t, extra]) => {
+    const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; el.appendChild(s);
+    F(s, { opacity: 0, yPercent: 45, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.5)" }, t - 0.04);
+  });
+}
+
+// ---------------- câmera ----------------
+F("#world", { transformPerspective: 2400, rotationX: 4, rotationY: -2, scale: 1 }, { rotationX: -1, rotationY: 2, scale: 1.03, duration: DUR, ease: "none" }, 0);
+F("#type", { x: 0 }, { x: -12, duration: DUR, ease: "none" }, 0);
+
+// ---------------- o circuito de espera: tudo calculado a partir do tempo ----------------
+const CY = 1000, L = 360, R = 130, X0 = 360, P = 2 * L + 2 * Math.PI * R;
+function race(s) { // s em [0,1): posição e rumo no oval (sentido horário)
+  let d = ((s % 1) + 1) % 1 * P;
+  if (d < L) return [X0 + d, CY - R, 90];
+  d -= L; const arc = Math.PI * R;
+  if (d < arc) { const a = -Math.PI / 2 + d / R; return [X0 + L + Math.cos(a) * R, CY + Math.sin(a) * R, 90 + (d / R) * 180 / Math.PI]; }
+  d -= arc;
+  if (d < L) return [X0 + L - d, CY + R, 270];
+  d -= L; const a = Math.PI / 2 + d / R; return [X0 + Math.cos(a) * R, CY + Math.sin(a) * R, 270 + (d / R) * 180 / Math.PI];
+}
+function bez(p0, p1, p2, p3, u) {
+  const m = 1 - u;
+  const x = m * m * m * p0[0] + 3 * m * m * u * p1[0] + 3 * m * u * u * p2[0] + u * u * u * p3[0];
+  const y = m * m * m * p0[1] + 3 * m * m * u * p1[1] + 3 * m * u * u * p2[1] + u * u * u * p3[1];
+  const dx = 3 * m * m * (p1[0] - p0[0]) + 6 * m * u * (p2[0] - p1[0]) + 3 * u * u * (p3[0] - p2[0]);
+  const dy = 3 * m * m * (p1[1] - p0[1]) + 6 * m * u * (p2[1] - p1[1]) + 3 * u * u * (p3[1] - p2[1]);
+  return [x, y, Math.atan2(dy, dx) * 180 / Math.PI + 90];
+}
+const LAP = 9;
+const PLANE = "M0 -30 L6 -10 L28 2 L28 8 L6 3 L4 20 L12 26 L12 30 L0 27 L-12 30 L-12 26 L-4 20 L-6 3 L-28 8 L-28 2 L-6 -10 Z";
+const NS = "http://www.w3.org/2000/svg";
+const pl = {};
+["A", "B", "C", "D", "E"].forEach((k) => { const g = document.createElementNS(NS, "g"); const p = document.createElementNS(NS, "path"); p.setAttribute("d", PLANE); p.setAttribute("fill", "#101010"); g.appendChild(p); $("#planes").appendChild(g); pl[k] = g; });
+const T_EXIT = 18.4, A_EXIT = race(T_EXIT / LAP + 0.25);
+function put(g, x, y, h, op = 1, s = 1) { g.setAttribute("transform", "translate(" + x.toFixed(1) + " " + y.toFixed(1) + ") rotate(" + h.toFixed(1) + ") scale(" + s + ")"); g.setAttribute("opacity", op); }
+function radarAt(t) {
+  $("#sweep").setAttribute("transform", "rotate(" + ((t * 90) % 360).toFixed(1) + " 540 1000)");
+  $("#sweep2").setAttribute("transform", "rotate(" + ((t * 90) % 360).toFixed(1) + " 540 700)");
+  // B e C dão voltas o tempo todo
+  const [bx, by, bh] = race(t / LAP + 0.55); put(pl.B, bx, by, bh);
+  const [cx, cy, ch] = race(t / LAP + 0.85); put(pl.C, cx, cy, ch);
+  // A: o primeiro da fila, sai do oval e pousa
+  if (t < T_EXIT) { const [x, y, h] = race(t / LAP + 0.25); put(pl.A, x, y, h); }
+  else if (t < 19.7) { const u = ease(seg(t, T_EXIT, 19.7)); const [x, y, h] = bez(A_EXIT, [A_EXIT[0] + 220, A_EXIT[1] + 160], [1080, 1480], [900, 1480], u); put(pl.A, x, y, h); }
+  else { const u = eOut(seg(t, 19.7, 20.9)); put(pl.A, lerp(900, 330, u), 1480, 270, 1 - seg(t, 21.0, 21.4)); }
+  // D: entra em espera no "espera"
+  if (t < 8.3) put(pl.D, -80, 640, 120, 0);
+  else if (t < 9.6) { const u = ease(seg(t, 8.3, 9.6)); put(pl.D, lerp(-60, X0, u), lerp(640, CY - R, u), 110 - 20 * u, 1); }
+  else { const [x, y, h] = race((t - 9.6) / LAP); put(pl.D, x, y, h); }
+  // E: o avião que ocupa a pista
+  if (t < 4.2) put(pl.E, 1200, 1480, 270, 0);
+  else { const u = eOut(seg(t, 4.2, 7.2)); put(pl.E, lerp(1180, 260, u), 1480, 270, 1 - seg(t, 7.4, 8.0)); }
+}
+const rk = { t: 0 };
+F(rk, { t: 0 }, { t: DUR, duration: DUR, ease: "none", onUpdate: () => radarAt(rk.t) }, 0);
+radarAt(0);
+
+// ---------------- 1. gancho (escrito no quadro 1) ----------------
+OUT("#h1", 3.9);
+// ---------------- 2. a mecânica ----------------
+const h2 = lines("h2", 230, [["sm", [["Quando", 4.16], ["a", 4.34], ["pista", 4.48], ["está", 4.76], ["ocupada,", 5.02]]], ["big", [["espera.", 8.36, "or"]]], ["serif", [["retas", 12.38], ["de", 12.82], ["1", 12.96], ["min.", 13.08]]]], true);
+OUT(h2, 13.75);
+F("#ovalHi", { strokeDashoffset: 1537 }, { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 9.34);
+F("#ovalHi", { opacity: 1 }, { opacity: 0.35, duration: 0.6 }, 14.0);
+F("#fix", { opacity: 0, scale: 0.4, svgOrigin: "360 870" }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, 10.68);
+F(["#t1", "#t2"], { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.38);
+// ---------------- 3. ele não vai embora ----------------
+const h3 = lines("h3", 230, [["sm", [["Ele", 14.02], ["não", 14.34], ["vai", 14.64], ["embora.", 14.82]]], ["big", [["Sabe", 16.9], ["que", 17.24], ["vai", 17.38]]], ["big", [["pousar.", 17.56, "or"]]]], true);
+OUT(h3, 21.1);
+
+// ---------------- 4. a ponte: o oval vira "digitando…" ----------------
+F("#rad", { scale: 1, opacity: 1, transformOrigin: "540px 1000px" }, { scale: 2.4, opacity: 0, duration: 0.75, ease: "power3.in" }, 21.3);
+F("#night", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 21.35);
+F("#glow", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 21.6);
+F("#grain", { opacity: 0.06 }, { opacity: 0.045, duration: 0.5 }, 21.35);
+F("#typ", { opacity: 0, scaleX: 2.6, scaleY: 2.2 }, { opacity: 1, scaleX: 1, scaleY: 1, duration: 0.6, ease: "back.out(1.4)" }, 21.85);
+document.querySelectorAll("#typ i").forEach((d, i) => F(d, { y: 0 }, { y: -16, duration: 0.3, repeat: 7, yoyo: true, ease: "sine.inOut" }, 22.2 + i * 0.12));
+F("#typ", { opacity: 1, y: 0 }, { opacity: 0, y: -60, duration: 0.35, ease: "power2.in" }, 24.7);
+const h4 = lines("h4", 230, [["sm", [["Agora,", 21.44], ["olha", 22.2], ["o", 22.34], ["seu", 22.44]]], ["big", [["WhatsApp", 22.6, "lm"]]], ["serif", [["enquanto", 23.14], ["você", 23.5], ["está", 23.76], ["numa", 23.98], ["visita.", 24.22]]]]);
+OUT(h4, 24.95);
+
+// ---------------- 5. o mundo do corretor ----------------
+const CHATS = [["J", "Juliana", "Ainda está disponível?", "10:12"], ["M", "Marcos", "Qual o valor?", "10:14"], ["P", "Paula", "Aceita financiamento?", "10:21"], ["D", "Diego", "Dá pra visitar hoje?", "10:33"], ["A", "Ana", "Tem de 2 quartos no Braga?", "10:40"]];
+CHATS.forEach(([ini, nm, msg, hh], i) => {
+  const top = 100 + i * 140;
+  const r = document.createElement("div"); r.className = "cr"; r.style.top = top + "px";
+  r.innerHTML = '<div class="av">' + ini + "</div><b>" + nm + "</b><span>" + msg + "</span><em>" + hh + '</em><div class="no">sem resposta</div>';
+  $("#list").appendChild(r);
+  const g = document.createElement("div"); g.className = "gone"; g.style.top = (top + 40) + "px"; g.textContent = nm + " foi embora."; $("#list").appendChild(g);
+  F(r, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, ease: "expo.out" }, 25.14 + i * 0.12);
+  F(r.querySelector(".no"), { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(2.2)" }, 27.18 + i * 0.1);
+  F(r, { opacity: 1, x: 0 }, { opacity: 0, x: -900, duration: 0.5, ease: "power3.in" }, 29.2 + i * 0.22);
+  F(g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 29.55 + i * 0.22);
+});
+F("#list", { opacity: 0, y: 80, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "expo.out" }, 24.95);
+F("#list", { opacity: 1, scale: 1, filter: "blur(0px)" }, { opacity: 0, scale: 0.9, filter: "blur(12px)", duration: 0.4, ease: "power3.in" }, 31.5);
+const h5 = lines("h5", 230, [["sm", [["Cinco", 25.14], ["clientes", 25.52], ["chamando,", 25.92]]], ["big", [["sem", 27.18, "rd"], ["resposta.", 27.6, "rd"]]]]);
+OUT(h5, 28.2);
+const h5b = lines("h5b", 230, [["sm", [["Esses", 28.6], ["não", 28.92], ["ficam", 29.14], ["esperando.", 29.4]]], ["big", [["Vão", 30.26, "rd"], ["embora.", 30.42, "rd"]]]]);
+OUT(h5b, 31.2);
+
+// ---------------- 6. o pouso: a Kalli é o seu controle ----------------
+const h6 = lines("h6", 230, [["sm", [["A", 31.4], ["Kalli", 31.62], ["é", 32.18], ["o", 32.26], ["seu", 32.56]]], ["big", [["controle.", 32.82, "lm"]]]]);
+OUT(h6, 38.7);
+const OCY = 1010;
+function orb(s) { const [x, y, h] = race(s); return [x, y - CY + OCY]; }
+const wrs = [];
+const obs = CHATS.map(([ini, nm], i) => {
+  const wr = document.createElement("div"); wr.className = "obw"; const o = document.createElement("div"); o.className = "ob"; o.setAttribute("data-layout-ignore", ""); wr.appendChild(o); wrs.push(wr);
+  o.innerHTML = "<i>" + ini + "</i><span>aguardando</span>"; $("#orbit").appendChild(wr); return o;
+});
+const T_READY = 37.66;
+function orbitAt(t) {
+  obs.forEach((o, i) => {
+    let [x, y] = orb(t / 7 + i / 5);
+    if (i === 4 && t > T_READY) { const u = ease(seg(t, T_READY, T_READY + 0.7)); const [x0, y0] = orb(T_READY / 7 + i / 5); x = lerp(x0, 540, u); y = lerp(y0, 1300, u); }
+    wrs[i].style.transform = "translate(" + (x - 140).toFixed(1) + "px," + (y - 32).toFixed(1) + "px)";
+  });
+}
+const ok = { t: 0 };
+F(ok, { t: 31.0 }, { t: DUR, duration: DUR - 31.0, ease: "none", onUpdate: () => orbitAt(ok.t) }, 31.0);
+orbitAt(31.0);
+F("#orbit", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 31.3);
+F("#orbsvg", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 31.4);
+obs.forEach((o, i) => {
+  F(o, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 31.4 + i * 0.1);
+  F(o, { borderColor: "#34352F", backgroundColor: "#1A1B18" }, { borderColor: "#B8FF4F", backgroundColor: "#16200C", duration: 0.25 }, 33.64 + i * 0.15);
+  F(o.querySelector("span"), { color: "#8E8E86" }, { color: "#B8FF4F", duration: 0.25 }, 33.64 + i * 0.15);
+  F(o.querySelector("i"), { backgroundColor: "#2A2B27" }, { backgroundColor: "#B8FF4F", color: "#0A0A0A", duration: 0.25 }, 33.64 + i * 0.15);
+});
+obs.forEach((o, i) => { const sp = o.querySelector("span"); const lab = { v: 0 }; F(lab, { v: 0 }, { v: 1, duration: 0.01, onUpdate: () => { sp.textContent = lab.v > 0.5 ? "✓ respondido" : "aguardando"; } }, 33.64 + i * 0.15); });
+F(obs[4], { opacity: 1 }, { opacity: 0, duration: 0.3 }, T_READY + 0.5);
+F("#card", { opacity: 0, y: 60, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "back.out(1.6)" }, T_READY + 0.35);
+F("#card", { x: 0 }, { x: 8, duration: 0.05, repeat: 7, yoyo: true, ease: "sine.inOut" }, T_READY + 0.4);
+const h7 = lines("h7", 230, [["big", [["Você", 38.9], ["pousa", 39.3]]], ["serif", [["um", 39.96], ["de", 40.16], ["cada", 40.34], ["vez.", 40.66]]]]);
+OUT(h7, 41.1);
+F(["#orbit", "#card"], { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(12px)", duration: 0.4, ease: "power3.in" }, 41.1);
+
+// ---------------- 7. assinatura: o radar volta em lima ----------------
+F("#rad2", { opacity: 0, scale: 0.6, transformOrigin: "540px 700px" }, { opacity: 1, scale: 1, duration: 0.7, ease: "expo.out" }, 41.3);
+F("#sym", { opacity: 0, scale: 0.3, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.7)" }, 41.45);
+centered("#e1", [["Teste", 41.32], ["7", 41.84, "lm"], ["dias", 42.2]]);
+centered("#e2", [["de", 42.8], ["graça.", 42.94]]);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 43.66);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 44.6);
+
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl.set({}, {}, DUR);
+window.__timelines["main"] = tl;
+</script>
+</body></html>
