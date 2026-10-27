@@ -37,14 +37,14 @@ O fechamento da S05 deu o diagnóstico: **o Instagram não distribuiu porque nin
 
 **Encaixe na Máquina Semanal** (5 Reels + 2 carrosséis): situação real = H5 ou U09 · dor = E02 · provocação = O01 · prático = T01 e T02. R03 e R04 vão para o **destaque**, não contam como Reels. Os 2 carrosséis da semana: o **C02 corrigido** e o **T01 em lâminas** (o roteiro já está dividido em 4 perguntas).
 
-## 🔤 Siglas novas (a aprovar)
+## 🔤 Siglas novas (✅ aprovadas em 26/10)
 
 | Sigla | O que é | Por quê |
 |---|---|---|
 | **T** + dois dígitos | **Técnica de atendimento**: conhecimento prático que o corretor usa no próximo atendimento, sem precisar da Kalli | O E é "fato curioso, sem vender". Prático é outra coisa, e é o tipo que mais aparece na semana (2 de 5). **P** foi evitado: confunde com as Provas (P-001) |
 | **O** + dois dígitos | **Opinião ou provocação** | Não existia sigla para o tipo |
 
-Aprovadas, entram nas [[../00 Manual/Siglas e Convenções|Siglas e Convenções]]. A **H5** pula a H3 e a H4, que já existem no banco de histórias com outro tema.
+Aprovadas pelo fundador em 26/10 e registradas nas [[../00 Manual/Siglas e Convenções|Siglas e Convenções]]. A **H5** pula a H3 e a H4, que já existem no banco de histórias com outro tema.
 
 ## 🎥 A gravação que serve para R03, R04, R05 e R10
 

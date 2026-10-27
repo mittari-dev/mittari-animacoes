@@ -17,6 +17,8 @@ criado: 2026-10-05
 | **W** + dois dígitos | **Site** (*web*): vídeo deitado, 16:9. Letra no fim para variações (W01a, W01b) | W01 = Kalli no site | — |
 | **C** + dois dígitos | **Carrossel** do Instagram, 4:5 | C01 = toda venda começa com uma chave | [[../../05 Playbooks/Playbook — Carrossel (Um Objeto, Uma Ideia por Lâmina)\|Carrossel]] |
 | **R** + dois dígitos | **Resposta**: vídeo curto (10 a 25 s, 9:16) que responde **a pergunta de um destaque** do Instagram. Uma pergunta por vídeo, escrita na tela no primeiro segundo | R03 = o que acontece quando um cliente me chama | [[../03 Peças Estáticas/Kalli — Vídeos dos Destaques (Lista)\|Vídeos dos Destaques]] (aprovada em 06/10) |
+| **T** + dois dígitos | **Técnica de atendimento**: conhecimento prático que o corretor usa no próximo atendimento, sem precisar da Kalli (aprovada em 26/10) | T02 = nunca responda só "sim" | [[../../05 Playbooks/Playbook — Máquina Semanal de Conteúdo (Produção em Lote)\|Máquina Semanal]] |
+| **O** + dois dígitos | **Opinião ou provocação** (aprovada em 26/10) | O01 = você não precisa de mais clientes | [[../../05 Playbooks/Playbook — Máquina Semanal de Conteúdo (Produção em Lote)\|Máquina Semanal]] |
 | **A** + dois dígitos | **Animação pronta**, o vídeo renderizado, na ordem em que foi feita, de qualquer tipo | A07 = a H2 narrada | — |
 
 **H, E, U, W e R são o roteiro (a ideia). A é o vídeo que saiu dele.** A H2 virou a A04, a A05, a A06 e a A07. Quando a U01 for renderizada, vira a próxima A.
