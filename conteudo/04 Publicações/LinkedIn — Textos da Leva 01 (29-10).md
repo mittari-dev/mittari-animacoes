@@ -57,9 +57,9 @@ O vídeo resume em 38 segundos. Qual delas o seu cliente mais demora para respon
 ## 3 · E02 — A conta da primeira hora · *dados, com fonte*
 
 ```text
-Em 2011, a Harvard Business Review publicou uma pesquisa com mais de 2 mil empresas dos EUA sobre quanto tempo elas levavam para responder quem pedia informação pela internet.
+Em 2011, a Harvard Business Review publicou uma pesquisa que olhou 1,25 milhão de contatos recebidos por 42 empresas dos EUA, de gente que pedia informação pela internet.
 
-As que responderam na primeira hora tiveram quase 7 vezes mais chance de qualificar o cliente do que as que responderam uma hora depois. As que esperaram um dia inteiro ficaram mais de 60 vezes atrás.
+Quem respondeu na primeira hora teve quase 7 vezes mais chance de qualificar o cliente do que quem respondeu uma hora depois. Quem esperou um dia inteiro ficou mais de 60 vezes atrás.
 
 A pesquisa não é sobre imóveis, mas descreve bem o problema do corretor. Uma visita leva uma hora. Um plantão leva a tarde.
 
@@ -112,7 +112,7 @@ Que outro setor você acha que já resolveu um problema que o atendimento imobil
 
 | Post | O que conferir |
 |---|---|
-| E02 | Os números da HBR batem com o resumo do artigo (2.241 empresas; "quase 7 vezes" na primeira hora; "mais de 60 vezes" contra 24 h ou mais). O verbo do original é *qualify the lead*, por isso o texto diz "qualificar o cliente" |
+| E02 | ✅ Alinhado com a correção feita no PC remoto (ficha do vídeo no repo): o "quase 7 vezes" e o "mais de 60 vezes" vêm do estudo de **1,25 milhão de contatos de 42 empresas**, não da auditoria de 2.241 empresas. O verbo do original é *qualify the lead*, por isso o texto diz "qualificar o cliente" |
 | E02 | A citação da Grow e da Isis está autorizada desde 22/10 |
 | U09 | O aviso de "cliente pronto" existe (PR #16). O texto não cita o "um minuto" da ICAO, que estava em conferência |
 | Todos | Sem a palavra "lead" no corpo do texto (o corretor lê "LED") |
