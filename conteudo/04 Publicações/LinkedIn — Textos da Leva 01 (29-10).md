@@ -13,6 +13,25 @@ criado: 2026-10-29
 > **Ritmo sugerido:** um por dia, na ordem abaixo, entre 8h e 10h. Cinco no mesmo dia competem entre si.
 > **Medir:** impressões, comentários de corretores e quem é o público (o post de 08/10 alcançou TI e bancos, não corretores). Anotar no [[Registro de Publicações]].
 
+## 📅 Agenda de postagem da Leva 01 (definida em 29/10)
+
+Um vídeo por dia em cada rede. Programar tudo de uma vez: o Instagram programa Reels (Opções avançadas → Programar) e o LinkedIn programa posts (o relógio ao lado de Publicar). Assim os horários de escola não atrapalham.
+
+| Data | Instagram @kalli.app (Reels) | LinkedIn (perfil do fundador) |
+|---|---|---|
+| qui 29/10 | **18h30 · T02** Nunca responda só "sim" | — |
+| sex 30/10 | **12h00 · O01** Você não precisa de mais clientes | **8h30 · O01** (tese) |
+| sáb 31/10 | **11h30 · T01** As 4 perguntas | — (fim de semana rende pouco no LinkedIn) |
+| dom 01/11 | **18h30 · E02** A conta da primeira hora | — |
+| seg 02/11 | **12h00 · U09** A torre de controle | **8h30 · T01** |
+| ter 03/11 | — | **8h30 · E02** |
+| qua 04/11 | — | **8h30 · T02** |
+| qui 05/11 | — | **8h30 · U09** |
+
+**Por que essa ordem:** a T02 é a mais fácil de mandar para outro corretor e abre a semana; a O01 puxa comentário e vai na sexta, quando o pessoal discute mais; a E02 e a U09 são as mais longas e ficam para quando as primeiras já tiverem trazido gente. No LinkedIn, a tese (O01) abre porque apresenta a empresa.
+
+**Medir** em cada uma, 48 h depois: visualizações, quem passou de 3 s, compartilhamentos e comentários de corretor. Anotar no [[Registro de Publicações]].
+
 ---
 
 ## 1 · O01 — Você não precisa de mais clientes · *tese*
