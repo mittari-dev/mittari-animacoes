@@ -13,7 +13,9 @@ criado: 2026-10-29
 > **Ritmo sugerido:** um por dia, na ordem abaixo, entre 8h e 10h. Cinco no mesmo dia competem entre si.
 > **Medir:** impressões, comentários de corretores e quem é o público (o post de 08/10 alcançou TI e bancos, não corretores). Anotar no [[Registro de Publicações]].
 
-## 📅 Agenda de postagem da Leva 01 (definida em 29/10)
+> ⚠️ **05/11: nada foi postado na S08.** As datas abaixo ficaram velhas. **A agenda que vale está na [[../../12 Planejamentos/2026/11 Novembro/Semanas/S09|S09]]** (Bloco Conteúdo): começa na sex 06/11 e vai até qui 12/11, nos mesmos horários.
+
+## 📅 Agenda de postagem da Leva 01 (definida em 29/10, substituída em 05/11)
 
 Um vídeo por dia em cada rede. Programar tudo de uma vez: o Instagram programa Reels (Opções avançadas → Programar) e o LinkedIn programa posts (o relógio ao lado de Publicar). Assim os horários de escola não atrapalham.
 
