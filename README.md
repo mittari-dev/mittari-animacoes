@@ -17,6 +17,12 @@ Todos os vídeos animados e as peças gráficas da Mittari: o arquivo pronto, o 
 
 ---
 
+## Leva 02 (roteiros, para montar)
+
+Roteiros da S10 e **a correção do gancho** (som no quadro 1, trilha do ElevenLabs Music, nada parado mais de 2 s) em [`conteudo/05 Ideias/Leva 02 — Roteiros para a S10 (09-11).md`](conteudo/05%20Ideias/). Começa reabrindo O01, T02 e U09 com o começo novo; depois T03, O02 e U10.
+
+---
+
 ## Leva 01 (em aprovação)
 
 Feita em 26/10/2026 no PC remoto, a partir dos roteiros de [`conteudo/05 Ideias`](conteudo/05%20Ideias/). Os vídeos estão juntos em [`videos/2026-10-26_leva-01_pc-remoto/`](videos/2026-10-26_leva-01_pc-remoto/).
