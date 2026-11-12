@@ -49,3 +49,13 @@ Roteiro: `conteudo/05 Ideias/U09 — A Torre de Controle.md` (leva 01, S08).
 |---|---|
 | `final/` | O vídeo, a capa e o texto para postar junto |
 | `trabalho/` | O projeto HyperFrames (`index.html`), narração, trilha, efeitos e o registro da geração (`render.log`) |
+
+## Versão 2 (11/11/2026)
+
+Reaberto na Leva 02 para a correção do gancho. O arquivo novo é `final/kalli_torre-de-controle_v2_60fps.mp4` (48,5 s); o original continua na pasta.
+
+- **Começo novo de 1,5 s:** *"Sexta, 18h. 5 clientes chamando ao mesmo tempo."*, com cinco notificações em cascata. Tem som desde o primeiro quadro.
+- **Trilha nova por baixo do vídeo todo**, com batida. A antiga era ambiente e ficava inaudível.
+- A narração e a animação não mudaram.
+
+O projeto da abertura está em `videos/2026-11-09_leva-02_pc-remoto/2026-11-11_ajuste-gancho_o01-t02-u09/`.

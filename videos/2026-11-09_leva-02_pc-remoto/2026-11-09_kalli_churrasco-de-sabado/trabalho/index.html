@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --dim:#8E8E86; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 38%, #17110B 0%, #0a0a0a 55%, #060606 100%); }
+
+/* ---------- cena cheia (atos 1 a 3) ---------- */
+#cena { position:absolute; left:0; top:520px; width:1080px; height:1090px; overflow:hidden; }
+.im { position:absolute; top:0; width:1938px; height:1090px; background-size:cover; opacity:0; }
+#iG { left:-300px; background-image:url("assets/grelha.png"); opacity:1; }
+#iB { left:-140px; background-image:url("assets/bolso.png"); }
+#iC { left:-330px; background-image:url("assets/costas.png"); }
+#brasa { position:absolute; left:0; top:300px; width:1080px; height:790px; background:radial-gradient(ellipse 70% 55% at 50% 75%, rgba(255,120,40,0.45) 0%, rgba(255,120,40,0) 70%); mix-blend-mode:screen; }
+#luz { position:absolute; left:330px; top:300px; width:330px; height:420px; border-radius:60px; background:radial-gradient(ellipse, rgba(184,255,79,0.95) 0%, rgba(184,255,79,0) 68%); mix-blend-mode:screen; opacity:0; }
+#bdg { position:absolute; left:560px; top:250px; width:150px; height:150px; border-radius:50%; background:var(--red); color:#fff; font:900 96px/150px Archivo; text-align:center; opacity:0; box-shadow:0 12px 30px rgba(0,0,0,0.6); }
+#bdg span { position:absolute; left:0; top:0; width:150px; opacity:0; }
+.fum { position:absolute; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle, rgba(230,220,210,0.20) 0%, rgba(230,220,210,0) 65%); filter:blur(14px); opacity:0; }
+#cenaFade { position:absolute; inset:0; background:linear-gradient(180deg, #080808 0%, rgba(8,8,8,0) 20%, rgba(8,8,8,0) 80%, #080808 100%); }
+#chip { position:absolute; left:70px; top:1480px; height:72px; border-radius:36px; padding:0 30px; background:rgba(10,10,10,0.82); border:2px solid rgba(255,138,61,0.7); font:800 32px/68px Inter; letter-spacing:0.06em; color:var(--lar); opacity:0; }
+
+/* ---------- tela dividida (atos 4 a 6) ---------- */
+#split { position:absolute; left:0; top:0; width:1080px; height:1920px; opacity:0; }
+#esq { position:absolute; left:40px; top:660px; width:480px; height:880px; border-radius:40px; overflow:hidden; border:2px solid #2A2B27; }
+.ie { position:absolute; top:0; width:1564px; height:880px; background-size:cover; }
+#eC { left:-365px; background-image:url("assets/costas.png"); }
+#eG { left:-190px; background-image:url("assets/grelha.png"); opacity:0; }
+#esq .tag, #dir .tag { position:absolute; left:20px; top:20px; height:56px; border-radius:28px; padding:0 22px; font:800 28px/54px Inter; letter-spacing:0.05em; background:rgba(10,10,10,0.85); z-index:5; }
+#esq .tag { color:var(--lar); border:2px solid rgba(255,138,61,0.7); }
+#dir { position:absolute; left:560px; top:660px; width:480px; height:880px; border-radius:40px; overflow:hidden; background:#0D0E0C; border:2px solid #2A2B27; }
+.hd { position:absolute; left:0; top:0; width:480px; height:124px; background:#141513; border-bottom:1px solid #22231F; }
+.hd .av { position:absolute; left:22px; top:30px; width:64px; height:64px; border-radius:50%; background:#26301C; color:var(--lima); font:800 30px/64px Inter; text-align:center; }
+.hd b { position:absolute; left:104px; top:28px; font:700 32px Inter; color:var(--off); }
+.hd span { position:absolute; left:104px; top:70px; font:500 28px Inter; color:var(--dim); }
+.hd .s2 { opacity:0; }
+.cv { position:absolute; left:0; top:124px; width:480px; height:756px; padding:22px 18px; display:flex; flex-direction:column; gap:16px; }
+.m { position:relative; max-width:400px; padding:16px 20px; font:500 30px/1.28 Inter; color:var(--off); border-radius:24px; opacity:0; }
+.m.in { align-self:flex-start; background:#1E1F1C; border-top-left-radius:6px; }
+.m.out { align-self:flex-end; background:#243A12; border:2px solid rgba(184,255,79,0.7); border-top-right-radius:6px; }
+.m small { display:block; margin-top:4px; font:700 28px Inter; color:var(--lima); }
+#cB { opacity:0; }
+#oc { position:absolute; left:590px; top:1080px; width:420px; border-radius:30px; background:#1A1113; border:2px solid rgba(255,90,94,0.8); padding:22px; opacity:0; box-shadow:0 30px 60px rgba(0,0,0,0.7); }
+#oc b { display:block; font:800 30px Inter; color:var(--red); margin-bottom:12px; }
+#oc .m { opacity:1; }
+#oc .m.out { background:#2A1516; border:2px solid rgba(255,90,94,0.6); margin-top:12px; margin-left:auto; width:fit-content; opacity:0; }
+#aviso { position:absolute; left:70px; top:1010px; width:940px; border-radius:36px; background:#14210B; border:3px solid var(--lima); padding:34px 38px 38px; opacity:0; box-shadow:0 40px 90px rgba(0,0,0,0.8), 0 0 80px rgba(184,255,79,0.25); }
+#aviso .h { display:flex; align-items:center; gap:16px; font:700 30px Inter; color:#B4B4AC; margin-bottom:16px; }
+#aviso .h img { width:44px; height:43px; }
+#aviso .t { display:flex; align-items:center; gap:18px; font:900 60px Archivo; letter-spacing:-0.03em; color:var(--off); }
+#aviso .ck { width:60px; height:60px; border-radius:16px; background:var(--lima); flex:none; position:relative; }
+#aviso .ck svg { position:absolute; left:10px; top:10px; width:40px; height:40px; }
+#aviso .d { margin-top:14px; font:500 36px/1.3 Inter; color:#D0D0C8; }
+#dim { position:absolute; inset:0; background:#000; opacity:0; }
+
+/* ---------- letra ---------- */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:600 54px/1.25 Inter; color:#B4B4AC; margin-bottom:8px; }
+.mid { font-family:Archivo; font-weight:900; font-size:86px; line-height:1.02; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.huge { font-family:Archivo; font-weight:900; font-size:170px; line-height:0.9; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:92px; line-height:1.04; letter-spacing:-0.01em; color:var(--off); margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:var(--red); }
+.or { color:var(--lar); }
+#h1 { top:150px; }
+#h1 .w { opacity:1; }
+#h1 .big { font-size:116px; }
+#h1 .serif { font-size:108px; }
+
+/* ---------- fim ---------- */
+#end { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#sym { position:absolute; left:430px; top:470px; width:220px; height:215px; opacity:0; }
+#kw { position:absolute; left:0; top:720px; width:1080px; text-align:center; font:900 120px Archivo; letter-spacing:-0.04em; color:var(--off); opacity:0; }
+#kl { position:absolute; left:140px; top:880px; width:800px; text-align:center; font:500 46px/1.3 Inter; color:#B8B8B0; opacity:0; }
+#cta { position:absolute; left:0; top:1090px; width:1080px; display:flex; justify-content:center; opacity:0; }
+.btn { display:flex; align-items:center; background:var(--lima); color:#0A0A0A; font:800 44px Inter; border-radius:60px; padding:26px 50px; }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.06; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="32.6" data-fps="60">
+  <div id="bg"></div>
+
+  <div id="cena" data-layout-allow-overlap>
+    <div class="im" id="iG"></div>
+    <div class="im" id="iB"></div>
+    <div class="im" id="iC"></div>
+    <div id="brasa"></div>
+    <div id="luz"></div>
+    <i class="fum" style="left:240px; top:420px"></i><i class="fum" style="left:520px; top:380px"></i><i class="fum" style="left:700px; top:460px"></i>
+    <div id="bdg"><span id="b1">1</span><span id="b2">2</span><span id="b4">4</span></div>
+    <div id="cenaFade"></div>
+  </div>
+  <div id="chip">SÁBADO · CHURRASCO DA FAMÍLIA</div>
+
+  <div id="split" data-layout-allow-overlap>
+    <div id="esq"><div class="ie" id="eC"></div><div class="ie" id="eG"></div><div class="tag">VOCÊ</div></div>
+    <div id="dir">
+      <div class="hd"><div class="av">A</div><b>Ana</b><span class="s1">online</span><span class="s2" data-layout-ignore>saiu às 13:40</span></div>
+      <div class="cv" id="cA">
+        <div class="m in" id="q1">Oi! Dá pra visitar no domingo?</div>
+        <div class="m in" id="q2">Qual o preço?</div>
+        <div class="m in" id="q3">É no Braga, né?</div>
+        <div class="m in" id="q4">Tenho carta de crédito.</div>
+      </div>
+      <div class="cv" id="cB">
+        <div class="m in" id="k1" style="opacity:1">Oi! Dá pra visitar no domingo?</div>
+        <div class="m out" id="k2"><small>Kalli</small>Dá sim! De manhã ou à tarde?</div>
+        <div class="m in" id="k3">De manhã.</div>
+        <div class="m out" id="k4"><small>Kalli</small>Fechado. Já tem o valor de entrada?</div>
+        <div class="m in" id="k5">Tenho carta de crédito.</div>
+      </div>
+    </div>
+    <div id="oc"><b>Outro corretor</b><div class="m in">Oi! Tem horário domingo?</div><div class="m out" id="ocr">Tenho! Às 10h?</div></div>
+    <div id="dim"></div>
+    <div id="aviso">
+      <div class="h"><img src="assets/simbolo-lima.png" alt="" />Kalli · agora</div>
+      <div class="t"><i class="ck"><svg viewBox="0 0 40 40"><path d="M7 21 L16 30 L33 10" fill="none" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Cliente pronto: Ana</div>
+      <div class="d">Quer comprar · apartamento · Braga · até R$ 450.000</div>
+    </div>
+  </div>
+
+  <div id="type">
+    <div class="ln" id="h1">
+      <div class="row big"><span class="w">Esse</span><span class="w">cliente</span></div>
+      <div class="row big"><span class="w">vai</span><span class="w lm">fechar</span><span class="w lm">hoje.</span></div>
+      <div class="row serif"><span class="w rd">Só</span><span class="w rd">não</span><span class="w rd">com</span><span class="w rd">você.</span></div>
+    </div>
+  </div>
+  <div id="end">
+    <img id="sym" src="assets/simbolo-lima.png" alt="" />
+    <div id="kw">Kalli</div>
+    <div id="kl">Você na grelha. A Kalli no WhatsApp.</div>
+    <div id="cta"><div class="btn">7 dias grátis · link na bio</div></div>
+  </div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0.3" data-duration="29.31" data-volume="1"></audio>
+  <audio id="a-trilha" src="assets/trilha.mp3" data-start="0" data-duration="32.6" data-volume="1"></audio>
+  <audio id="a-g0" src="assets/sfx-grelha.mp3" data-start="0" data-duration="2" data-volume="1"></audio>
+  <audio id="a-v0" src="assets/sfx-vibra.mp3" data-start="0.1" data-duration="0.8" data-volume="0.9"></audio>
+  <audio id="a-g1" src="assets/sfx-grelha.mp3" data-start="1.9" data-duration="1.5" data-volume="0.45"></audio>
+  <audio id="a-w0" src="assets/sfx-whoosh.mp3" data-start="3.1" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-v1" src="assets/sfx-vibra.mp3" data-start="3.4" data-duration="0.8" data-volume="0.7"></audio>
+  <audio id="a-v2" src="assets/sfx-vibra.mp3" data-start="5.59" data-duration="0.8" data-volume="0.9"></audio>
+  <audio id="a-s2" src="assets/sfx-snap.mp3" data-start="5.59" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-v3" src="assets/sfx-vibra.mp3" data-start="6.74" data-duration="0.8" data-volume="0.9"></audio>
+  <audio id="a-g3" src="assets/sfx-grelha.mp3" data-start="6.74" data-duration="0.8" data-volume="0.5"></audio>
+  <audio id="a-v4" src="assets/sfx-vibra.mp3" data-start="7.55" data-duration="0.8" data-volume="1"></audio>
+  <audio id="a-i4" src="assets/sfx-impacto.mp3" data-start="7.55" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-w1" src="assets/sfx-whoosh.mp3" data-start="8.3" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-g5" src="assets/sfx-grelha.mp3" data-start="8.5" data-duration="2" data-volume="0.4"></audio>
+  <audio id="a-w2" src="assets/sfx-whoosh.mp3" data-start="11.5" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-p1" src="assets/sfx-notif.mp3" data-start="13.4" data-duration="0.9" data-volume="0.55"></audio>
+  <audio id="a-p2" src="assets/sfx-notif.mp3" data-start="15.65" data-duration="0.9" data-volume="0.55"></audio>
+  <audio id="a-p3" src="assets/sfx-notif.mp3" data-start="16.63" data-duration="0.9" data-volume="0.55"></audio>
+  <audio id="a-p4" src="assets/sfx-notif.mp3" data-start="18.0" data-duration="0.9" data-volume="0.55"></audio>
+  <audio id="a-i5" src="assets/sfx-impacto.mp3" data-start="19.5" data-duration="1.4" data-volume="0.7"></audio>
+  <audio id="a-e5" src="assets/sfx-enviada.mp3" data-start="20.85" data-duration="0.6" data-volume="0.9"></audio>
+  <audio id="a-e6" src="assets/sfx-enviada.mp3" data-start="21.4" data-duration="0.6" data-volume="0.9"></audio>
+  <audio id="a-w3" src="assets/sfx-whoosh.mp3" data-start="22.2" data-duration="1.2" data-volume="0.55"></audio>
+  <audio id="a-g6" src="assets/sfx-grelha.mp3" data-start="22.5" data-duration="1.6" data-volume="0.45"></audio>
+  <audio id="a-e7" src="assets/sfx-enviada.mp3" data-start="23.4" data-duration="0.6" data-volume="0.8"></audio>
+  <audio id="a-p7" src="assets/sfx-pop.mp3" data-start="24.3" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-e8" src="assets/sfx-enviada.mp3" data-start="25.0" data-duration="0.6" data-volume="0.8"></audio>
+  <audio id="a-p8" src="assets/sfx-pop.mp3" data-start="25.7" data-duration="0.4" data-volume="0.5"></audio>
+  <audio id="a-n9" src="assets/sfx-notif.mp3" data-start="27.5" data-duration="0.9" data-volume="0.9"></audio>
+  <audio id="a-v9" src="assets/sfx-vibra.mp3" data-start="27.5" data-duration="0.8" data-volume="0.5"></audio>
+  <audio id="a-s9" src="assets/sfx-snap.mp3" data-start="28.6" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-w9" src="assets/sfx-whoosh.mp3" data-start="29.75" data-duration="1.2" data-volume="0.55"></audio>
+  <audio id="a-p9" src="assets/sfx-pop.mp3" data-start="30.1" data-duration="0.4" data-volume="0.6"></audio>
+</div>
+<script>
+const DUR = 32.6;
+// narração 0,3 s depois do som do quadro 1 e 10% mais rápida; W() converte o tempo medido no áudio original
+const W = (t) => 0.3 + t / 1.1;
+let seed = 20261111;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.25, ease: "power2.in" }, at);
+const SHOW = (el, at, d = 0.15) => F(el, { opacity: 0 }, { opacity: 1, duration: d }, at);
+const HIDE = (el, at, d = 0.15) => F(el, { opacity: 1 }, { opacity: 0, duration: d }, at);
+const MSG = (el, at, side = "0% 100%") => F(el, { opacity: 0, scale: 0.6, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "back.out(2)", transformOrigin: side }, at);
+function lines(id, top, rows) {
+  const ln = document.createElement("div"); ln.className = "ln"; ln.id = id; ln.style.top = top + "px";
+  rows.forEach(([cls, words]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    words.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = !cls.startsWith("sm");
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.42 : 0.34, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $("#type").appendChild(ln);
+  return ln;
+}
+const CUT = (from, to, at) => { HIDE(from, at, 0.01); SHOW(to, at, 0.01); };
+// vibração do celular no bolso: a luz lima pulsa e a imagem treme
+const VIB = (at, n = 9) => {
+  F("#luz", { opacity: 0.15 }, { opacity: 1, duration: 0.07, repeat: n, yoyo: true, ease: "sine.inOut" }, at);
+  F("#cena", { x: 0 }, { x: 8, duration: 0.04, repeat: n * 2 - 1, yoyo: true, ease: "sine.inOut" }, at);
+};
+
+F("#type", { x: 0 }, { x: -14, duration: DUR, ease: "none" }, 0);
+// brasa viva e fumaça durante toda a cena cheia
+for (let i = 0; i < 12 * 12; i++) tl.set("#brasa", { opacity: 0.55 + rnd() * 0.45 }, i / 12);
+document.querySelectorAll(".fum").forEach((f, i) => {
+  for (let k = 0; k < 5; k++) F(f, { opacity: 0, y: 120, x: 0, scale: 0.7 }, { opacity: 1, y: -260, x: (rnd() - 0.5) * 120, scale: 1.5, duration: 1.3, ease: "sine.out" }, k * 1.25 + i * 0.4)
+    && F(f, { opacity: 1 }, { opacity: 0, duration: 0.5 }, k * 1.25 + i * 0.4 + 0.8);
+});
+
+// ---------------- ato 1: gancho na grelha (0–3,2 s) ----------------
+gsap.set("#iG", { scale: 1.22, transformOrigin: "40% 60%" });
+F("#iG", { scale: 1.22 }, { scale: 1.02, duration: 3.3, ease: "power1.out" }, 0);
+F("#cena", { x: 0 }, { x: 7, duration: 0.04, repeat: 15, yoyo: true, ease: "sine.inOut" }, 0.1);
+F("#h1 .lm", { scale: 1 }, { scale: 1.1, duration: 0.16, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "50% 70%" }, 0.5);
+F("#h1 .serif", { x: 0 }, { x: 12, duration: 0.18, yoyo: true, repeat: 1, ease: "sine.inOut" }, 1.5);
+F("#chip", { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.35, ease: "back.out(1.8)" }, W(1.4));
+OUT("#h1", 3.15);
+F("#chip", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 3.15);
+
+// ---------------- ato 2: a vibração (3,3–8,3 s) ----------------
+CUT("#iG", "#iB", 3.3);
+gsap.set("#iB", { transformOrigin: "32% 38%" });
+F("#iB", { scale: 1.12 }, { scale: 1, duration: 2.2, ease: "power1.out" }, 3.3);
+VIB(3.4, 9);
+const a2 = lines("a2", 170, [["sm", [["O", W(3.48)], ["celular", W(3.6)], ["vibra", W(4.24)]]], ["big", [["no", W(4.64)], ["bolso.", W(4.88)]]]]);
+OUT(a2, W(5.7));
+const a2n = lines("a2n", 170, [["huge", [["1×", W(5.82)], ["2×", W(7.09)]]], ["huge rd", [["4×", W(7.98)]]]]);
+// uma vez: bolso em close
+F("#iB", { scale: 1 }, { scale: 1.5, duration: 0.14, ease: "back.out(2)" }, W(5.82));
+VIB(W(5.82), 9);
+F("#bdg", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2.6)" }, W(5.82)); SHOW("#b1", W(5.82), 0.01);
+// duas: corte para a grelha
+CUT("#iB", "#iG", W(7.09)); F("#iG", { scale: 1.5 }, { scale: 1.42, duration: 0.8, ease: "none" }, W(7.09));
+HIDE("#luz", W(7.09), 0.01);
+HIDE("#b1", W(7.09), 0.01); SHOW("#b2", W(7.09), 0.01);
+F("#bdg", { scale: 1 }, { scale: 1.35, duration: 0.12, yoyo: true, repeat: 1 }, W(7.09));
+F("#cena", { x: 0 }, { x: 8, duration: 0.04, repeat: 15, yoyo: true, ease: "sine.inOut" }, W(7.09));
+// quatro: bolso mais perto ainda
+CUT("#iG", "#iB", W(7.98)); F("#iB", { scale: 1.5 }, { scale: 2.0, duration: 0.14, ease: "back.out(2)" }, W(7.98));
+VIB(W(7.98), 11);
+HIDE("#b2", W(7.98), 0.01); SHOW("#b4", W(7.98), 0.01);
+F("#bdg", { scale: 1 }, { scale: 1.5, duration: 0.14, yoyo: true, repeat: 1 }, W(7.98));
+OUT(a2n, 8.3);
+HIDE("#bdg", 8.4, 0.05); HIDE("#luz", 8.4, 0.05);
+
+// ---------------- ato 3: a desculpa (8,45–11,6 s) ----------------
+CUT("#iB", "#iC", 8.45);
+gsap.set("#iC", { transformOrigin: "42% 65%" });
+F("#iC", { scale: 1.0 }, { scale: 1.16, duration: 3.2, ease: "none" }, 8.45);
+const a3 = lines("a3", 170, [["sm", [["Você", W(9.2)], ["pensa:", W(9.36)]]], ["serif", [["“segunda", W(10.16)]]], ["serif", [["eu", W(10.68)], ["respondo.”", W(10.84)]]]]);
+gsap.set("#a3 .serif", { fontSize: 128 });
+OUT(a3, 11.5);
+F("#cena", { opacity: 1, x: 0 }, { opacity: 0, x: -200, duration: 0.25, ease: "power2.in" }, 11.5);
+
+// ---------------- ato 4: o outro lado (11,75–19,3 s) ----------------
+F("#split", { opacity: 0 }, { opacity: 1, duration: 0.01 }, 11.72);
+F("#esq", { x: -560 }, { x: 0, duration: 0.45, ease: "back.out(1.3)" }, 11.72);
+F("#dir", { x: 560 }, { x: 0, duration: 0.45, ease: "back.out(1.3)" }, 11.78);
+F("#eC", { scale: 1, transformOrigin: "38% 60%" }, { scale: 1.12, duration: 10.5, ease: "none" }, 11.72);
+const a4 = lines("a4", 170, [["sm", [["Do", W(12.64)], ["outro", W(12.8)], ["lado,", W(13.12)]]], ["big", [["queria", W(14.16)], ["visitar", W(14.48)]]], ["big lm", [["no", W(15.04)], ["domingo.", W(15.24)]]]]);
+MSG("#q1", W(14.48));
+OUT(a4, W(16.2));
+const a4b = lines("a4b", 190, [["mid", [["Preço.", W(16.92)]]], ["mid", [["Bairro.", W(18.0)]]], ["mid lm", [["Carta", W(19.52)], ["de", W(19.84)], ["crédito.", W(20.0)]]]]);
+MSG("#q2", W(16.92)); MSG("#q3", W(18.0)); MSG("#q4", W(19.52));
+F("#dir", { boxShadow: "0 0 0 0 rgba(184,255,79,0)" }, { boxShadow: "0 0 70px 10px rgba(184,255,79,0.35)", duration: 0.4, yoyo: true, repeat: 1 }, W(19.52));
+OUT(a4b, W(21.05));
+
+// ---------------- ato 5: a perda (19,5–22,3 s) ----------------
+const a5 = lines("a5", 190, [["huge", [["Esperou.", W(21.15)]]]]);
+F("#cA", { filter: "grayscale(0) brightness(1)" }, { filter: "grayscale(1) brightness(0.45)", duration: 0.5 }, W(21.15));
+HIDE("#dir .s1", W(21.15)); SHOW("#dir .s2", W(21.2));
+F("#split", { x: 0 }, { x: 12, duration: 0.05, repeat: 5, yoyo: true, ease: "sine.inOut" }, W(21.15));
+OUT(a5, W(22.08));
+const a5b = lines("a5b", 170, [["sm", [["E", W(22.15)], ["chamou", W(22.24)]]], ["big rd", [["outro", W(22.64)]]], ["big rd", [["corretor.", W(23.04)]]]]);
+F("#oc", { opacity: 0, y: 200, rotation: 6 }, { opacity: 1, y: 0, rotation: -2, duration: 0.4, ease: "back.out(1.6)" }, W(22.6));
+MSG("#ocr", 21.4, "100% 100%");
+OUT(a5b, 22.25);
+F("#split", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.92, duration: 0.22, ease: "power2.in" }, 22.25);
+
+// ---------------- ato 6: a virada (22,5–29,8 s) ----------------
+tl.set("#oc", { opacity: 0 }, 22.48); tl.set("#cA", { opacity: 0 }, 22.48); tl.set("#cB", { opacity: 1 }, 22.48);
+tl.set("#eC", { opacity: 0 }, 22.48); tl.set("#eG", { opacity: 1 }, 22.48);
+tl.set("#dir .s2", { opacity: 0 }, 22.48); tl.set("#dir .s1", { opacity: 1 }, 22.48);
+F("#split", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.6)" }, 22.5);
+F("#eG", { scale: 1.15, transformOrigin: "30% 60%" }, { scale: 1, duration: 7.5, ease: "none" }, 22.5);
+F("#dir", { borderColor: "#2A2B27" }, { borderColor: "rgba(184,255,79,0.8)", duration: 0.4 }, 22.6);
+const a6 = lines("a6", 170, [["sm", [["Com", W(24.63)], ["a", W(24.72)], ["Kalli,", W(24.88)]]], ["big lm", [["alguém", W(25.44)]]], ["big lm", [["responde", W(25.92)]]], ["serif", [["enquanto", W(26.48)], ["você", W(27.04)]]], ["serif", [["está", W(27.36)], ["na", W(27.56)], ["grelha.", W(27.68)]]]]);
+MSG("#k2", 23.4, "100% 100%"); MSG("#k3", 24.3); MSG("#k4", 25.0, "100% 100%"); MSG("#k5", 25.7);
+OUT(a6, W(28.4));
+const a7 = lines("a7", 170, [["sm", [["E", W(28.47)], ["você", W(28.56)], ["só", W(29.12)], ["recebe", W(29.48)], ["o", W(29.8)], ["aviso", W(29.96)]]], ["big lm", [["de", W(30.32)], ["quem", W(30.56)], ["está", W(30.72)]]], ["big lm", [["pronto", W(31.12)]]], ["serif", [["pra", W(31.44)], ["visitar.", W(31.6)]]]]);
+F("#dim", { opacity: 0 }, { opacity: 0.55, duration: 0.3 }, 27.45);
+F("#aviso", { opacity: 0, y: -160, scale: 0.85 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(1.8)" }, 27.5);
+F("#aviso", { x: 0 }, { x: 8, duration: 0.04, repeat: 9, yoyo: true, ease: "sine.inOut" }, 27.52);
+F("#aviso", { scale: 1 }, { scale: 1.04, duration: 0.25, yoyo: true, repeat: 1, ease: "sine.inOut" }, W(31.12));
+OUT(a7, 29.8);
+F("#split", { opacity: 1, y: 0 }, { opacity: 0, y: 120, duration: 0.25, ease: "power2.in" }, 29.8);
+
+// ---------------- assinatura (30–32,6 s) ----------------
+F("#sym", { opacity: 0, scale: 0.3, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.7)" }, 30.05);
+F("#sym", { rotation: 0 }, { rotation: 8, duration: 1.8, ease: "sine.inOut" }, 30.7);
+F("#kw", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 30.15);
+F("#kl", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 30.25);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 30.4);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 31.3);
+
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl.set({}, {}, DUR);
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = tl;
+</script>
+</body></html>

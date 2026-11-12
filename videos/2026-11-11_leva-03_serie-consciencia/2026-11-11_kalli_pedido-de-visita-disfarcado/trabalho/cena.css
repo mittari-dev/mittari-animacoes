@@ -1,0 +1,13 @@
+#h1 .big { font-size:128px; }
+#qb { position:absolute; left:28px; top:22px; opacity:0; color:var(--lima); font-weight:700; white-space:nowrap; }
+#anun { position:absolute; left:0; top:170px; width:764px; height:774px; background:#0D0E0C; z-index:5; padding:30px 34px; opacity:0; }
+.fotos { display:flex; gap:14px; height:250px; }
+.fotos i { flex:1; border-radius:22px; background:linear-gradient(160deg, #3A3B36, #23241F); position:relative; }
+.fotos i::after { content:""; position:absolute; left:50%; top:50%; width:90px; height:70px; margin:-30px 0 0 -45px; background:#55564F; clip-path:polygon(50% 0, 100% 42%, 100% 100%, 0 100%, 0 42%); }
+.at { margin-top:26px; font:700 40px Inter; color:var(--off); }
+.ap { margin-top:10px; font:900 76px Archivo; letter-spacing:-0.03em; color:var(--off); display:inline-block; }
+.ab { margin-top:10px; font:600 40px Inter; color:#B4B4AC; display:inline-block; }
+.abt { margin-top:26px; height:96px; border-radius:48px; background:var(--lima); color:#0A0A0A; font:800 38px/96px Inter; text-align:center; }
+.ck { position:absolute; width:84px; height:84px; border-radius:50%; background:var(--lima); opacity:0; z-index:7; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.ck svg { position:absolute; left:20px; top:20px; width:44px; height:44px; }
+#ck1 { left:650px; top:10px; } #ck2 { left:540px; top:356px; } #ck3 { left:330px; top:440px; }

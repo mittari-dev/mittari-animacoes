@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 45%, #1a1210 0%, #0a0a0a 55%, #060606 100%); }
+#tx { position:absolute; left:70px; top:170px; width:940px; }
+.big { font-family:Archivo; font-weight:900; font-size:132px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:#ECECE4; }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:104px; line-height:1.04; color:#ECECE4; margin-top:8px; }
+.rd { color:#FF5A5E; } .lm { color:#B8FF4F; }
+#cards { position:absolute; left:90px; top:800px; width:900px; }
+.card { position:absolute; left:0; width:900px; border-radius:38px; background:#1E1F1C; padding:30px 34px 34px; box-shadow:0 30px 60px rgba(0,0,0,0.6); opacity:0; }
+.card .hd { display:flex; align-items:center; gap:18px; font:700 34px Inter; color:#B4B4AC; margin-bottom:12px; }
+.card .ico { width:54px; height:54px; border-radius:15px; background:#B8FF4F; position:relative; flex:none; }
+.card .ico::after { content:""; position:absolute; left:12px; top:14px; width:30px; height:22px; border-radius:7px; background:#0A0A0A; }
+.card .ms { font:500 44px/1.25 Inter; color:#ECECE4; }
+.card.bad { background:#2A1516; border:2px solid rgba(255,90,94,0.7); }
+.card.bad .hd { color:#FF5A5E; } .card.bad .ico { background:#FF5A5E; }
+#bdg { position:absolute; left:850px; top:740px; width:170px; height:170px; border-radius:50%; background:#FF5A5E; color:#fff; font:900 110px/170px Archivo; text-align:center; opacity:0; box-shadow:0 14px 34px rgba(0,0,0,0.6); }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.06; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="1.5" data-fps="60">
+  <div id="bg"></div>
+  <div id="tx"></div>
+  <div id="cards" data-layout-allow-overlap></div>
+  <div id="bdg"></div>
+  <div id="grain"></div>
+</div>
+<script>
+const CFG = /*CFG*/;
+const tl = gsap.timeline({ paused: true });
+const F = (t, a, b, at) => tl.fromTo(t, a, Object.assign({ immediateRender: false }, b), at);
+CFG.rows.forEach(([cls, txt]) => { const d = document.createElement("div"); d.className = cls; d.innerHTML = txt; document.querySelector("#tx").appendChild(d); });
+F("#tx", { scale: 1.06, transformOrigin: "0% 50%" }, { scale: 1, duration: 0.3, ease: "back.out(2)" }, 0);
+CFG.cards.forEach((c, i) => {
+  const d = document.createElement("div"); d.className = "card" + (c.bad ? " bad" : ""); d.style.top = (i * CFG.gap) + "px";
+  d.innerHTML = '<div class="hd"><i class="ico"></i>' + c.h + '</div><div class="ms">' + c.m + '</div>';
+  document.querySelector("#cards").appendChild(d);
+  const at = i === 0 ? 0 : c.at;
+  if (i === 0) gsap.set(d, { opacity: 1 });
+  else F(d, { opacity: 0, y: -90, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "back.out(2.2)" }, at);
+});
+F("#cards", { x: 0 }, { x: 10, duration: 0.035, repeat: 21, yoyo: true, ease: "sine.inOut" }, 0.02);
+if (CFG.badge) { document.querySelector("#bdg").textContent = CFG.badge; F("#bdg", { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.25, ease: "back.out(3)" }, CFG.badgeAt); }
+F("#tx .rd", { scale: 1 }, { scale: 1.07, duration: 0.14, yoyo: true, repeat: 1, transformOrigin: "0% 60%" }, 0.85);
+F("#root", { scale: 1 }, { scale: 1.05, duration: 1.5, ease: "none" }, 0);
+tl.set({}, {}, 1.5);
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = tl;
+</script>
+</body></html>

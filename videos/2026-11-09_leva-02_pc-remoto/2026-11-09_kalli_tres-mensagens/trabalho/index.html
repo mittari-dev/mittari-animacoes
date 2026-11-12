@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --dim:#8E8E86; --red:#FF5A5E; --ice:#BFE6FF; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 38%, #131611 0%, #0a0a0a 55%, #060606 100%); }
+#cold { position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 55%, rgba(120,190,255,0.30) 0%, rgba(60,120,200,0.12) 45%, rgba(0,0,0,0) 75%); opacity:0; }
+#glow { position:absolute; left:90px; top:520px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.09) 0%, rgba(184,255,79,0) 62%); }
+#world { position:absolute; inset:0; }
+
+/* ---------- celular ---------- */
+#phone { position:absolute; left:140px; top:690px; width:800px; height:980px; border-radius:72px; background:#0b0b0b; padding:18px;
+  box-shadow:0 70px 140px rgba(0,0,0,0.65), 0 0 0 3px #2a2a27, inset 0 0 0 2px #1d1d1b; }
+#screen { position:relative; width:764px; height:944px; border-radius:56px; overflow:hidden; background:#0D0E0C;
+  background-image:radial-gradient(rgba(255,255,255,0.025) 2px, transparent 2px); background-size:34px 34px; }
+.notch { position:absolute; left:302px; top:14px; width:160px; height:40px; border-radius:20px; background:#000; }
+.hdr { position:absolute; left:0; top:0; width:764px; height:170px; background:#141513; border-bottom:1px solid #22231F; }
+.back { position:absolute; left:26px; top:90px; width:26px; height:44px; }
+.ava { position:absolute; left:70px; top:78px; width:76px; height:76px; border-radius:50%; background:#26301C; color:var(--lima); font:800 36px Inter; text-align:center; line-height:76px; }
+.nm { position:absolute; left:168px; top:82px; font:700 36px Inter; color:var(--off); }
+.st { position:absolute; left:168px; top:128px; font:500 28px Inter; color:var(--dim); opacity:0; }
+#st1 { opacity:1; }
+.st.lm { color:var(--lima); }
+.chat { position:absolute; left:0; top:170px; width:764px; height:660px; padding:34px 34px; display:flex; flex-direction:column; gap:26px; opacity:0; }
+#ch1 { opacity:1; }
+.b { position:relative; max-width:610px; padding:22px 28px 20px; font:500 38px/1.32 Inter; color:var(--off); border-radius:30px; }
+.b.in { align-self:flex-start; background:#1E1F1C; border-top-left-radius:8px; }
+.b.out { align-self:flex-end; background:#1F2C14; border:1.5px solid rgba(184,255,79,0.22); border-top-right-radius:8px; }
+.b.ok { background:#243A12; border:2px solid rgba(184,255,79,0.7); }
+.tm { display:block; margin-top:6px; text-align:right; font:500 24px Inter; color:#A4A49C; position:relative; z-index:3; }
+.tx { position:relative; z-index:3; }
+.ww { opacity:0; }
+.ice { position:absolute; inset:-3px; border-radius:inherit; z-index:2; --h:110;
+  background:
+    linear-gradient(118deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.55) 34%, rgba(255,255,255,0) 39%),
+    linear-gradient(62deg, rgba(255,255,255,0) 55%, rgba(255,255,255,0.4) 58%, rgba(255,255,255,0) 63%),
+    linear-gradient(160deg, #E6F6FF 0%, #A9D8F8 45%, #D5EEFF 70%, #8CC6F0 100%);
+  box-shadow:0 0 40px rgba(150,210,255,0.55), inset 0 0 0 3px rgba(255,255,255,0.8);
+  -webkit-mask-image:radial-gradient(ellipse 75% 75% at 50% 50%, transparent calc(var(--h) * 1%), #000 calc(var(--h) * 1% + 38%));
+          mask-image:radial-gradient(ellipse 75% 75% at 50% 50%, transparent calc(var(--h) * 1%), #000 calc(var(--h) * 1% + 38%)); }
+.crk { position:absolute; left:0; top:0; width:100%; height:100%; z-index:4; overflow:visible; }
+.crk path { fill:none; stroke:#fff; stroke-width:5; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1200; stroke-dashoffset:1200; filter:drop-shadow(0 0 3px rgba(20,60,100,0.9)); }
+.mk { position:absolute; top:-30px; width:72px; height:72px; border-radius:50%; z-index:6; opacity:0; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.mk.x { left:-32px; background:var(--red); }
+.mk.v { left:-32px; background:var(--lima); }
+.mk svg { position:absolute; left:16px; top:16px; width:40px; height:40px; }
+.stamp { align-self:flex-end; margin-top:-12px; font:600 26px Inter; color:#9CC8E8; opacity:0; }
+.shards { position:absolute; left:0; top:0; width:100%; height:100%; z-index:5; pointer-events:none; }
+.shard { position:absolute; width:90px; height:80px; opacity:0; background:linear-gradient(140deg, #F2FAFF, #9ED2F5); }
+.link { display:flex; gap:20px; align-items:center; width:540px; }
+.link .th { width:120px; height:120px; border-radius:18px; background:#33342F; flex:none; position:relative; overflow:hidden; }
+.link .th::after { content:""; position:absolute; left:26px; top:44px; width:68px; height:50px; background:#55564F; clip-path:polygon(50% 0, 100% 45%, 100% 100%, 0 100%, 0 45%); }
+.link .u { font:500 30px/1.3 Inter; color:#8AB4FF; text-decoration:underline; word-break:break-all; position:relative; z-index:3; }
+.typing { align-self:flex-start; background:#1E1F1C; border-radius:30px; border-top-left-radius:8px; padding:26px 30px; display:flex; gap:12px; opacity:0; }
+.dot { width:16px; height:16px; border-radius:50%; background:#9A9A92; }
+.hl { background-image:linear-gradient(var(--lima), var(--lima)); background-repeat:no-repeat; background-position:0 96%; background-size:0% 7px; }
+#frost { position:absolute; left:0; top:0; width:764px; height:944px; z-index:8; --p:-30; opacity:1; pointer-events:none;
+  background:
+    linear-gradient(118deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.45) 23%, rgba(255,255,255,0) 27%),
+    linear-gradient(70deg, rgba(255,255,255,0) 60%, rgba(255,255,255,0.35) 63%, rgba(255,255,255,0) 67%),
+    linear-gradient(170deg, rgba(225,244,255,0.88) 0%, rgba(150,205,245,0.72) 50%, rgba(200,232,255,0.86) 100%);
+  -webkit-mask-image:linear-gradient(180deg, #000 calc(var(--p) * 1%), transparent calc(var(--p) * 1% + 22%));
+          mask-image:linear-gradient(180deg, #000 calc(var(--p) * 1%), transparent calc(var(--p) * 1% + 22%)); }
+.bar { position:absolute; left:22px; bottom:24px; width:720px; height:92px; }
+.fld { position:absolute; left:0; top:0; width:610px; height:92px; border-radius:46px; background:#1A1B18; font:500 32px/92px Inter; color:#7A7A73; padding-left:36px; }
+.mic { position:absolute; right:0; top:0; width:92px; height:92px; border-radius:50%; background:var(--lima); }
+.mic i { position:absolute; left:36px; top:22px; width:20px; height:34px; border-radius:10px; background:#0A0A0A; }
+#roll { position:absolute; left:0; top:0; width:764px; padding:34px; display:flex; flex-direction:column; gap:26px; }
+
+/* ---------- letra ---------- */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:600 54px/1.25 Inter; color:#B4B4AC; margin-bottom:8px; }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.huge { font-family:Archivo; font-weight:900; font-size:150px; line-height:0.9; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:92px; line-height:1.04; letter-spacing:-0.01em; color:var(--off); margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); }
+.rd { color:var(--red); }
+.ic { color:var(--ice); }
+#h1 { top:170px; }
+#h1 .w { opacity:1; }
+#h1 .big { font-size:128px; }
+#h1 .serif { font-size:104px; }
+#num { position:absolute; left:70px; top:170px; width:150px; height:150px; border-radius:50%; background:var(--lima); color:#0A0A0A; font:900 104px/150px Archivo; text-align:center; opacity:0; }
+#num span { position:absolute; left:0; top:0; width:150px; opacity:0; }
+#save { position:absolute; left:800px; top:190px; width:170px; height:220px; opacity:0; }
+
+/* ---------- fim ---------- */
+#end { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+#sym { position:absolute; left:430px; top:470px; width:220px; height:215px; opacity:0; }
+#kw { position:absolute; left:0; top:720px; width:1080px; text-align:center; font:900 120px Archivo; letter-spacing:-0.04em; color:var(--off); opacity:0; }
+#kl { position:absolute; left:170px; top:880px; width:740px; text-align:center; font:500 46px/1.3 Inter; color:#B8B8B0; opacity:0; }
+#cta { position:absolute; left:0; top:1090px; width:1080px; display:flex; justify-content:center; opacity:0; }
+.btn { display:flex; align-items:center; background:var(--lima); color:#0A0A0A; font:800 44px Inter; border-radius:60px; padding:26px 50px; }
+
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.05; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); pointer-events:none; }
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="31" data-fps="60">
+  <div id="bg"></div>
+  <div id="cold"></div>
+  <div id="glow"></div>
+  <div id="world" data-layout-allow-overlap>
+    <div id="phone" data-layout-allow-overflow>
+      <div id="screen">
+        <div class="hdr">
+          <svg class="back" viewBox="0 0 26 44"><path d="M22 4 L5 22 L22 40" fill="none" stroke="#B8FF4F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="ava">M</div>
+          <div class="nm">Marina</div>
+          <div class="st" id="st1">online</div>
+          <div class="st" id="st2" data-layout-ignore>visto por último ontem</div>
+          <div class="st lm" id="st3" data-layout-ignore>digitando…</div>
+        </div>
+        <div class="notch"></div>
+
+        <!-- 1: "vou verificar e te retorno" -->
+        <div class="chat" id="ch1">
+          <div class="b in">Esse apê tem vaga de garagem?<span class="tm" data-layout-ignore>10:14</span></div>
+          <div class="b out" id="m1"><i class="ice"></i><span class="tx">Vou verificar e te retorno</span><span class="tm" data-layout-ignore>10:15</span>
+            <svg class="crk" viewBox="0 0 500 130" preserveAspectRatio="none"><path d="M0 40 L70 62 L120 30 L190 78 L250 44 L330 90 L390 52 L500 84"/></svg>
+            <div class="mk x"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round"/></svg></div>
+            <div class="shards"></div>
+          </div>
+          <div class="stamp" id="stp1">há 2 dias · sem retorno</div>
+          <div class="b out ok" id="m1b" style="opacity:0"><span class="tx" id="m1bt"></span><span class="tm" data-layout-ignore>10:15</span>
+            <div class="mk v"><svg viewBox="0 0 40 40"><path d="M7 21 L16 30 L33 10" fill="none" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+
+        <!-- 2: só o link -->
+        <div class="chat" id="ch2">
+          <div class="b in">Aceita financiamento?<span class="tm" data-layout-ignore>14:02</span></div>
+          <div class="b out" id="m2" style="opacity:0"><i class="ice"></i>
+            <div class="link"><div class="th"></div><div class="u">imoveis.com.br/<br/>anuncio/8841</div></div><span class="tm" data-layout-ignore>14:03</span>
+            <svg class="crk" viewBox="0 0 500 130" preserveAspectRatio="none"><path d="M0 70 L80 40 L140 86 L210 36 L290 80 L360 30 L430 70 L500 44"/></svg>
+            <div class="mk x"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round"/></svg></div>
+            <div class="shards"></div>
+          </div>
+          <div class="b out ok" id="m2b" style="opacity:0"><span class="tx"><span id="m2b1" class="ww">Aceita sim!</span> <span id="m2b2" class="ww hl">Você já tem aprovação no banco?</span></span><span class="tm" data-layout-ignore>14:03</span>
+            <div class="mk v"><svg viewBox="0 0 40 40"><path d="M7 21 L16 30 L33 10" fill="none" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+
+        <!-- 3: "qualquer dúvida, estou à disposição" -->
+        <div class="chat" id="ch3">
+          <div class="b in">Gostei. Vou pensar e te falo.<span class="tm" data-layout-ignore>18:40</span></div>
+          <div class="b out" id="m3" style="opacity:0"><span class="tx" id="m3t"></span><span class="tm" data-layout-ignore>18:41</span>
+            <div class="mk x"><svg viewBox="0 0 40 40"><path d="M8 8 L32 32 M32 8 L8 32" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="b out ok" id="m3b" style="opacity:0; z-index:9"><span class="tx" id="m3bt"></span><span class="tm" data-layout-ignore>18:41</span>
+            <div class="mk v"><svg viewBox="0 0 40 40"><path d="M7 21 L16 30 L33 10" fill="none" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="typing" id="typ" style="z-index:9"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+        </div>
+
+        <!-- 5: a conversa que continua -->
+        <div class="chat" id="ch5" style="padding:0; overflow:hidden">
+          <div id="roll">
+            <div class="b out ok">Dá pra ver sábado de manhã?</div>
+            <div class="b in">Dá sim! Umas 10h?</div>
+            <div class="b out ok">Fechado. Você vai sozinha ou com mais alguém?</div>
+            <div class="b in">Com meu marido.</div>
+            <div class="b out ok">Ótimo. Vocês já têm o valor de entrada?</div>
+            <div class="b in">Temos uns 20%.</div>
+            <div class="b out ok">Perfeito. Te mando o endereço. Posso separar outro parecido pra vocês verem no mesmo dia?</div>
+            <div class="b in">Pode!</div>
+            <div class="b out ok">Combinado. Qual bairro vocês preferem?</div>
+            <div class="b in">Braga ou Centro.</div>
+          </div>
+        </div>
+
+        <div id="frost"></div>
+        <div class="bar"><div class="fld">Mensagem</div><div class="mic"><i></i></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="num"><span id="n1">1</span><span id="n2">2</span><span id="n3">3</span></div>
+  <div id="type">
+    <div class="ln" id="h1">
+      <div class="row big"><span class="w">Para</span><span class="w">de</span></div>
+      <div class="row big"><span class="w rd">mandar</span><span class="w rd">isso</span></div>
+      <div class="row serif"><span class="w">pro</span><span class="w">seu</span><span class="w">cliente.</span></div>
+    </div>
+  </div>
+  <svg id="save" viewBox="0 0 170 220"><path d="M20 12 H150 V206 L85 150 L20 206 Z" fill="#B8FF4F" stroke="#B8FF4F" stroke-width="14" stroke-linejoin="round"/></svg>
+  <div id="end">
+    <img id="sym" src="assets/simbolo-lima.png" alt="" />
+    <div id="kw">Kalli</div>
+    <div id="kl">A Kalli responde assim no seu WhatsApp.</div>
+    <div id="cta"><div class="btn">7 dias grátis · link na bio</div></div>
+  </div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+
+  <audio id="a-voz" src="assets/narracao.mp3" data-start="0.3" data-duration="27.64" data-volume="1"></audio>
+  <audio id="a-trilha" src="assets/trilha.mp3" data-start="0" data-duration="31" data-volume="1"></audio>
+  <audio id="a-e0" src="assets/sfx-enviada.mp3" data-start="0" data-duration="0.6" data-volume="1"></audio>
+  <audio id="a-g0" src="assets/sfx-gelo.mp3" data-start="0.1" data-duration="1.7" data-volume="0.9"></audio>
+  <audio id="a-w0" src="assets/sfx-whoosh.mp3" data-start="2.3" data-duration="1.2" data-volume="0.45"></audio>
+  <audio id="a-p1" src="assets/sfx-pop.mp3" data-start="2.55" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-i1" src="assets/sfx-impacto.mp3" data-start="4.93" data-duration="1.2" data-volume="0.6"></audio>
+  <audio id="a-g1" src="assets/sfx-gelo.mp3" data-start="6.19" data-duration="1.2" data-volume="0.8"></audio>
+  <audio id="a-e1" src="assets/sfx-enviada.mp3" data-start="7.0" data-duration="0.6" data-volume="0.8"></audio>
+  <audio id="a-s1" src="assets/sfx-snap.mp3" data-start="8.3" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-w1" src="assets/sfx-whoosh.mp3" data-start="9.2" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-p2" src="assets/sfx-pop.mp3" data-start="9.54" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-e2" src="assets/sfx-enviada.mp3" data-start="10.34" data-duration="0.6" data-volume="0.7"></audio>
+  <audio id="a-g2" src="assets/sfx-gelo.mp3" data-start="11.15" data-duration="1.3" data-volume="0.8"></audio>
+  <audio id="a-g2b" src="assets/sfx-gelo.mp3" data-start="12.43" data-duration="0.9" data-volume="0.55"></audio>
+  <audio id="a-e3" src="assets/sfx-enviada.mp3" data-start="13.25" data-duration="0.6" data-volume="0.8"></audio>
+  <audio id="a-s2" src="assets/sfx-snap.mp3" data-start="14.95" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a-w2" src="assets/sfx-whoosh.mp3" data-start="16.3" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-p3" src="assets/sfx-pop.mp3" data-start="16.64" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-e4" src="assets/sfx-enviada.mp3" data-start="17.39" data-duration="0.6" data-volume="0.7"></audio>
+  <audio id="a-g3" src="assets/sfx-gelo.mp3" data-start="19.8" data-duration="1.7" data-volume="1"></audio>
+  <audio id="a-i3" src="assets/sfx-impacto.mp3" data-start="19.84" data-duration="1.4" data-volume="0.55"></audio>
+  <audio id="a-e5" src="assets/sfx-enviada.mp3" data-start="22.2" data-duration="0.6" data-volume="0.9"></audio>
+  <audio id="a-w3" src="assets/sfx-whoosh.mp3" data-start="22.5" data-duration="1.2" data-volume="0.4"></audio>
+  <audio id="a-n3" src="assets/sfx-notif.mp3" data-start="23.5" data-duration="0.9" data-volume="0.5"></audio>
+  <audio id="a-w4" src="assets/sfx-whoosh.mp3" data-start="23.9" data-duration="1.2" data-volume="0.5"></audio>
+  <audio id="a-e6" src="assets/sfx-enviada.mp3" data-start="24.5" data-duration="0.6" data-volume="0.45"></audio>
+  <audio id="a-e7" src="assets/sfx-enviada.mp3" data-start="25.2" data-duration="0.6" data-volume="0.45"></audio>
+  <audio id="a-e8" src="assets/sfx-enviada.mp3" data-start="25.9" data-duration="0.6" data-volume="0.45"></audio>
+  <audio id="a-s4" src="assets/sfx-snap.mp3" data-start="26.34" data-duration="0.5" data-volume="0.55"></audio>
+  <audio id="a-w5" src="assets/sfx-whoosh.mp3" data-start="28.0" data-duration="1.2" data-volume="0.55"></audio>
+  <audio id="a-p5" src="assets/sfx-pop.mp3" data-start="28.3" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a-s5" src="assets/sfx-snap.mp3" data-start="29.0" data-duration="0.5" data-volume="0.45"></audio>
+</div>
+<script>
+const DUR = 31;
+// a narração entra 0,3 s depois do som do quadro 1 e toca 10% mais rápida: W() converte o tempo
+// de cada palavra medido no áudio original (ElevenLabs Scribe, _dev/words.json) para o tempo do vídeo
+const W = (t) => 0.3 + t / 1.1;
+let seed = 20261109;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.25, ease: "power2.in" }, at);
+const SHOW = (el, at, d = 0.15) => F(el, { opacity: 0 }, { opacity: 1, duration: d }, at);
+const HIDE = (el, at, d = 0.15) => F(el, { opacity: 1 }, { opacity: 0, duration: d }, at);
+const BUB = (el, at, side = "100% 100%") => F(el, { opacity: 0, scale: 0.6, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.38, ease: "back.out(2)", transformOrigin: side }, at);
+
+function lines(id, top, rows, left) {
+  const ln = document.createElement("div"); ln.className = "ln"; ln.id = id; ln.style.top = top + "px";
+  if (left) { ln.style.left = left + "px"; ln.style.width = (1010 - left) + "px"; }
+  rows.forEach(([cls, words]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    words.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = !cls.startsWith("sm");
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.42 : 0.34, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $("#type").appendChild(ln);
+  return ln;
+}
+function typeWords(sel, words) {
+  const el = $(sel);
+  words.forEach(([w, t], i) => {
+    const s = document.createElement("span"); s.className = "ww"; s.textContent = w; el.appendChild(s);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    F(s, { opacity: 0 }, { opacity: 1, duration: 0.1 }, t - 0.03);
+  });
+}
+// geada subindo pelas bordas do balão
+function freeze(sel, at, d = 1.1) {
+  F(sel + " .ice", { "--h": 110 }, { "--h": -45, duration: d, ease: "power2.out" }, at);
+  F(sel, { color: "#ECECE4", borderColor: "rgba(184,255,79,0.22)" }, { color: "#0E2A40", borderColor: "#FFFFFF", duration: d * 0.5, ease: "power1.in" }, at + d * 0.35);
+  F(sel + " .tm", { color: "#A4A49C" }, { color: "#2C5B80", duration: d * 0.5 }, at + d * 0.35);
+  F(sel, { x: 0 }, { x: 5, duration: 0.04, repeat: 9, yoyo: true, ease: "sine.inOut" }, at);
+}
+function crack(sel, at) { F(sel + " .crk path", { strokeDashoffset: 1200 }, { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, at); }
+function shatter(sel, at) {
+  const box = $(sel + " .shards");
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement("i"); s.className = "shard";
+    const a = 20 + rnd() * 60, b = rnd() * 40, c = 60 + rnd() * 40;
+    s.style.clipPath = `polygon(${a}% 0, 100% ${c}%, ${b}% 100%)`;
+    s.style.left = (i % 6) * 16 + "%"; s.style.top = (i < 6 ? -10 : 45) + "%";
+    box.appendChild(s);
+    const r0 = (rnd() - 0.5) * 80;
+    F(s, { opacity: 0, x: 0, y: 0, rotation: r0, scale: 1 }, { opacity: 1, duration: 0.01 }, at);
+    F(s, { x: 0, y: 0, rotation: r0, opacity: 1, scale: 1 }, { x: (rnd() - 0.5) * 520, y: 260 + rnd() * 520, rotation: (rnd() - 0.5) * 540, opacity: 0, scale: 0.6, duration: 0.75 + rnd() * 0.3, ease: "power2.in" }, at + 0.01);
+  }
+  // some o corpo do balão; os cacos (filhos) continuam caindo
+  F(sel, { backgroundColor: "#1F2C14", borderColor: "#FFFFFF", color: "#0E2A40" }, { backgroundColor: "rgba(0,0,0,0)", borderColor: "rgba(0,0,0,0)", color: "rgba(0,0,0,0)", duration: 0.08 }, at);
+  HIDE(sel + " .ice", at, 0.08); HIDE(sel + " .crk", at, 0.08); HIDE(sel + " .mk", at, 0.08); HIDE(sel + " .tm", at, 0.08);
+  if ($(sel + " .link")) HIDE(sel + " .link", at, 0.08);
+}
+const MARK = (sel, at) => F(sel + " .mk", { opacity: 0, scale: 0, rotation: -90 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2.5)" }, at);
+const NUM = (n, at) => { F("#n" + n, { opacity: 0 }, { opacity: 1, duration: 0.01 }, at); F("#num", { opacity: 0, scale: 0, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.4, ease: "back.out(2.2)" }, at); };
+const NUMOUT = (n, at) => { F("#num", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.4, duration: 0.2, ease: "power2.in" }, at); HIDE("#n" + n, at + 0.2, 0.01); };
+
+// ---------------- câmera ----------------
+F("#world", { transformPerspective: 2400, rotationY: -3, rotationX: 2 }, { rotationY: 3, rotationX: -1.5, duration: DUR, ease: "none" }, 0);
+F("#type", { x: 0 }, { x: -14, duration: DUR, ease: "none" }, 0);
+// abre em close no balão congelando e recua
+gsap.set("#phone", { scale: 1.2, transformOrigin: "50% 30%" });
+F("#phone", { scale: 1.2, transformOrigin: "50% 30%", y: 0, z: 0, rotationX: 0, opacity: 1 }, { scale: 1, duration: 0.6, ease: "power3.inOut" }, 2.25);
+F("#cold", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0.1);
+
+// ---------------- ato 1: gancho (0–2,5 s) ----------------
+freeze("#m1", 0.08, 1.3);
+MARK("#m1", 1.25);
+F("#h1 .rd", { scale: 1 }, { scale: 1.08, duration: 0.16, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "0% 70%" }, W(0.4));
+F("#h1 .rd", { scale: 1 }, { scale: 1.06, duration: 0.14, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: "0% 70%" }, 1.5);
+OUT("#h1", 2.3);
+
+// ---------------- ato 2: mensagem 1 (2,5–9,4 s) ----------------
+NUM(1, W(2.48));
+const a2a = lines("a2a", 180, [["serif rd", [["“Vou", W(3.12)], ["verificar", W(3.36)], ["e", W(3.95)], ["te", W(4.0)], ["retorno.”", W(4.16)]]]], 250);
+SHOW("#stp1", W(4.3), 0.25);
+OUT(a2a, W(5.05)); NUMOUT(1, W(5.05));
+const a2b = lines("a2b", 190, [["huge rd", [["Retorna", W(5.12)]]], ["huge rd", [["quando?", W(5.52)]]]]);
+F("#world", { x: 0 }, { x: 14, duration: 0.05, repeat: 5, yoyo: true, ease: "sine.inOut" }, W(5.52));
+F("#stp1", { scale: 1, color: "#9CC8E8" }, { scale: 1.25, color: "#FF5A5E", duration: 0.2, yoyo: true, repeat: 1, transformOrigin: "100% 50%" }, W(5.52));
+OUT(a2b, W(6.4));
+crack("#m1", W(6.48));
+shatter("#m1", W(6.95)); HIDE("#stp1", W(6.95));
+F("#cold", { opacity: 1 }, { opacity: 0, duration: 0.6 }, W(6.95));
+const a2c = lines("a2c", 190, [["sm", [["Troca", W(6.48)], ["por:", W(6.88)]]], ["big lm", [["Te", W(7.44)], ["mando", W(7.72)]]], ["big lm", [["até", W(7.96)], ["as", W(8.16)], ["15h.", W(8.4)]]]]);
+F("#m1b", { opacity: 0, scale: 0.6, y: -110 }, { opacity: 1, scale: 1, y: -150, duration: 0.38, ease: "back.out(2)", transformOrigin: "100% 100%" }, W(7.36));
+typeWords("#m1bt", [["Te", W(7.44)], ["mando", W(7.72)], ["até", W(7.96)], ["as", W(8.16)], ["15h.", W(8.4)]]);
+MARK("#m1b", W(8.85));
+F("#glow", { opacity: 1, scale: 1 }, { opacity: 2.2, scale: 1.15, duration: 0.4, yoyo: true, repeat: 1, ease: "sine.inOut" }, W(8.8));
+OUT(a2c, 9.25);
+
+// troca de conversa
+const SWAP = (from, to, at) => {
+  F("#phone", { rotationY: 0, x: 0 }, { rotationY: 70, x: 120, duration: 0.18, ease: "power2.in" }, at);
+  HIDE(from, at + 0.18, 0.01); SHOW(to, at + 0.18, 0.01);
+  F("#phone", { rotationY: -70, x: -120 }, { rotationY: 0, x: 0, duration: 0.32, ease: "back.out(1.4)" }, at + 0.19);
+};
+SWAP("#ch1", "#ch2", 9.25);
+
+// ---------------- ato 3: mensagem 2 (9,5–16,3 s) ----------------
+NUM(2, W(10.16));
+const a3a = lines("a3a", 180, [["serif rd", [["Só", W(11.6)], ["o", W(11.76)], ["link", W(11.92)]]], ["serif rd", [["do", W(12.2)], ["anúncio.", W(12.32)]]]], 250);
+BUB("#m2", W(11.04));
+F("#cold", { opacity: 0 }, { opacity: 1, duration: 0.8 }, 11.15);
+freeze("#m2", 11.15, 0.95);
+MARK("#m2", 11.9);
+OUT(a3a, W(13.2)); NUMOUT(2, W(13.2));
+crack("#m2", W(13.34));
+const a3b = lines("a3b", 190, [["sm", [["Ele", W(13.34)], ["perguntou", W(13.44)], ["uma", W(13.88)], ["coisa.", W(14.08)]]], ["huge", [["Responde", W(14.76)]]], ["huge", [["ela.", W(15.28)]]]]);
+shatter("#m2", W(14.3));
+F("#cold", { opacity: 1 }, { opacity: 0, duration: 0.6 }, W(14.3));
+F("#m2b", { opacity: 0, scale: 0.6, y: -150 }, { opacity: 1, scale: 1, y: -190, duration: 0.38, ease: "back.out(2)", transformOrigin: "100% 100%" }, W(14.7));
+SHOW("#m2b1", W(14.76), 0.12);
+OUT(a3b, W(15.75));
+const a3c = lines("a3c", 190, [["sm", [["E", W(15.83)], ["devolve", W(15.92)]]], ["huge lm", [["uma", W(16.56)]]], ["huge lm", [["pergunta.", W(16.72)]]]]);
+SHOW("#m2b2", W(15.92), 0.15);
+F("#m2b2", { backgroundSize: "0% 7px" }, { backgroundSize: "100% 7px", duration: 0.45, ease: "power2.out" }, W(16.72));
+MARK("#m2b", W(17.0));
+F("#glow", { opacity: 1, scale: 1 }, { opacity: 2.2, scale: 1.15, duration: 0.4, yoyo: true, repeat: 1, ease: "sine.inOut" }, W(16.72));
+OUT(a3c, 16.25);
+SWAP("#ch2", "#ch3", 16.25);
+
+// ---------------- ato 4: mensagem 3 (16,6–23,9 s) ----------------
+NUM(3, W(17.97));
+const a4a = lines("a4a", 180, [["serif rd", [["“Qualquer", W(18.8)], ["dúvida,", W(19.2)]]], ["serif rd", [["estou", W(19.88)], ["à", W(20.12)]]], ["serif rd", [["disposição.”", W(20.28)]]]], 250);
+BUB("#m3", W(18.72));
+typeWords("#m3t", [["Qualquer", W(18.8)], ["dúvida,", W(19.2)], ["estou", W(19.88)], ["à", W(20.12)], ["disposição", W(20.28)]]);
+OUT(a4a, W(21.4)); NUMOUT(3, W(21.4));
+const a4b = lines("a4b", 190, [["big rd", [["Isso", W(21.49)], ["encerra", W(21.76)]]], ["big rd", [["a", W(22.1)], ["conversa.", W(22.16)]]]]);
+// a conversa inteira congela de cima a baixo
+F("#frost", { "--p": -30 }, { "--p": 105, duration: 1.15, ease: "power1.inOut" }, W(21.49));
+F("#cold", { opacity: 0 }, { opacity: 1.4, duration: 1.0 }, W(21.49));
+F("#world", { x: 0 }, { x: 12, duration: 0.05, repeat: 5, yoyo: true, ease: "sine.inOut" }, W(21.52));
+MARK("#m3", W(22.16));
+HIDE("#st1", W(21.6)); SHOW("#st2", W(21.7));
+OUT(a4b, W(22.95));
+const a4c = lines("a4c", 190, [["sm", [["Troca", W(23.25)], ["por:", W(23.64)]]], ["big lm", [["Dá", W(24.12)], ["pra", W(24.28)], ["ver", W(24.4)]]], ["big lm", [["sábado?", W(24.68)]]]]);
+BUB("#m3b", W(24.08));
+typeWords("#m3bt", [["Dá", W(24.12)], ["pra", W(24.28)], ["ver", W(24.4)], ["sábado", W(24.68)], ["de", W(25.04)], ["manhã?", W(25.12)]]);
+F("#m3b", { boxShadow: "0 0 0 0 rgba(184,255,79,0)" }, { boxShadow: "0 0 90px 30px rgba(184,255,79,0.55)", duration: 0.5, yoyo: true, repeat: 1, ease: "sine.inOut" }, W(24.5));
+// o gelo derrete a partir do balão novo
+F("#frost", { opacity: 1, y: 0 }, { opacity: 0, y: 70, duration: 0.9, ease: "power2.in" }, W(24.5));
+F("#cold", { opacity: 1.4 }, { opacity: 0, duration: 0.9 }, W(24.5));
+F("#m3", { opacity: 1 }, { opacity: 0.3, duration: 0.4 }, W(24.5));
+MARK("#m3b", W(25.5));
+HIDE("#st2", 23.45); SHOW("#st3", 23.5);
+F("#typ", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(2)", transformOrigin: "0% 100%" }, 23.5);
+OUT(a4c, 23.85);
+SWAP("#ch3", "#ch5", 23.85);
+HIDE("#st3", 24.0, 0.01); SHOW("#st1", 24.05, 0.01);
+
+// ---------------- ato 5: fecho (24–28 s) ----------------
+const a5 = lines("a5", 170, [["sm", [["Conversa", W(26.06)], ["que", W(26.4)], ["termina", W(26.72)]]], ["huge lm", [["em", W(27.04)]]], ["huge lm", [["pergunta", W(27.24)]]], ["serif", [["continua.", W(27.68)]]]]);
+F("#roll", { y: 0 }, { y: -1010, duration: 4.0, ease: "power1.inOut" }, 24.1);
+OUT(a5, W(28.6));
+const a6 = lines("a6", 190, [["huge", [["Salva", W(28.64)]]], ["serif", [["pro", W(28.96)], ["próximo", W(29.28)]]], ["serif", [["atendimento.", W(29.6)]]]]);
+F("#save", { opacity: 0, y: -80, scale: 0.4 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "back.out(2.2)" }, W(28.64));
+F("#save", { scale: 1 }, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, W(29.2));
+OUT(a6, 28.05); F("#save", { opacity: 1 }, { opacity: 0, duration: 0.2 }, 28.05);
+F("#phone", { y: 0, rotationX: 0, opacity: 1 }, { y: 1500, rotationX: -25, opacity: 1, duration: 0.55, ease: "power3.in" }, 28.0);
+
+// ---------------- assinatura (28,3–30,5 s) ----------------
+F("#sym", { opacity: 0, scale: 0.3, rotation: -40 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.7)" }, 28.3);
+F("#sym", { rotation: 0 }, { rotation: 8, duration: 1.5, ease: "sine.inOut" }, 28.95);
+F("#kw", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 28.45);
+F("#kl", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 28.65);
+F("#cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 28.95);
+F("#cta .btn", { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: "power2.inOut" }, 29.6);
+
+for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+tl.set({}, {}, DUR);
+window.__timelines = window.__timelines || {};
+window.__timelines["main"] = tl;
+</script>
+</body></html>

@@ -30,9 +30,9 @@ Texto na tela sozinho não segura ninguém. Daqui em diante, **todo vídeo segue
 | # | O que | Tipo | Duração | Custo |
 |---|---|---|---|---|
 | 1 | **Reabrir O01, T02 e U09** (prontas na Leva 01, ainda não postadas): começo novo de 1,5 s com som + trilha por baixo do vídeo todo. **Não refaz a narração**, só o começo e a mixagem | Ajuste | — | 🟢 baixo |
-| 2 | [[T03 — Três Mensagens que Esfriam o Cliente\|T03 — Três mensagens que esfriam o cliente]] | Prático | ~30 s | 🟢 baixo: WhatsApp estilizado + letra |
-| 3 | [[O02 — O Cliente Não Espera Segunda-feira\|O02 — O cliente não espera segunda-feira]] | Provocação | ~22 s | 🟢 baixo: letra cinética + celular |
-| 4 | [[U10 — O Churrasco de Sábado\|U10 — O churrasco de sábado]] | Situação | ~35 s | 🟡 médio: cena ilustrada |
+| 2 | [[../01 Roteiros/T03 — Três Mensagens que Esfriam o Cliente\|T03 — Três mensagens que esfriam o cliente]] | Prático | ~30 s | 🟢 baixo: WhatsApp estilizado + letra |
+| 3 | [[../01 Roteiros/O02 — O Cliente Não Espera Segunda-feira\|O02 — O cliente não espera segunda-feira]] | Provocação | ~22 s | 🟢 baixo: letra cinética + celular |
+| 4 | [[../01 Roteiros/U10 — O Churrasco de Sábado\|U10 — O churrasco de sábado]] | Situação | ~35 s | 🟡 médio: cena ilustrada |
 
 **Ordem:** a da tabela, do mais barato para o mais caro. O item 1 vem primeiro porque transforma 3 vídeos que já existem em 3 vídeos postáveis numa tarde.
 
@@ -44,3 +44,22 @@ Texto na tela sozinho não segura ninguém. Daqui em diante, **todo vídeo segue
 2. A nota sai de `05 Ideias/` para `01 Roteiros/`; o vídeo ganha ficha A em `02 Animações/` e pasta em `videos/`
 3. Na ficha, anotar o prompt da trilha e o efeito sonoro do quadro 1, para repetir o que funcionar
 4. Ao postar: linha no [[../04 Publicações/Registro de Publicações|Registro de Publicações]]. Em 48 h, o **% que passou dos 3 s** no [[../Painel de Saúde do Conteúdo|Painel de Saúde]]. É o número que diz se a correção funcionou: a Leva 01 ficou entre 0% e 44%
+
+## 🎬 Status em 11/11
+
+Montada no PC remoto em 10 e 11/11. Tudo **em aprovação**, nada postado. Vídeos em `videos/2026-11-09_leva-02_pc-remoto/`.
+
+| Item | Situação |
+|---|---|
+| O01, T02 e U09 reabertas | ✅ Versão `_v2` ao lado da original, na pasta de cada vídeo da Leva 01: abertura nova de 1,5 s com som e trilha nova por baixo de tudo. A narração não mudou |
+| T03 | ✅ 31 s |
+| O02 | ✅ 22,8 s |
+| U10 | ✅ 32,6 s |
+
+**O que mudou em relação ao pedido:**
+
+- **Trilha mais alta que os −20 dB da regra 3.** Medi as trilhas da Leva 01: ficavam uns 15 dB abaixo da voz, com trechos em −64 dB, e por isso pareciam não existir. A −20 dB ficariam mais baixas ainda. Mixei mais alto, com a trilha abaixando sozinha quando a voz entra. Se passou do ponto, é um número em `_ferramentas/mix.sh`.
+- **As trilhas antigas de O01, T02 e U09 não serviam para aumentar**: eram ambiente, sem batida. Gerei uma trilha nova para cada uma.
+- **Voz 10% mais rápida** feita na edição (sem mudar o tom), não no ElevenLabs.
+
+**Falta:** conferir no celular com som, ouvir se alguma trilha tem voz cantada, e as fichas A na Central. Em seguida veio a [[Leva 03 — Série Você Não Viu (11-11)|Leva 03]].

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face { font-family:"Archivo"; src:url("assets/fonts/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/fonts/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --dim:#8E8E86; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 38%, #131611 0%, #0a0a0a 55%, #060606 100%); }
+#glow { position:absolute; left:90px; top:520px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.09) 0%, rgba(184,255,79,0) 62%); }
+#world { position:absolute; inset:0; }
+#stage { position:absolute; inset:0; }
+/* selo da série */
+#selo { position:absolute; left:70px; top:92px; height:54px; border-radius:27px; padding:0 22px; display:flex; align-items:center; gap:12px; background:#141513; border:2px solid #2A2B27; font:800 28px Inter; letter-spacing:0.08em; color:#B4B4AC; }
+#selo i { width:14px; height:14px; border-radius:50%; background:var(--lima); }
+/* celular */
+#phone { position:absolute; left:140px; top:700px; width:800px; height:980px; border-radius:72px; background:#0b0b0b; padding:18px;
+  box-shadow:0 70px 140px rgba(0,0,0,0.65), 0 0 0 3px #2a2a27, inset 0 0 0 2px #1d1d1b; }
+#screen { position:relative; width:764px; height:944px; border-radius:56px; overflow:hidden; background:#0D0E0C;
+  background-image:radial-gradient(rgba(255,255,255,0.025) 2px, transparent 2px); background-size:34px 34px; }
+.notch { position:absolute; left:302px; top:14px; width:160px; height:40px; border-radius:20px; background:#000; z-index:9; }
+.hdr { position:absolute; left:0; top:0; width:764px; height:170px; background:#141513; border-bottom:1px solid #22231F; }
+.back { position:absolute; left:26px; top:90px; width:26px; height:44px; }
+.ava { position:absolute; left:70px; top:78px; width:76px; height:76px; border-radius:50%; background:#26301C; color:var(--lima); font:800 36px Inter; text-align:center; line-height:76px; }
+.nm { position:absolute; left:168px; top:82px; font:700 36px Inter; color:var(--off); }
+.st { position:absolute; left:168px; top:128px; font:500 28px Inter; color:var(--dim); }
+.st.lm { color:var(--lima); }
+.chat { position:absolute; left:0; top:170px; width:764px; height:660px; padding:30px 34px; display:flex; flex-direction:column; gap:22px; }
+.b { position:relative; max-width:620px; padding:22px 28px 20px; font:500 38px/1.32 Inter; color:var(--off); border-radius:30px; }
+.b.in { align-self:flex-start; background:#1E1F1C; border-top-left-radius:8px; }
+.b.out { align-self:flex-end; background:#1F2C14; border:1.5px solid rgba(184,255,79,0.22); border-top-right-radius:8px; }
+.b.ok { background:#243A12; border:2px solid rgba(184,255,79,0.7); }
+.b.bad { background:#2A1516; border:2px solid rgba(255,90,94,0.6); }
+.b small { display:block; font:700 28px Inter; color:var(--lima); margin-bottom:2px; }
+.tm { display:block; margin-top:6px; text-align:right; font:500 24px Inter; color:#A4A49C; }
+.ww { opacity:0; }
+.bar { position:absolute; left:22px; bottom:24px; width:720px; height:92px; }
+.fld { position:absolute; left:0; top:0; width:610px; height:92px; border-radius:46px; background:#1A1B18; font:500 32px/92px Inter; color:#7A7A73; padding-left:36px; }
+.mic { position:absolute; right:0; top:0; width:92px; height:92px; border-radius:50%; background:var(--lima); }
+.mic i { position:absolute; left:36px; top:22px; width:20px; height:34px; border-radius:10px; background:#0A0A0A; }
+.mk { position:absolute; left:-32px; top:-30px; width:72px; height:72px; border-radius:50%; z-index:6; opacity:0; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.mk.x { background:var(--red); } .mk.v { background:var(--lima); }
+.mk svg { position:absolute; left:16px; top:16px; width:40px; height:40px; }
+/* letra */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:600 54px/1.25 Inter; color:#B4B4AC; margin-bottom:8px; }
+.mid { font-family:Archivo; font-weight:900; font-size:86px; line-height:1.02; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.huge { font-family:Archivo; font-weight:900; font-size:160px; line-height:0.9; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:92px; line-height:1.04; letter-spacing:-0.01em; color:var(--off); margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); } .rd { color:var(--red); } .or { color:var(--lar); }
+#h1 { top:190px; }
+#h1 .w { opacity:1; }
+/* a porta: o pedido do fim */
+#porta { position:absolute; left:0; top:0; width:1080px; height:1920px; opacity:0; }
+#pIco { position:absolute; left:70px; top:330px; width:210px; height:210px; border-radius:50%; background:var(--lima); }
+#pIco svg { position:absolute; left:45px; top:45px; width:120px; height:120px; }
+#pL1 { position:absolute; left:70px; top:590px; width:940px; font-family:Archivo; font-weight:900; font-size:128px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--lima); }
+#pL2 { position:absolute; left:70px; top:870px; width:940px; font-family:"Instrument Serif"; font-style:italic; font-size:104px; line-height:1.04; color:var(--off); }
+#pSeta { position:absolute; left:70px; top:1180px; width:120px; height:120px; }
+#pK { position:absolute; left:70px; top:1370px; display:flex; align-items:center; gap:22px; font:900 64px Archivo; letter-spacing:-0.04em; color:var(--off); }
+#pK img { width:76px; height:74px; }
+#pK span { font:500 34px Inter; letter-spacing:0; color:#B4B4AC; margin-left:6px; }
+#grain { position:absolute; inset:-200px; background:url("assets/grao.png"); mix-blend-mode:overlay; opacity:0.05; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); pointer-events:none; }
+
+#h1 .big { font-size:104px; }
+#funil { position:absolute; left:0; top:720px; width:1080px; height:760px; }
+.fb { position:absolute; height:150px; border-radius:32px; background:#121311; border:2px solid #2A2B27; }
+.fb .l { position:absolute; left:34px; top:0; font:800 40px/146px Inter; letter-spacing:0.03em; color:#B4B4AC; white-space:nowrap; }
+.fb .q { position:absolute; right:30px; top:27px; width:96px; height:96px; border-radius:50%; background:#2A2B27; color:#8E8E86; font:900 64px/96px Archivo; text-align:center; }
+.fb .v { position:absolute; right:34px; top:0; font:900 84px/146px Archivo; letter-spacing:-0.03em; color:var(--off); opacity:0; }
+#f1 { left:70px; width:940px; top:0; }
+#f2 { left:150px; width:780px; top:180px; }
+#f3 { left:230px; width:620px; top:360px; }
+#f4 { left:310px; width:460px; top:540px; background:#1B2A10; border-color:rgba(184,255,79,0.8); }
+#f4 .l { color:var(--lima); }
+#f4 .ok { position:absolute; right:30px; top:27px; width:96px; height:96px; border-radius:50%; background:var(--lima); }
+#f4 .ok svg { position:absolute; left:24px; top:24px; width:48px; height:48px; }
+.gota { position:absolute; width:36px; height:36px; border-radius:50%; background:var(--red); opacity:0; }
+#ex { position:absolute; left:70px; top:-70px; height:52px; border-radius:26px; padding:0 22px; font:800 28px/48px Inter; letter-spacing:0.06em; color:var(--lar); border:2px solid rgba(255,138,61,0.7); opacity:0; }
+#queda { position:absolute; left:820px; top:296px; width:210px; height:130px; border-radius:65px; background:var(--red); color:#fff; font:900 84px/130px Archivo; text-align:center; opacity:0; box-shadow:0 14px 34px rgba(0,0,0,0.6); }
+
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="28" data-fps="60">
+  <div id="bg"></div>
+  <div id="glow"></div>
+  <div id="stage" data-layout-allow-overlap>
+    <div id="world" data-layout-allow-overlap>
+      <div id="funil" data-layout-allow-overflow>
+        <div id="ex">EXEMPLO · UMA SEMANA</div>
+        <div class="fb" id="f1"><div class="l">CONVERSAS</div><div class="q">?</div><div class="v">40</div></div>
+        <div class="fb" id="f2"><div class="l">RESPONDIDAS NO DIA</div><div class="q">?</div><div class="v">22</div></div>
+        <div class="fb" id="f3"><div class="l">VISITAS</div><div class="q">?</div><div class="v">6</div></div>
+        <div class="fb" id="f4"><div class="l">VENDAS</div><div class="ok"><svg viewBox="0 0 40 40"><path d="M7 21 L16 30 L33 10" fill="none" stroke="#0A0A0A" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div id="queda">−16</div>
+      </div>
+
+    </div>
+    <div id="selo"><i></i>VOCÊ NÃO VIU</div>
+    <div id="type"></div>
+  </div>
+  <div id="porta">
+    <div id="pIco"></div>
+    <div id="pL1"></div>
+    <div id="pL2"></div>
+    <svg id="pSeta" viewBox="0 0 120 120"><path d="M60 10 V96 M24 62 L60 100 L96 62" fill="none" stroke="#B8FF4F" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div id="pK"><img src="assets/simbolo-lima.png" alt="" />Kalli<span>responde seus clientes em segundos</span></div>
+  </div>
+  <div id="grain"></div>
+  <div id="vig"></div>
+  <audio id="a0" src="assets/narracao.mp3" data-start="0.3" data-duration="26.4" data-volume="1"></audio>
+  <audio id="a1" src="assets/trilha.mp3" data-start="0" data-duration="28" data-volume="1"></audio>
+  <audio id="a2" src="assets/sfx-impacto.mp3" data-start="0" data-duration="1.4" data-volume="0.8"></audio>
+  <audio id="a3" src="assets/sfx-pop.mp3" data-start="0.02" data-duration="0.4" data-volume="0.9"></audio>
+  <audio id="a4" src="assets/sfx-whoosh.mp3" data-start="3.5" data-duration="1.2" data-volume="0.45"></audio>
+  <audio id="a5" src="assets/sfx-snap.mp3" data-start="4.95" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a6" src="assets/sfx-snap.mp3" data-start="7.39" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a7" src="assets/sfx-snap.mp3" data-start="9.64" data-duration="0.5" data-volume="0.6"></audio>
+  <audio id="a8" src="assets/sfx-whoosh.mp3" data-start="10.4" data-duration="1.2" data-volume="0.45"></audio>
+  <audio id="a9" src="assets/sfx-impacto.mp3" data-start="12.4" data-duration="1.4" data-volume="0.6"></audio>
+  <audio id="a10" src="assets/sfx-tick.mp3" data-start="13.9" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a11" src="assets/sfx-pop.mp3" data-start="14.95" data-duration="0.4" data-volume="0.6"></audio>
+  <audio id="a12" src="assets/sfx-whoosh.mp3" data-start="15.75" data-duration="1.2" data-volume="0.45"></audio>
+  <audio id="a13" src="assets/sfx-pop.mp3" data-start="17.87" data-duration="0.4" data-volume="0.7"></audio>
+  <audio id="a14" src="assets/sfx-pop.mp3" data-start="18.63" data-duration="0.4" data-volume="0.7"></audio>
+  <audio id="a15" src="assets/sfx-pop.mp3" data-start="19.54" data-duration="0.4" data-volume="0.7"></audio>
+  <audio id="a16" src="assets/sfx-impacto.mp3" data-start="21.2" data-duration="1.3" data-volume="0.6"></audio>
+  <audio id="a17" src="assets/sfx-snap.mp3" data-start="22.9" data-duration="0.5" data-volume="0.5"></audio>
+  <audio id="a18" src="assets/sfx-whoosh.mp3" data-start="23.5" data-duration="1.2" data-volume="0.55"></audio>
+  <audio id="a19" src="assets/sfx-pop.mp3" data-start="23.78" data-duration="0.4" data-volume="0.7"></audio>
+</div>
+<script>
+const DUR = 28;
+const SEED = 20261204;
+// Base comum da série "Você não viu". Cada vídeo define DUR e SEED antes deste bloco.
+// A narração entra 0,3 s depois do som do quadro 1 e toca 10% mais rápida:
+// W() converte o tempo de cada palavra medido no áudio original (Scribe, _dev/words.json).
+const W = (t) => 0.3 + t / 1.1;
+let seed = SEED;
+const rnd = () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+const tl = gsap.timeline({ paused: true });
+const F = (target, from, to, at) => tl.fromTo(target, from, Object.assign({ immediateRender: false }, to), at);
+const OUT = (el, at) => F(el, { opacity: 1, y: 0, filter: "blur(0px)" }, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.25, ease: "power2.in" }, at);
+const SHOW = (el, at, d = 0.15) => F(el, { opacity: 0 }, { opacity: 1, duration: d }, at);
+const HIDE = (el, at, d = 0.15) => F(el, { opacity: 1 }, { opacity: 0, duration: d }, at);
+const POP = (el, at, o = "50% 50%") => F(el, { opacity: 0, scale: 0.5, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: 0.38, ease: "back.out(2)", transformOrigin: o }, at);
+const BUB = (el, at, side = "100% 100%") => POP(el, at, side);
+const PULSE = (el, at, s = 1.08, o = "50% 50%") => F(el, { scale: 1 }, { scale: s, duration: 0.16, yoyo: true, repeat: 1, ease: "power2.out", transformOrigin: o }, at);
+const SHAKE = (el, at, n = 5, px = 12) => F(el, { x: 0 }, { x: px, duration: 0.05, repeat: n, yoyo: true, ease: "sine.inOut" }, at);
+const MARK = (sel, at) => F(sel + " .mk", { opacity: 0, scale: 0, rotation: -90 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.35, ease: "back.out(2.5)" }, at);
+let _ln = 0;
+function lines(top, rows) {
+  const ln = document.createElement("div"); ln.className = "ln"; ln.id = "tx" + (++_ln); ln.style.top = top + "px";
+  rows.forEach(([cls, words]) => {
+    const row = document.createElement("div"); row.className = "row " + cls;
+    words.forEach(([w, t, extra]) => {
+      const s = document.createElement("span"); s.className = "w" + (extra ? " " + extra : ""); s.textContent = w; row.appendChild(s);
+      const big = !cls.startsWith("sm");
+      F(s, { opacity: 0, yPercent: big ? 45 : 35, filter: "blur(10px)" }, { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: big ? 0.42 : 0.34, ease: big ? "back.out(1.5)" : "expo.out" }, Math.max(0, t - 0.04));
+    });
+    ln.appendChild(row);
+  });
+  $("#type").appendChild(ln);
+  return ln;
+}
+function typeWords(sel, words) {
+  const el = $(sel);
+  words.forEach(([w, t], i) => {
+    const s = document.createElement("span"); s.className = "ww"; s.textContent = w; el.appendChild(s);
+    if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    F(s, { opacity: 0 }, { opacity: 1, duration: 0.1 }, t - 0.03);
+  });
+}
+const ICONES = {
+  comenta: '<svg viewBox="0 0 120 120"><path d="M14 22 H106 V84 H58 L34 106 V84 H14 Z" fill="#0A0A0A"/></svg>',
+  manda: '<svg viewBox="0 0 120 120"><path d="M10 58 L110 12 L78 108 L56 68 Z" fill="#0A0A0A"/><path d="M56 68 L110 12" stroke="#B8FF4F" stroke-width="6"/></svg>',
+  direct: '<svg viewBox="0 0 120 120"><rect x="10" y="24" width="100" height="72" rx="12" fill="#0A0A0A"/><path d="M16 32 L60 66 L104 32" fill="none" stroke="#B8FF4F" stroke-width="8" stroke-linejoin="round"/></svg>',
+};
+// A porta: toda peça da série termina pedindo uma coisa só.
+function porta(at, icone, l1, l2) {
+  $("#pIco").innerHTML = ICONES[icone]; $("#pL1").innerHTML = l1; $("#pL2").innerHTML = l2;
+  F("#stage", { opacity: 1, scale: 1 }, { opacity: 0, scale: 0.94, duration: 0.22, ease: "power2.in" }, at - 0.24);
+  tl.set("#porta", { opacity: 1 }, at);
+  F("#pIco", { opacity: 0, scale: 0, rotation: -60 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.2)" }, at);
+  F("#pL1", { opacity: 0, y: 50, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.4, ease: "back.out(1.5)" }, at + 0.1);
+  F("#pL2", { opacity: 0, y: 40, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, at + 0.3);
+  F("#pSeta", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(2)" }, at + 0.55);
+  F("#pSeta", { y: 0 }, { y: 26, duration: 0.3, repeat: 9, yoyo: true, ease: "sine.inOut" }, at + 0.85);
+  F("#pK", { opacity: 0 }, { opacity: 1, duration: 0.3 }, at + 0.7);
+  PULSE("#pIco", at + 1.2, 1.12); PULSE("#pIco", at + 2.2, 1.12);
+}
+function fim() {
+  F("#type", { x: 0 }, { x: -14, duration: DUR, ease: "none" }, 0);
+  F("#world", { transformPerspective: 2400, rotationY: -3, rotationX: 2 }, { rotationY: 3, rotationX: -1.5, duration: DUR, ease: "none" }, 0);
+  for (let i = 0; i < DUR * 12; i++) tl.set("#grain", { x: Math.round(rnd() * 200 - 100), y: Math.round(rnd() * 200 - 100) }, i / 12);
+  tl.set({}, {}, DUR);
+  window.__timelines = window.__timelines || {};
+  window.__timelines["main"] = tl;
+}
+
+// gancho escrito desde o quadro 1
+const h1 = document.createElement("div"); h1.className = "ln"; h1.id = "h1";
+h1.innerHTML = '<div class="row big"><span class="w">Quanto</span><span class="w">você</span></div><div class="row big"><span class="w">vendeu,</span></div><div class="row big"><span class="w lm">você</span><span class="w lm">sabe.</span></div>';
+$("#type").appendChild(h1);
+const ASK = (f, at) => {
+  F(f, { borderColor: "#2A2B27" }, { borderColor: "#FF5A5E", duration: 0.2 }, at);
+  F(f + " .q", { backgroundColor: "#2A2B27", color: "#8E8E86", scale: 1 }, { backgroundColor: "#FF5A5E", color: "#FFFFFF", scale: 1.25, duration: 0.2, ease: "back.out(3)" }, at);
+  F(f + " .q", { scale: 1.25 }, { scale: 1, duration: 0.25 }, at + 0.22);
+  F(f + " .l", { color: "#B4B4AC" }, { color: "#ECECE4", duration: 0.2 }, at);
+  SHAKE(f, at, 5, 10);
+};
+
+// ato 1 (0–3,4 s): a única conta que todo mundo faz
+gsap.set("#funil", { scale: 1.06, transformOrigin: "50% 0%" });
+F("#funil", { scale: 1.06 }, { scale: 1, duration: 3.2, ease: "power1.out" }, 0);
+F("#f4", { boxShadow: "0 0 0 0 rgba(184,255,79,0)" }, { boxShadow: "0 0 90px 20px rgba(184,255,79,0.55)", duration: 0.3, yoyo: true, repeat: 3 }, 0.02);
+PULSE("#f4", 0.02, 1.1); PULSE("#f4", W(2.72), 1.08);
+PULSE("#h1 .lm", W(2.72), 1.08, "0% 60%");
+OUT("#h1", W(3.6));
+
+// ato 2 (3,7–10,1 s): as três que ninguém faz
+const a = lines(190, [["sm", [["Agora", W(3.74)], ["me", W(3.92)], ["diz:", W(4.08)]]], ["mid", [["Conversas?", W(5.12), "rd"]]], ["mid", [["Respostas", W(7.8), "rd"], ["no", W(8.28), "rd"], ["dia?", W(8.72), "rd"]]], ["mid", [["Visitas?", W(10.28), "rd"]]]]);
+ASK("#f1", W(5.12)); ASK("#f2", W(7.8)); ASK("#f3", W(10.28));
+OUT(a, W(11.15));
+
+// ato 3 (10,6–15,7 s): onde a venda some
+const b = lines(190, [["sm", [["Se", W(11.33)], ["você", W(11.44)], ["não", W(11.76)], ["sabe,", W(12.0)]]], ["big rd", [["é", W(12.64)], ["aí", W(12.8)], ["que", W(13.12)]]], ["big rd", [["a", W(13.24)], ["venda", W(13.36)], ["some.", W(13.76)]]]]);
+// as gotas escapam pelos vãos entre as barras
+const VAOS = [158, 338, 518];
+for (let i = 0; i < 27; i++) {
+  const g = document.createElement("i"); g.className = "gota"; const v = VAOS[i % 3]; const lado = i % 2 ? 1 : -1;
+  g.style.top = v + "px"; g.style.left = (540 + lado * (120 + rnd() * 260)) + "px"; $("#funil").appendChild(g);
+  const at = W(13.36) + rnd() * 3.0;
+  F(g, { opacity: 0, x: 0, y: 0, scale: 0.6 }, { opacity: 1, duration: 0.05 }, at);
+  F(g, { x: 0, y: 0, opacity: 1, scale: 0.6 }, { x: lado * (140 + rnd() * 220), y: 260 + rnd() * 420, opacity: 0, scale: 1.2, duration: 0.8 + rnd() * 0.4, ease: "power1.in" }, at + 0.05);
+}
+SHAKE("#world", W(13.76), 5, 12);
+OUT(b, W(14.45));
+const b2 = lines(190, [["serif", [["Não", W(14.56)], ["no", W(14.8)], ["fechamento.", W(14.96)]]], ["huge lm", [["No", W(16.06)]]], ["huge lm", [["caminho.", W(16.16)]]]]);
+F("#f4", { opacity: 1 }, { opacity: 0.3, duration: 0.3 }, W(14.96));
+["#f1", "#f2", "#f3"].forEach((f, i) => PULSE(f, W(16.16) + i * 0.12, 1.05));
+OUT(b2, W(17.05));
+
+// ato 4 (15,9–20,3 s): a conta de uma semana
+const c = lines(190, [["sm", [["Uma", W(18.0)], ["semana", W(18.16)], ["só.", W(18.56)]]], ["big", [["Faz", W(17.18)], ["a", W(17.36)]]], ["big lm", [["conta.", W(17.52)]]]]);
+F("#f4", { opacity: 0.3 }, { opacity: 1, duration: 0.3 }, W(17.2));
+POP("#ex", W(18.56), "0% 50%");
+[["#f1", 19.33], ["#f2", 20.16], ["#f3", 21.16]].forEach(([f, t]) => {
+  HIDE(f + " .q", W(t), 0.1);
+  F(f + " .v", { opacity: 0, scale: 2, y: -20 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: "back.out(2)", transformOrigin: "100% 50%" }, W(t));
+  F(f, { borderColor: "#FF5A5E" }, { borderColor: "#ECECE4", duration: 0.2 }, W(t));
+});
+OUT(c, W(21.95));
+
+// ato 5 (20,4–23,5 s): o número que mais cai
+const d = lines(190, [["sm", [["O", W(22.07)], ["número", W(22.12)], ["que", W(22.48)], ["mais", W(22.72)], ["cai", W(23.04)]]], ["big", [["mostra", W(23.44)], ["onde", W(24.0)]]], ["big rd", [["você", W(24.32)], ["perde.", W(24.88)]]]]);
+POP("#queda", W(23.04)); SHAKE("#world", W(23.04), 5, 12);
+F("#f3", { borderColor: "#ECECE4", boxShadow: "0 0 0 0 rgba(255,90,94,0)" }, { borderColor: "#FF5A5E", boxShadow: "0 0 70px 10px rgba(255,90,94,0.45)", duration: 0.3 }, W(23.04));
+F("#f3 .v", { color: "#ECECE4" }, { color: "#FF5A5E", duration: 0.3 }, W(23.04));
+PULSE("#queda", W(24.88), 1.15);
+
+// a porta
+porta(W(25.72), "comenta", "Faz a conta.", "E comenta quantas visitas você marcou.");
+
+fim();
+</script>
+</body></html>

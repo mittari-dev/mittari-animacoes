@@ -1,0 +1,14 @@
+#h1 .big { font-size:118px; }
+#nm2, #av2 { opacity:0; }
+#sOn { color:var(--lima); font-weight:700; }
+#anel { position:absolute; left:154px; top:124px; width:136px; height:44px; border-radius:26px; border:4px solid var(--lima); opacity:0; }
+.chat { gap:18px; }
+#cB { opacity:0; }
+.tk { display:inline-block; width:34px; height:20px; margin-left:8px; vertical-align:-3px; }
+#rel { position:absolute; left:150px; top:560px; height:96px; border-radius:48px; padding:0 34px; background:#141513; border:3px solid #3A3B36; font:900 60px/90px Archivo; color:var(--off); opacity:0; z-index:6; white-space:nowrap; }
+#rel span { position:absolute; left:0; top:0; width:100%; text-align:center; opacity:0; }
+#rel b { visibility:hidden; font-weight:900; }
+#outro { position:absolute; left:470px; top:1210px; width:520px; border-radius:34px; background:#141513; border:2px solid #3A3B36; padding:24px 28px 28px; opacity:0; box-shadow:0 30px 70px rgba(0,0,0,0.75); }
+#outro .t { font:700 28px Inter; color:#B4B4AC; margin-bottom:12px; letter-spacing:0.04em; }
+#outro .n { font:800 40px Inter; color:var(--off); }
+#outro .d { margin-top:8px; font:600 34px Inter; color:var(--lima); }

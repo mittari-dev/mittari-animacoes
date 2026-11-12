@@ -3,6 +3,8 @@
 </p>
 
 <p align="center">
+  <a href="#leva-03-série-você-não-viu-em-aprovação">Leva 03</a> ·
+  <a href="#leva-02-em-aprovação">Leva 02</a> ·
   <a href="#leva-01-em-aprovação">Leva 01</a> ·
   <a href="#vídeos">Vídeos</a> ·
   <a href="#peças-gráficas">Peças gráficas</a> ·
@@ -17,9 +19,37 @@ Todos os vídeos animados e as peças gráficas da Mittari: o arquivo pronto, o 
 
 ---
 
-## Leva 02 (roteiros, para montar)
+## Leva 03: série "Você não viu" (em aprovação)
 
-Roteiros da S10 e **a correção do gancho** (som no quadro 1, trilha do ElevenLabs Music, nada parado mais de 2 s) em [`conteudo/05 Ideias/Leva 02 — Roteiros para a S10 (09-11).md`](conteudo/05%20Ideias/). Começa reabrindo O01, T02 e U09 com o começo novo; depois T03, O02 e U10.
+Cinco vídeos de consciência feitos em 11/11/2026: cada um mostra ao corretor algo que ele não tinha visto e termina com uma porta (comentar, mandar, chamar no direct). Plano da série em [`conteudo/05 Ideias`](conteudo/05%20Ideias/); vídeos em [`videos/2026-11-11_leva-03_serie-consciencia/`](videos/2026-11-11_leva-03_serie-consciencia/).
+
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_pedido-de-visita-disfarcado/"><img src=".github/galeria/e03.jpg" width="150" alt="Pedido de visita disfarçado"></a><br><b>Pedido de visita disfarçado</b><br><sub>E03 · 28,6 s · 🟡</sub></td>
+    <td align="center" width="20%"><a href="videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_numero-sem-nome/"><img src=".github/galeria/e04.jpg" width="150" alt="Você é um número sem nome"></a><br><b>Você é um número sem nome</b><br><sub>E04 · 29 s · 🟡</sub></td>
+    <td align="center" width="20%"><a href="videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_a-aba-aberta/"><img src=".github/galeria/e05.jpg" width="150" alt="A aba aberta"></a><br><b>A aba aberta</b><br><sub>E05 · 35,2 s · 🟡</sub></td>
+    <td align="center" width="20%"><a href="videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_o-funil-que-voce-nunca-contou/"><img src=".github/galeria/e06.jpg" width="150" alt="O funil que você nunca contou"></a><br><b>O funil que você nunca contou</b><br><sub>E06 · 28 s · 🟡</sub></td>
+    <td align="center" width="20%"><a href="videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_ele-viu-voce-online/"><img src=".github/galeria/e07.jpg" width="150" alt="Ele viu você online"></a><br><b>Ele viu você online</b><br><sub>E07 · 28,4 s · 🟡</sub></td>
+  </tr>
+</table>
+
+---
+
+## Leva 02 (em aprovação)
+
+A correção do gancho (som no quadro 1, trilha audível, nada parado mais de 2 s) em três vídeos novos, feitos em 10 e 11/11/2026. Vídeos em [`videos/2026-11-09_leva-02_pc-remoto/`](videos/2026-11-09_leva-02_pc-remoto/).
+
+<table>
+  <tr>
+    <td align="center" width="20%"><a href="videos/2026-11-09_leva-02_pc-remoto/2026-11-09_kalli_tres-mensagens/"><img src=".github/galeria/t03.jpg" width="150" alt="Três mensagens que esfriam o cliente"></a><br><b>Três mensagens que esfriam o cliente</b><br><sub>T03 · 31 s · 🟡</sub></td>
+    <td align="center" width="20%"><a href="videos/2026-11-09_leva-02_pc-remoto/2026-11-09_kalli_cliente-nao-espera-segunda/"><img src=".github/galeria/o02.jpg" width="150" alt="O cliente não espera segunda-feira"></a><br><b>O cliente não espera segunda-feira</b><br><sub>O02 · 22,8 s · 🟡</sub></td>
+    <td align="center" width="20%"><a href="videos/2026-11-09_leva-02_pc-remoto/2026-11-09_kalli_churrasco-de-sabado/"><img src=".github/galeria/u10.jpg" width="150" alt="O churrasco de sábado"></a><br><b>O churrasco de sábado</b><br><sub>U10 · 32,6 s · 🟡</sub></td>
+    <td width="20%"></td>
+    <td width="20%"></td>
+  </tr>
+</table>
+
+**Reabertos da Leva 01:** O01, T02 e U09 ganharam uma versão `_v2`, com um começo novo de 1,5 s e trilha nova. O arquivo fica ao lado do original, na pasta `final/` de cada um.
 
 ---
 
@@ -98,12 +128,20 @@ O ImobiFlow passou a se chamar **Kalli** em 02/10/2026. Os vídeos anteriores ai
 | 07/10/2026 | [Curioso e comprador](videos/2026-10-07_kalli_curioso-e-comprador/) (primeira versão) | Kalli | 24 s | 16:9 | 🟢 Pronto |
 | 07/10/2026 | [Curioso e comprador, filme 3D](videos/2026-10-07_kalli_curioso-e-comprador-3d/) | Kalli | 50 a 65 s | 16:9 e 9:16 | 🟢 Pronto, sem a trilha final |
 | 08/10/2026 | [Triagem](videos/2026-10-08_kalli_triagem/) | Kalli | 49,6 s | 9:16 | 🟢 Pronto |
-| 26/10/2026 | [Nunca responda só "sim"](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_nunca-responda-so-sim/) (T02) | Kalli | 33 s | 9:16 | 🟡 Em aprovação |
-| 26/10/2026 | [Você não precisa de mais clientes](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_voce-nao-precisa-de-mais-clientes/) (O01) | Kalli | 28,4 s | 9:16 | 🟡 Em aprovação |
+| 26/10/2026 | [Nunca responda só "sim"](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_nunca-responda-so-sim/) (T02), com v2 de 11/11 | Kalli | 33 s e 34,5 s | 9:16 | 🟡 Em aprovação |
+| 26/10/2026 | [Você não precisa de mais clientes](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_voce-nao-precisa-de-mais-clientes/) (O01), com v2 de 11/11 | Kalli | 28,4 s e 29,9 s | 9:16 | 🟡 Em aprovação |
 | 26/10/2026 | [As 4 perguntas](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_4-perguntas/) (T01) | Kalli | 39 s | 9:16 | 🟡 Em aprovação |
 | 26/10/2026 | [A conta da primeira hora](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_primeira-hora/) (E02) | Kalli | 42 s | 9:16 | 🟡 Em aprovação |
-| 26/10/2026 | [A torre de controle](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_torre-de-controle/) (U09) | Kalli | 47 s | 9:16 | 🟡 Em aprovação |
+| 26/10/2026 | [A torre de controle](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_torre-de-controle/) (U09), com v2 de 11/11 | Kalli | 47 s e 48,5 s | 9:16 | 🟡 Em aprovação |
 | 26/10/2026 | [Parece que você tem uma equipe](videos/2026-10-26_leva-01_pc-remoto/2026-10-26_kalli_parece-uma-equipe/) (H5) | Kalli | — | 9:16 | 🚧 Pela metade |
+| 10/11/2026 | [Três mensagens que esfriam o cliente](videos/2026-11-09_leva-02_pc-remoto/2026-11-09_kalli_tres-mensagens/) (T03) | Kalli | 31 s | 9:16 | 🟡 Em aprovação |
+| 10/11/2026 | [O cliente não espera segunda-feira](videos/2026-11-09_leva-02_pc-remoto/2026-11-09_kalli_cliente-nao-espera-segunda/) (O02) | Kalli | 22,8 s | 9:16 | 🟡 Em aprovação |
+| 11/11/2026 | [O churrasco de sábado](videos/2026-11-09_leva-02_pc-remoto/2026-11-09_kalli_churrasco-de-sabado/) (U10) | Kalli | 32,6 s | 9:16 | 🟡 Em aprovação |
+| 11/11/2026 | [Pedido de visita disfarçado](videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_pedido-de-visita-disfarcado/) (E03) | Kalli | 28,6 s | 9:16 | 🟡 Em aprovação |
+| 11/11/2026 | [Você é um número sem nome](videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_numero-sem-nome/) (E04) | Kalli | 29 s | 9:16 | 🟡 Em aprovação |
+| 11/11/2026 | [A aba aberta](videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_a-aba-aberta/) (E05) | Kalli | 35,2 s | 9:16 | 🟡 Em aprovação |
+| 11/11/2026 | [O funil que você nunca contou](videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_o-funil-que-voce-nunca-contou/) (E06) | Kalli | 28 s | 9:16 | 🟡 Em aprovação |
+| 11/11/2026 | [Ele viu você online](videos/2026-11-11_leva-03_serie-consciencia/2026-11-11_kalli_ele-viu-voce-online/) (E07) | Kalli | 28,4 s | 9:16 | 🟡 Em aprovação |
 
 </details>
 

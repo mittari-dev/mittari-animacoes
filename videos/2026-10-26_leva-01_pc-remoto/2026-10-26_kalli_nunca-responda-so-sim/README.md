@@ -44,3 +44,13 @@ Roteiro: `conteudo/01 Roteiros/T02 — Nunca Responda Só Sim.md` (leva 01, S08)
 | `trabalho/` | O projeto HyperFrames (`index.html`), narração, trilha, efeitos e o registro da geração (`render.log`) |
 
 Para refazer: dentro de `trabalho/`, `npm run check` e `npm run render`. O áudio final passa por normalização para −14 LUFS (o padrão dos Reels).
+
+## Versão 2 (11/11/2026)
+
+Reaberto na Leva 02 para a correção do gancho. O arquivo novo é `final/kalli_nunca-responda-so-sim_v2_60fps.mp4` (34,5 s); o original continua na pasta.
+
+- **Começo novo de 1,5 s:** *"14h32. Ele perguntou. Você disse 'sim'. Ele sumiu."*, com a notificação e o "visto por último". Tem som desde o primeiro quadro.
+- **Trilha nova por baixo do vídeo todo**, com batida. A antiga era ambiente e ficava inaudível.
+- A narração e a animação não mudaram.
+
+O projeto da abertura está em `videos/2026-11-09_leva-02_pc-remoto/2026-11-11_ajuste-gancho_o01-t02-u09/`.
