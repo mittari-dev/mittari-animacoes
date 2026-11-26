@@ -26,9 +26,11 @@ Para cada etapa: ler as candidatas inteiras, ficar com uma por função, copiar 
 - [x] Etapas 8, 9 e 10: direção, produção e revisão
   - 8: `motion-art-direction` + `video-beat-board` · 9: HyperFrames + `kinetic-typography` + `beat-sync-editing` · 10: `video-delivery-specs` + /humanizer
   - Para o banco: `shot-composition`, `video-shotcraft`, `motion-video-director`, `video-animatic`, `remotion-video`, `remotion-kinetic-kit`, `caption-animation`, `gsap-web`, `accessible-animation`, `content-humanizer`, `mic-check`
-- [ ] Etapas 4, 5, 12 e 13: grade, ideias, publicação e medição
+- [x] Etapas 4, 5, 12 e 13: grade, ideias, publicação e medição
+  - 4: `ig-content-planner` · 5: `viral-short-form-ideas` · 12: `viral-instagram-reels` + `ig-plan` · 13: `ig-audit` + `hook-library`
+  - Para o banco: `content-strategy`, `content-calendar-sms`, `reverse-engineer-marketing`, `postiz-mcp`, `trypost-mcp`, `performance-analyzer-sms`, `content-pattern-analyzer-sms`
 - [ ] Etapas 0 a 3: perfil, público, canais e oferta
-- [ ] Ler também as que o agy citou e não estão na spec: `remotion-scenes`, `create-remotion-geist` e `trypost-mcp` (`mic-check` e `content-humanizer` lidas: banco)
+- [ ] Ler também as que o agy citou e não estão na spec: `remotion-scenes` e `create-remotion-geist` (`mic-check`, `content-humanizer` e `trypost-mcp` lidas: banco)
 
 **Decisões da Central na T3:**
 - **O texto das skills fica no original, e a saída é em português.** Traduzir dezenas de milhares de palavras não muda o resultado. Se estiver errado, custa uma tradução depois, skill por skill.
