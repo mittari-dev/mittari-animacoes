@@ -124,7 +124,7 @@ As etapas 0 a 4 rodam **uma vez por marca** e são revistas por ciclo. As etapas
 | 12 | `postiz-mcp` |
 | 13 | `performance-analyzer-sms`, `content-pattern-analyzer-sms` |
 
-**Licenças:** das 36, só 7 trazem a licença junto (5 dizem MIT, 3 têm arquivo LICENSE). As outras não dizem de onde vieram. Num repositório privado, só da Mittari, copiar é aceitável. **Antes de entregar a fábrica a outra empresa**, cada `ORIGEM.md` sem licença confirmada tem que ser resolvido: ou se acha a licença, ou se reescreve a skill com palavras próprias.
+**Licenças:** das 36, só 7 trazem a licença junto. **A indústria é só da Mittari, para sempre** (fundador, 26/11), então copiar para uso interno não trava nada. Cada `ORIGEM.md` registra a licença que veio, ou a falta dela.
 
 **O banco (`banco.md`):** as outras ~215, com uma linha cada. Elas continuam no disco, em `D:\dev\.tools\claude\skills`. Uma skill do banco só entra no guia depois de lida.
 
