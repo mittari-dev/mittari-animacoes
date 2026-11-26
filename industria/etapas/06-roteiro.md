@@ -4,12 +4,23 @@
 |---|---|
 | **Entra** | A linha da peça, o modelo de roteiro da marca |
 | **Sai** | `<peça>/planejamento/roteiro.md` |
-| **Skill** | A definir na leitura (T3). Candidatas: `spotlight-short-script`, `milo-video-script-writer`, `storytelling-conversion` |
+| **Skill** | `viral-short-form` (estrutura) e `storytelling-conversion` (revisão da história). No banco: `spotlight-short-script`, `milo-video-script-writer` |
 | **Portão** | Passa pelas regras da marca e pelo /humanizer. O dono aprovou |
 
 ## Como fazer
 
-A preencher quando a skill da etapa for escolhida e adaptada.
+1. **Ler `industria/skills/viral-short-form/SKILL.md`** e seguir o modo "Write a script", com `assets/script-template.md`.
+2. **Escolher o formato** em `references/formats.md` que serve à linha da peça (o funil e o ângulo vêm da etapa 5).
+3. **Montar o arco:** gancho, escalada, entrega e porta. Conferir os três jeitos de perder quem assiste, em `references/retention.md`.
+4. **Passar pela `storytelling-conversion`** (`references/review.md`):
+   - quem é o vilão, que na Kalli é o método manual;
+   - cada detalhe plantado tem retorno;
+   - o fim volta ao começo com sentido novo.
+5. **Gravar `planejamento/roteiro.md`** no modelo de roteiro da marca, com colunas de voz e tela.
+6. **Conferir antes de mandar ao dono:**
+   - `marcas/<marca>/regras.md`, linha por linha;
+   - cada recurso citado está em `perfil.md`;
+   - /humanizer na narração e no texto da tela.
 
 ## Regras da marca que pesam aqui
 

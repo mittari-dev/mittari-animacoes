@@ -20,11 +20,17 @@ Cada tarefa termina num commit no `main`. Quem pegar no meio olha os `[x]` abaix
 
 ## T3. Leitura das skills, por etapa
 Para cada etapa: ler as candidatas inteiras, ficar com uma por função, copiar para `industria/skills/<nome>/`, adaptar, escrever o `ORIGEM.md` e preencher a etapa.
-- [ ] Etapas 6, 7 e 11: roteiro, gancho e pacote. A semana de 04/01 depende delas
+- [x] Etapas 6, 7 e 11: roteiro, gancho e pacote. A semana de 04/01 depende delas
+  - 6: `viral-short-form` + `storytelling-conversion` · 7: `viral-hooks` · 11: `viral-captions-and-ctas`, `ig-carousel`, `ig-story` · 13 (adiantada): `hook-library`
+  - Para o banco: `spotlight-short-script`, `milo-video-script-writer`, `hormozi-hooks`, `ig-caption`, `ig-caption-writer`, `caption-writer-sms`, `ig-carousel-planner`, `carousel-writer-sms`
 - [ ] Etapas 8, 9 e 10: direção, produção e revisão
 - [ ] Etapas 4, 5, 12 e 13: grade, ideias, publicação e medição
 - [ ] Etapas 0 a 3: perfil, público, canais e oferta
 - [ ] Ler também as que o agy citou e não estão na spec: `mic-check`, `content-humanizer`, `remotion-scenes`, `create-remotion-geist` e `trypost-mcp`
+
+**Decisões da Central na T3:**
+- **O texto das skills fica no original, e a saída é em português.** Traduzir dezenas de milhares de palavras não muda o resultado. Se estiver errado, custa uma tradução depois, skill por skill.
+- **Skill que aponta para arquivo que não veio junto vai para o banco.** É o caso de `ig-carousel-planner` e `ig-caption-writer` (`../../references`) e de `caption-writer-sms` e `carousel-writer-sms` (`.agents/`).
 
 ## T4. Banco
 - [ ] `industria/banco.md`: as outras skills, com uma linha cada

@@ -102,7 +102,7 @@ As etapas 0 a 4 rodam **uma vez por marca** e são revistas por ciclo. As etapas
 3. A skill escolhida é copiada para `industria/skills/<nome>/` e adaptada:
    - o que for de serviço pago ou de outra plataforma sai;
    - a regra que brigar com o guia sai;
-   - o texto de exemplo vai para o português.
+   - a saída é sempre em português. O texto da skill fica no original, porque traduzir 50 mil palavras não muda o resultado (decisão da Central em 26/11, ver `PLANO.md`).
 4. Cada uma ganha um `ORIGEM.md` com o repositório de onde veio, a licença e o que foi mudado.
 
 **Candidatas** (36, umas 53 mil palavras no total; a lista final sai da leitura):
