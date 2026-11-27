@@ -9,6 +9,8 @@ Este guia não produz nada sozinho. Em cada etapa, ele diz o que entra, que skil
 
 ## Antes de começar
 
+**Todos os caminhos deste guia partem da raiz do repositório `mittari-dev/mittari-animacoes`:** `D:\dev\projects\mittari-animacoes` no notebook, e o clone no PC remoto. Se você abriu esta skill por outra pasta, vá para a raiz antes de seguir. Para instalar ou atualizar a skill, rode `ferramentas/instalar-industria.ps1`.
+
 1. **Qual marca?** Abra `marcas/<marca>/`. Se a pasta não existe, copie `marcas/_modelo/` e rode as etapas 0 a 4 com o dono antes de qualquer peça.
 2. **Leia `marcas/<marca>/regras.md` inteiro.** As regras da marca valem em todas as etapas e vencem qualquer skill.
 3. **Em que etapa a peça está?** Siga a tabela a partir dela. Não pule portão.

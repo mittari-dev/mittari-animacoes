@@ -33,23 +33,23 @@ Para cada etapa: ler as candidatas inteiras, ficar com uma por função, copiar 
   - 0: `brand-context` + `brand-voice` · 1: `customer-research` · 2: `platform-strategy-sms` · 3: `brand-messaging` + `hormozi-offer` + `objection-destroyer`
   - Para o banco: `target-audience`, `funnel-content-strategy`
   - **Total: 24 skills escolhidas** (a meta era de 20 a 35)
-- [ ] Ler também as que o agy citou e não estão na spec: `remotion-scenes` e `create-remotion-geist` (`mic-check`, `content-humanizer` e `trypost-mcp` lidas: banco)
+- [x] Ler também as que o agy citou: `remotion-scenes`, `create-remotion-geist`, `mic-check`, `content-humanizer` e `trypost-mcp` (todas para o banco)
 
 **Decisões da Central na T3:**
 - **O texto das skills fica no original, e a saída é em português.** Traduzir dezenas de milhares de palavras não muda o resultado. Se estiver errado, custa uma tradução depois, skill por skill.
 - **Skill que aponta para arquivo que não veio junto vai para o banco.** É o caso de `ig-carousel-planner` e `ig-caption-writer` (`../../references`) e de `caption-writer-sms` e `carousel-writer-sms` (`.agents/`).
 
 ## T4. Banco
-- [ ] `industria/banco.md`: as outras skills, com uma linha cada
+- [x] `industria/banco.md`: as outras 228 skills, com uma linha cada (32 lidas, com o motivo)
 
 ## T5. Instalação
-- [ ] `ferramentas/instalar-industria.ps1`: liga `industria/` às pastas de skills da Central, do `~/.claude` e do agy
-- [ ] Tirar o rascunho do agy de `~/.claude/skills/industria-de-postagem`, já guardado em `referencias/`
+- [x] `ferramentas/instalar-industria.ps1`: junção no C: (Central). No D: (exFAT), cópia, para `~/.claude` e o agy. Rodar de novo depois de `git pull`
+- [x] Tirar o rascunho do agy de `~/.claude/skills/industria-de-postagem`, já guardado em `referencias/`
 
 ## T6. Kit da Kalli e melhorias do repositório
-- [ ] `marcas/kalli/kit/`: as fontes, os sons, o grão e o símbolo que hoje se repetem em até 28 vídeos
+- [x] `marcas/kalli/kit/`: as fontes, os sons, o grão e o símbolo que hoje se repetem em até 28 vídeos
 - [ ] `ferramentas/hyperframes/`: base de cena a partir do melhor vídeo da Leva 03
-- [ ] `.gitignore`: `_dev/` e `render.log`
+- [x] `.gitignore`: `render.log` e temporários de render. A `_dev/` fica, porque tem o `words.json`
 - [ ] Script que gera a galeria do README
 - [ ] Decidir com o fundador: `conteudo/` como cópia ou leitura da Central no GitHub
 - [ ] Conferir a cota do LFS (fundador, em Billing)

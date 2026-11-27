@@ -51,7 +51,9 @@ O rascunho também lê a grade 2-3-2-3-2 como 4 temas que somam 10 Reels. Isso b
 - `render.log` versionado.
 - `videos/2026-09-30_imobiflow_cliente-das-23h/trabalho/` tem 673 arquivos, e `curioso-e-comprador-3d` tem 325.
 
-**O que fazer:** `_dev/` e `render.log` vão para o `.gitignore` nos vídeos novos. Os antigos ficam.
+**O que fazer:**
+- `render.log` e as pastas temporárias de render (`.render-bruto.hf-transaction-*`) foram para o `.gitignore`.
+- **A `_dev/` fica no Git.** Ela guarda o `words.json`, com o tempo de cada palavra da narração, e o `index.html` usa esse arquivo (correção de 26/11).
 
 ## 5. Organização
 

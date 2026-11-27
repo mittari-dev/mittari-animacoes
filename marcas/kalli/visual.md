@@ -10,6 +10,6 @@
 | **Voz** | ElevenLabs. Pelos nomes dos arquivos de narração, a voz do Sandro (conferir) |
 | **Formato** | 9:16, 1080×1920, 60 qps |
 
-Os arquivos vão para `marcas/kalli/kit/` na T6. Até lá, copiar de `videos/2026-11-11_leva-03_serie-consciencia/<qualquer>/trabalho/assets/`.
+**Os arquivos estão em `marcas/kalli/kit/`** (fontes, sons, grão e símbolo), copiados da Leva 03. Vídeo novo copia de lá para o seu `trabalho/assets/`.
 
 Roteiro no formato da Central: [Modelo de roteiro (VOZ × TELA)](https://github.com/mittari-dev/central/blob/main/Mittari/18%20Conte%C3%BAdo/00%20Manual/_Modelo%20%E2%80%94%20Roteiro%20%28VOZ%20%C3%97%20TELA%29.md)
