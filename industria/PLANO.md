@@ -29,7 +29,10 @@ Para cada etapa: ler as candidatas inteiras, ficar com uma por função, copiar 
 - [x] Etapas 4, 5, 12 e 13: grade, ideias, publicação e medição
   - 4: `ig-content-planner` · 5: `viral-short-form-ideas` · 12: `viral-instagram-reels` + `ig-plan` · 13: `ig-audit` + `hook-library`
   - Para o banco: `content-strategy`, `content-calendar-sms`, `reverse-engineer-marketing`, `postiz-mcp`, `trypost-mcp`, `performance-analyzer-sms`, `content-pattern-analyzer-sms`
-- [ ] Etapas 0 a 3: perfil, público, canais e oferta
+- [x] Etapas 0 a 3: perfil, público, canais e oferta
+  - 0: `brand-context` + `brand-voice` · 1: `customer-research` · 2: `platform-strategy-sms` · 3: `brand-messaging` + `hormozi-offer` + `objection-destroyer`
+  - Para o banco: `target-audience`, `funnel-content-strategy`
+  - **Total: 24 skills escolhidas** (a meta era de 20 a 35)
 - [ ] Ler também as que o agy citou e não estão na spec: `remotion-scenes` e `create-remotion-geist` (`mic-check`, `content-humanizer` e `trypost-mcp` lidas: banco)
 
 **Decisões da Central na T3:**
