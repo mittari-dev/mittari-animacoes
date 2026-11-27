@@ -66,5 +66,6 @@ O que deu errado e para onde voltar está no mapa de falhas do README.
 | Uma peça | `videos/<data>_<marca>_<nome>/` (ou `pecas/`), com `planejamento/`, `trabalho/` e `final/` |
 | O plano e o resultado da semana | `producoes/<marca>/` |
 | Fontes, sons e logos da marca | `marcas/<marca>/kit/` |
+| Sons, trilhas, vozes, telas reais e 3D de todas as marcas | [`industria/biblioteca/`](biblioteca/README.md). Procure lá **antes** de gerar qualquer coisa |
 | Modelos de ficha e roteiro | `modelos/` |
 | Spec, plano e auditoria desta fábrica | `industria/ESPEC.md`, `industria/PLANO.md`, `industria/AUDITORIA.md` |

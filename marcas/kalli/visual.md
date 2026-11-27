@@ -7,7 +7,7 @@
 | **Textura** | `grao.png` |
 | **Símbolo** | `simbolo-lima.png` |
 | **Sons** | whoosh, tick, notif, pop, vibra, snap, impacto, digitando, enviada |
-| **Voz** | ElevenLabs. Pelos nomes dos arquivos de narração, a voz do Sandro (conferir) |
+| **Voz** | ElevenLabs, **Sandro Dutra** (`qPfM2laM0pRL4rrZtBGl`), oficial desde 07/10. Estabilidade baixa, velocidade 1,1 (Leva 02) |
 | **Formato** | 9:16, 1080×1920, 60 qps |
 
 **Os arquivos estão em `marcas/kalli/kit/`** (fontes, sons, grão e símbolo), copiados da Leva 03. Vídeo novo copia de lá para o seu `trabalho/assets/`.
