@@ -18,7 +18,8 @@
 
 **Agendar**
 1. **Agora:** à mão, no Meta Business Suite, com o vídeo, a capa e a legenda de `final/`. Sem cabo USB.
-2. **Depois:** a API da Meta, quando sair a revisão do app, ou o Metricool, se a conta servir (T7).
+2. **Metricool:** o Instagram `kalli.app` já está conectado lá (conferido em 26/11), e a Central tem o conector. Antes de usar, falta o fundador confirmar o plano, se ele publica Reels sozinho, e aprovar. Agendar é publicar fora do PC: só com o sim dele, peça por peça ou por semana.
+3. **Depois:** a API da Meta, quando sair a revisão do app.
 
 **Depois de publicar**
 1. **Cold start, nos primeiros 30 min:** mandar o post a quem já conversa com a marca e a grupos de que o dono já participa. Sem disparo em massa.

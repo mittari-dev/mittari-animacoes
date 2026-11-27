@@ -55,7 +55,7 @@ Para cada etapa: ler as candidatas inteiras, ficar com uma por função, copiar 
 - [ ] Conferir a cota do LFS (fundador, em Billing)
 
 ## T7. Publicação
-- [ ] Conferir o Metricool: a conta da Kalli está conectada? Quanto custa?
+- [x] Conferir o Metricool: **o Instagram `kalli.app` está conectado** desde 06/10, na marca `_mittari`, fuso de São Paulo (lido em 26/11). Falta saber o plano e se ele publica Reels sozinho. Fundador confere no site. Agendar por lá é ação externa: só com o sim dele
 
 ## T8. Prova
 - [ ] Um Reels da Kalli do zero, só com o guia e `marcas/kalli/`
