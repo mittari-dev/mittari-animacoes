@@ -1,0 +1,4 @@
+{ "marca": "kalli", "dur": 12, "seed": 20261126, "selo": "SÉRIE", "assinatura": null,
+  "css": "cena.css", "html": "cena.html", "js": "cena.js",
+  "audio": [["kit/sons/sfx-notif.mp3", 0, 0.9, 0.9], ["kit/sons/sfx-whoosh.mp3", 2.9, 1.2, 0.45],
+            ["kit/sons/sfx-pop.mp3", 3.2, 0.4, 0.6], ["kit/sons/sfx-impacto.mp3", 8.0, 1.3, 0.6]] }

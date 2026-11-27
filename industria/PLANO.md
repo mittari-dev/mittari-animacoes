@@ -48,11 +48,21 @@ Para cada etapa: ler as candidatas inteiras, ficar com uma por função, copiar 
 
 ## T6. Kit da Kalli e melhorias do repositório
 - [x] `marcas/kalli/kit/`: as fontes, os sons, o grão e o símbolo que hoje se repetem em até 28 vídeos
-- [ ] `ferramentas/hyperframes/`: base de cena a partir do melhor vídeo da Leva 03
+- [x] `ferramentas/hyperframes/`: a base que o PC remoto fez na Leva 03 (`kit.js`, `montar.mjs`, `mix.sh`, `render.sh`), generalizada por marca. Testada: mesmos pixels que o original
 - [x] `.gitignore`: `render.log` e temporários de render. A `_dev/` fica, porque tem o `words.json`
 - [ ] Script que gera a galeria do README
 - [ ] Decidir com o fundador: `conteudo/` como cópia ou leitura da Central no GitHub
 - [ ] Conferir a cota do LFS (fundador, em Billing)
+
+## T9. O padrão da Mittari (pedido do fundador em 26/11: "achei extremamente simples")
+- [x] `industria/qualidade/`: cinco portões com nota e o mapa de falhas
+- [x] Previsão: nota de prontidão e `ferramentas/calibrar.py` (só conclui com 20 peças ou mais)
+- [x] `industria/biblioteca/`: inventário (`ferramentas/catalogo.py`), telas reais, 3D pelo Blender
+- [x] Base de cena (ver T6)
+- [x] `industria/custos.md`
+- [ ] Galeria: o dono diz quais vídeos são bons e quais são ruins
+- [ ] Celular 3D da Kalli no Blender (PC remoto, com aprovação)
+- [ ] `faster-whisper` no lugar do Scribe (instalar no PC remoto)
 
 ## T7. Publicação
 - [x] Conferir o Metricool: **o Instagram `kalli.app` está conectado** desde 06/10, na marca `_mittari`, fuso de São Paulo (lido em 26/11). Falta saber o plano e se ele publica Reels sozinho. Fundador confere no site. Agendar por lá é ação externa: só com o sim dele

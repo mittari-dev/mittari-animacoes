@@ -18,3 +18,8 @@ render-bruto.mp4
 # Rascunho de render (desde 26/11). A pasta _dev/ fica: tem o words.json que o index.html usa
 render.log
 .render-bruto.hf-transaction-*/
+
+# Kit da marca copiado pelo montar.mjs (o original fica em marcas/<marca>/kit/)
+videos/**/trabalho/assets/kit/
+ferramentas/hyperframes/modelo-cena/trabalho/assets/
+ferramentas/hyperframes/modelo-cena/trabalho/index.html

@@ -1,0 +1,69 @@
+@font-face { font-family:"Archivo"; src:url("assets/kit/fontes/archivo-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Inter"; src:url("assets/kit/fontes/inter-latin.woff2") format("woff2"); font-weight:100 900; }
+@font-face { font-family:"Instrument Serif"; src:url("assets/kit/fontes/instrument-serif-italic-latin.woff2") format("woff2"); font-style:italic; font-weight:400; }
+:root { --acento:#B8FF4F; --fundo:#0A0A0A; --lima:#B8FF4F; --lar:#FF8A3D; --off:#ECECE4; --dim:#8E8E86; --red:#FF5A5E; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#000; }
+#root { position:relative; width:100%; height:100%; overflow:hidden; background:#080808; }
+#bg { position:absolute; inset:0; background:radial-gradient(ellipse 85% 55% at 50% 38%, #131611 0%, #0a0a0a 55%, #060606 100%); }
+#glow { position:absolute; left:90px; top:520px; width:900px; height:900px; border-radius:50%; background:radial-gradient(circle, rgba(184,255,79,0.09) 0%, rgba(184,255,79,0) 62%); }
+#world { position:absolute; inset:0; }
+#stage { position:absolute; inset:0; }
+/* selo da série */
+#selo { position:absolute; left:70px; top:92px; height:54px; border-radius:27px; padding:0 22px; display:flex; align-items:center; gap:12px; background:#141513; border:2px solid #2A2B27; font:800 28px Inter; letter-spacing:0.08em; color:#B4B4AC; }
+#selo i { width:14px; height:14px; border-radius:50%; background:var(--lima); }
+/* celular */
+#phone { position:absolute; left:140px; top:700px; width:800px; height:980px; border-radius:72px; background:#0b0b0b; padding:18px;
+  box-shadow:0 70px 140px rgba(0,0,0,0.65), 0 0 0 3px #2a2a27, inset 0 0 0 2px #1d1d1b; }
+#screen { position:relative; width:764px; height:944px; border-radius:56px; overflow:hidden; background:#0D0E0C;
+  background-image:radial-gradient(rgba(255,255,255,0.025) 2px, transparent 2px); background-size:34px 34px; }
+.notch { position:absolute; left:302px; top:14px; width:160px; height:40px; border-radius:20px; background:#000; z-index:9; }
+.hdr { position:absolute; left:0; top:0; width:764px; height:170px; background:#141513; border-bottom:1px solid #22231F; }
+.back { position:absolute; left:26px; top:90px; width:26px; height:44px; }
+.ava { position:absolute; left:70px; top:78px; width:76px; height:76px; border-radius:50%; background:#26301C; color:var(--lima); font:800 36px Inter; text-align:center; line-height:76px; }
+.nm { position:absolute; left:168px; top:82px; font:700 36px Inter; color:var(--off); }
+.st { position:absolute; left:168px; top:128px; font:500 28px Inter; color:var(--dim); }
+.st.lm { color:var(--lima); }
+.chat { position:absolute; left:0; top:170px; width:764px; height:660px; padding:30px 34px; display:flex; flex-direction:column; gap:22px; }
+.b { position:relative; max-width:620px; padding:22px 28px 20px; font:500 38px/1.32 Inter; color:var(--off); border-radius:30px; }
+.b.in { align-self:flex-start; background:#1E1F1C; border-top-left-radius:8px; }
+.b.out { align-self:flex-end; background:#1F2C14; border:1.5px solid rgba(184,255,79,0.22); border-top-right-radius:8px; }
+.b.ok { background:#243A12; border:2px solid rgba(184,255,79,0.7); }
+.b.bad { background:#2A1516; border:2px solid rgba(255,90,94,0.6); }
+.b small { display:block; font:700 28px Inter; color:var(--lima); margin-bottom:2px; }
+.tm { display:block; margin-top:6px; text-align:right; font:500 24px Inter; color:#A4A49C; }
+.ww { opacity:0; }
+.bar { position:absolute; left:22px; bottom:24px; width:720px; height:92px; }
+.fld { position:absolute; left:0; top:0; width:610px; height:92px; border-radius:46px; background:#1A1B18; font:500 32px/92px Inter; color:#7A7A73; padding-left:36px; }
+.mic { position:absolute; right:0; top:0; width:92px; height:92px; border-radius:50%; background:var(--lima); }
+.mic i { position:absolute; left:36px; top:22px; width:20px; height:34px; border-radius:10px; background:#0A0A0A; }
+.mk { position:absolute; left:-32px; top:-30px; width:72px; height:72px; border-radius:50%; z-index:6; opacity:0; box-shadow:0 8px 20px rgba(0,0,0,0.5); }
+.mk.x { background:var(--red); } .mk.v { background:var(--lima); }
+.mk svg { position:absolute; left:16px; top:16px; width:40px; height:40px; }
+/* letra */
+#type { position:absolute; inset:0; }
+.ln { position:absolute; left:70px; width:940px; }
+.row { display:block; position:relative; }
+.sm { font:600 54px/1.25 Inter; color:#B4B4AC; margin-bottom:8px; }
+.mid { font-family:Archivo; font-weight:900; font-size:86px; line-height:1.02; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.big { font-family:Archivo; font-weight:900; font-size:112px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--off); }
+.huge { font-family:Archivo; font-weight:900; font-size:160px; line-height:0.9; letter-spacing:-0.04em; text-transform:uppercase; color:var(--off); }
+.serif { font-family:"Instrument Serif"; font-style:italic; font-size:92px; line-height:1.04; letter-spacing:-0.01em; color:var(--off); margin-top:6px; }
+.w { display:inline-block; margin-right:0.22em; opacity:0; }
+.lm { color:var(--lima); } .rd { color:var(--red); } .or { color:var(--lar); }
+#h1 { top:190px; }
+#h1 .w { opacity:1; }
+/* a porta: o pedido do fim */
+#porta { position:absolute; left:0; top:0; width:1080px; height:1920px; opacity:0; }
+#pIco { position:absolute; left:70px; top:330px; width:210px; height:210px; border-radius:50%; background:var(--lima); }
+#pIco svg { position:absolute; left:45px; top:45px; width:120px; height:120px; }
+#pL1 { position:absolute; left:70px; top:590px; width:940px; font-family:Archivo; font-weight:900; font-size:128px; line-height:0.95; letter-spacing:-0.035em; text-transform:uppercase; color:var(--lima); }
+#pL2 { position:absolute; left:70px; top:870px; width:940px; font-family:"Instrument Serif"; font-style:italic; font-size:104px; line-height:1.04; color:var(--off); }
+#pSeta { position:absolute; left:70px; top:1180px; width:120px; height:120px; }
+#pK { position:absolute; left:70px; top:1370px; display:flex; align-items:center; gap:22px; font:900 64px Archivo; letter-spacing:-0.04em; color:var(--off); }
+#pK img { width:76px; height:74px; }
+#pK span { font:500 34px Inter; letter-spacing:0; color:#B4B4AC; margin-left:6px; }
+#grain { position:absolute; inset:-200px; background:url("assets/kit/grao.png"); mix-blend-mode:overlay; opacity:0.05; pointer-events:none; }
+#vig { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.5) 100%); pointer-events:none; }
+/* os elementos da porta nascem invisíveis: cada um entra na sua vez */
+#pIco, #pL1, #pL2, #pSeta, #pK { opacity:0; }
