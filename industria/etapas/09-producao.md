@@ -21,6 +21,12 @@
 4. **Conferir e renderizar:** `npm run check`, depois `npm run render`. O resultado vai para `final/`.
 5. **Skills do HyperFrames:** a máquina que renderiza precisa das skills oficiais da HeyGen (`npx skills add heygen-com/hyperframes`). O PC remoto já usou ("authoringSkill": "general-video"). Neste PC ainda não estão instaladas.
 
+## Portões
+
+- **Na prévia:** [portão 3, animação](../qualidade/3-animacao.md). Nenhuma camada abaixo de 3.
+- **Depois do render:** [portão 4](../qualidade/4-render.md), com `python ferramentas/conferir-render.py <video> --capturas <peça>/revisao`.
+- **Voz:** gerar só depois do portão 1, em uma tomada. Frase ruim é regenerada sozinha, nunca a narração inteira (ver `industria/custos.md`).
+
 ## Regras da marca que pesam aqui
 
 Ler `marcas/<marca>/regras.md`. Quando a regra da marca e a da skill brigarem, vale a da marca.

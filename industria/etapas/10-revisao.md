@@ -16,6 +16,10 @@
 5. **Regras da marca:** `marcas/<marca>/regras.md`, linha por linha.
 6. **Preencher o checklist na ficha** (`modelos/ficha-de-video.md`) e mudar a situação para "Em aprovação". O dono aprova.
 
+## Portão
+
+[Portão 5, prontidão](../qualidade/5-prontidao.md): somar as notas e anotar na ficha. Abaixo de 70, não vai ao dono.
+
 ## Regras da marca que pesam aqui
 
 Ler `marcas/<marca>/regras.md`. Quando a regra da marca e a da skill brigarem, vale a da marca.

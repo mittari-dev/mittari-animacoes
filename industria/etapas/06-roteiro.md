@@ -22,6 +22,10 @@
    - cada recurso citado está em `perfil.md`;
    - /humanizer na narração e no texto da tela.
 
+## Portão
+
+O roteiro passa pelo [portão 1](../qualidade/1-roteiro.md) no fim da etapa 7. Texto que soar como IA: [portão 2](../qualidade/2-humanizer.md).
+
 ## Regras da marca que pesam aqui
 
 Ler `marcas/<marca>/regras.md`. Quando a regra da marca e a da skill brigarem, vale a da marca.

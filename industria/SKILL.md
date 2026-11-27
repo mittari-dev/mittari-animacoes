@@ -38,6 +38,17 @@ As etapas 0 a 4 rodam uma vez por marca e são revistas a cada ciclo. As etapas 
 
 Para chamar a skill de uma etapa, leia `industria/skills/<nome>/SKILL.md`. Só use skill que esteja em `industria/skills/`. As outras estão listadas em `industria/banco.md` e não foram lidas.
 
+## Qualidade
+
+**Os cinco portões e o que fazer quando uma peça reprova estão em [`industria/qualidade/`](qualidade/README.md).** Leia o README de lá antes de produzir. Resumo:
+1. **Roteiro:** nota de 0 a 20, antes de gerar voz.
+2. **Humanizer:** no máximo 2 reescritas.
+3. **Animação:** 10 camadas, nenhuma abaixo de 3.
+4. **Render:** `ferramentas/conferir-render.py`.
+5. **Prontidão:** de 0 a 100. Abaixo de 70, não vai ao dono.
+
+O que deu errado e para onde voltar está no mapa de falhas do README.
+
 ## Regras universais (todas as marcas)
 
 - **Só prometer o que existe.** Confira no `perfil.md` da marca.

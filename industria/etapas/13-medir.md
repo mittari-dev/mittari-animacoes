@@ -16,6 +16,10 @@
 4. **Uma vez por mês, rodar `patterns --min 3`.** O que tiver 3 usos ou mais e resultado acima da mediana vai para o topo da etapa 7.
 5. **Gravar `producoes/<marca>/<AAAA-semana>-resultado.md`:** o que repetir e o que cortar. A etapa 4 da semana seguinte lê essa nota.
 
+## Calibrar a previsão
+
+Cada peça postada ganha uma linha em `marcas/<marca>/resultados.csv`, com as notas e o resultado de 48 h. A cada 20 peças, `python ferramentas/calibrar.py marcas/<marca>/resultados.csv` ([portão 5](../qualidade/5-prontidao.md)).
+
 ## Regras da marca que pesam aqui
 
 Ler `marcas/<marca>/regras.md`. Quando a regra da marca e a da skill brigarem, vale a da marca.

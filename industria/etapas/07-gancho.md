@@ -16,6 +16,10 @@
 5. **Consultar os ganchos que já funcionaram** para a marca (etapa 13, `hook-library`). Moldes com 3 usos ou mais e resultado acima da mediana vão para o topo.
 6. **Deixar 3 no roteiro, com um marcado.** O dono escolhe junto com o roteiro.
 
+## Portão
+
+**Depois do gancho escolhido, o roteiro inteiro passa pelo [portão 1](../qualidade/1-roteiro.md)**, antes de qualquer voz. Texto que soar como IA: [portão 2](../qualidade/2-humanizer.md).
+
 ## Regras da marca que pesam aqui
 
 Ler `marcas/<marca>/regras.md`. Quando a regra da marca e a da skill brigarem, vale a da marca.
